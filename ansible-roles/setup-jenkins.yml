@@ -7,6 +7,7 @@
     cloud: "jenkins"
 
   vars_files:
+    - "group_vars/jenkins.yml"
     #- "group_vars/all.yml" should be loaded automatically
     - "secret_group_vars/default.yml"
 

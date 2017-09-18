@@ -1,10 +1,6 @@
 #!/bin/bash
 echo "
-,--.  ,--.,----.    ,-----.,--.  ,--.
-\  \.'  /'  .-./   '  .--./|  ,'.|  |
- \     / |  | .---.|  |    |  |' '  |
-  \   /  '  '--'  |'  '--'\|  | \   |
-   \-'    \------'  \-----'\--'  \--'
+{{ dynmotd_logo }}
 ====================================================
 Hostname......: `hostname -f`
 Release.......: {{ ansible_distribution }} Linux release {{ ansible_distribution_version }} ({{ ansible_distribution_release }})
@@ -13,5 +9,7 @@ Build Date....: {{ ansible_date_time.iso8601 }}
 ====================================================
 Current user..: root
 Load..........: `cat /proc/loadavg`
-Condor........: `condor_q | grep jobs`
+{% for custom_command in dynmotd_custom %}
+{{ custom_command.name }}........ : `{{ custom_command.command }}`
+{% endfor %}
 ===================================================="
