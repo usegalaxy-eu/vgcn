@@ -2,7 +2,7 @@
 - hosts: default
 
   vars:
-    vgcn_build: 4
+    vgcn_build: 5
     vgcn_cluster: "vjcn"
     cloud: "jenkins"
 
