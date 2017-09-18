@@ -14,3 +14,17 @@
     key: '{{ item }}'
   with_file:
     - jenkins-v1.pub
+
+- name: Install packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - qemu-system-x86
+    - unzip
+
+- name: Download packer
+  shell: wget https://releases.hashicorp.com/packer/1.1.0/packer_1.1.0_linux_amd64.zip -O /tmp/packer.zip
+
+- name: Extract packer
+  shell: unzip /tmp/packer.zip -d /usr/bin
