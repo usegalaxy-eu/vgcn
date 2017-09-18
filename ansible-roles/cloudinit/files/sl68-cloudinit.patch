@@ -1,0 +1,11 @@
+--- /usr/lib/python2.6/site-packages/cloudinit/distros/__init__.py.ORIG 2013-11-19 22:27:46.000000000 +0100
++++ /usr/lib/python2.6/site-packages/cloudinit/distros/__init__.py      2016-12-06 16:47:49.873999657 +0100
+@@ -81,7 +81,7 @@
+     def set_hostname(self, hostname, fqdn=None):
+         writeable_hostname = self._select_hostname(hostname, fqdn)
+         self._write_hostname(writeable_hostname, self.hostname_conf_fn)
+-        self._apply_hostname(hostname)
++        self._apply_hostname(writeable_hostname)
+ 
+     @abc.abstractmethod
+     def package_command(self, cmd, args=None, pkgs=None):

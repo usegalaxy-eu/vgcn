@@ -1,0 +1,10 @@
+---
+- name: Install packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - screen
+    - ansible
+    - vim
+    - "@development"

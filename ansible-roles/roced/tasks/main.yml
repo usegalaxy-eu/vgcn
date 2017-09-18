@@ -1,0 +1,119 @@
+---
+# ROCED setup
+  # no longer needed, we install Python 3.5 instead, see below
+  #- name: pkg python2-future,python-configparser
+  #  yum: name=python2-future,python-configparser state=present
+
+  - name: python-3.5 unpack
+    unarchive: src=python-3.5-sl6.tgz
+               dest=/opt creates=no
+
+  - name: roced unpack
+    unarchive:
+      src: "roced-{{ roced_dist }}.tar.bz2"
+      dest: /opt
+      creates: no
+
+  # interim patch for ROCED b60d0575
+  - name: roced patch
+    patch:
+      src: roced-b60d0575-patch
+      dest: /opt/ROCED/src/ROCED/IntegrationAdapter/HTCondorIntegrationAdapter.py
+      backup: yes
+
+  - name: roced owner fix
+    file: dest=/opt/ROCED owner=root recurse=yes
+
+  - name: roced bangpath fix
+    lineinfile:
+      dest: /opt/ROCED/src/ROCED/scale.py
+      backup: yes
+      regexp: '^#!'
+      line: '#!/opt/python-3.5/bin/python3'
+
+  - name: roced ssh directory
+    file: path=/root/.ssh state=directory mode=0700
+
+  - name: roced ssh-key private
+    copy:
+      dest: /root/.ssh/roced
+      mode: 0600
+      owner: root
+      group: root
+      content: "{{ roced_ssh_privkey }}"
+
+  - name: roced ssh-key public
+    copy:
+      dest: /root/.ssh/roced.pub
+      mode: 0644
+      owner: root
+      group: root
+      content: "{{ roced_ssh_pubkey }}"
+
+  - name: roced cfg freiburg_user
+    ini_file: dest={{ roced_fr }} section=freiburg_cloud
+              option=freiburg_user value=fr_sj7
+              backup=yes
+
+  # > at our 2017-04-24-workshop it was found this could potentially
+  # > disturb ROCED operation by including unrelated MOAB jobs
+  # janky 2017-06-21: this option must be REMOVED from the original config!
+  - name: roced cfg freiburg_user_group
+    ini_file: dest={{ roced_fr }} section=freiburg_cloud
+              option=freiburg_user_group state=absent
+
+  - name: roced cfg freiburg_key
+    ini_file: dest={{ roced_fr }} section=freiburg_cloud
+              option=freiburg_key value=/root/.ssh/roced
+
+  - name: roced cfg freiburg_server
+    ini_file: dest={{ roced_fr }} section=freiburg_cloud
+              option=freiburg_server value=login.nemo.uni-freiburg.de
+
+  - name: roced cfg vm_prefix
+    ini_file: dest={{ roced_fr }} section=freiburg_cloud
+              option=vm_prefix value=vgcn
+
+  - name: roced cfg condor_user/int
+    ini_file: dest={{ roced_fr }} section=htcondor_int_freiburg
+              option=condor_user state=absent
+
+  - name: roced cfg condor_key/int
+    ini_file: dest={{ roced_fr }} section=htcondor_int_freiburg
+              option=condor_key state=absent
+
+  - name: roced cfg condor_requirement
+    ini_file: dest={{ roced_fr }} section=htcondor_req_freiburg
+              option=condor_requirement state=absent
+
+  - name: roced cfg condor_constraint
+    ini_file: dest={{ roced_fr }} section=htcondor_req_freiburg
+              option=condor_constraint value=True
+
+  - name: roced cfg condor_user/req
+    ini_file: dest={{ roced_fr }} section=htcondor_req_freiburg
+              option=condor_user state=absent
+
+  - name: roced cfg condor_key/req
+    ini_file: dest={{ roced_fr }} section=htcondor_req_freiburg
+              option=condor_key state=absent
+
+  - name: roced cfg condor_wait_pd
+    ini_file: dest={{ roced_fr }} section=htcondor_int_freiburg
+              option=condor_wait_pd value=30
+
+  - name: roced cfg condor_wait_working
+    ini_file: dest={{ roced_fr }} section=htcondor_int_freiburg
+              option=condor_wait_working value=5
+
+  - name: roced cfg condor_deadline
+    ini_file: dest={{ roced_fr }} section=htcondor_int_freiburg
+              option=condor_deadline value=45
+
+  - name: roced cfg machines/frcl
+    ini_file: dest={{ roced_fr }} section=freiburg_cloud
+              option=machines value='{"vm-default":{"cores":20,"memory":"120gb","walltime":"2:00:00:00"}}'
+
+  - name: roced cfg machines/req
+    ini_file: dest={{ roced_fr }} section=htcondor_req_freiburg
+              option=machines value='{"vm-default":{"cores":20,"memory":"120gb","walltime":"2:00:00:00"}}'

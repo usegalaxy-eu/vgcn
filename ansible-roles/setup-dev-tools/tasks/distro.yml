@@ -1,0 +1,16 @@
+---
+# This sets the package names for the supported distros.
+- set_fact: 
+    pkgnames:
+      - "build-essential"
+      - "cmake"
+      - "git"
+  when:
+    - ansible_distribution == "Ubuntu"
+- set_fact: 
+    pkgnames:
+      - "@development tools"
+      - "cmake"
+      - "git"
+  when:
+    - ansible_distribution == "CentOS"

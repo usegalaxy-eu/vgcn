@@ -1,0 +1,28 @@
+---
+- hosts: default
+
+  vars:
+    condor_enable_autoshutdown: true
+    # delay=24d grace=23h30m
+    condor_drain_delay: 86400
+    condor_drain_grace: 84600
+    cloud: NEMO
+
+  vars_files:
+    - "secret_group_vars/default.yml"
+
+  roles:
+    - basic
+    - grub2
+    - sshserver
+    - cloudinit
+    - htcondor
+    - htcondorexec
+    - autofs
+    - galaxy2
+    - packages
+    - systemupdate
+    - root
+    - dynmotd
+    # hxr: added for monitoring of the VMs
+    - dj-wasabi.telegraf

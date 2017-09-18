@@ -1,0 +1,25 @@
+---
+- set_fact:
+    pkgnames:
+      - kernel-devel
+      - fuse-devel
+      - jansson-devel
+      - glib2-devel
+      - pixman-devel
+      - libewf-devel
+      - afflib-devel
+      - device-mapper
+  when:
+      - ansible_distribution == "CentOS"
+- set_fact:
+    pkgnames:
+      - libfuse-dev
+      - libglib2.0-dev
+      - libpixman-1-dev
+      - libewf-dev
+      - libafflib-dev
+      - dmsetup
+      - iputils-arping
+  when:
+      - ansible_distribution == "Ubuntu"
+

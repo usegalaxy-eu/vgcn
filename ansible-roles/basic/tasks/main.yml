@@ -1,0 +1,12 @@
+---
+  - name: epel install
+    yum: name=epel-release.noarch state=present
+
+  - name: yum-autoupdate removal
+    yum: name=yum-autoupdate state=absent
+
+  - name: patch util install
+    package:
+      name: patch
+      state: latest
+      use: yum

@@ -1,0 +1,62 @@
+---
+  - name: autofs package install
+    package:
+      name: autofs
+      state: latest
+      use: yum
+
+  - name: autofs map master 
+    copy:
+      dest: /etc/auto.master
+      backup: yes
+      content: |
+        /data           /etc/auto.data          nfsvers=3
+        /scratch        /etc/auto.scratch       nfsvers=3
+        /usr/local      /etc/auto.usrlocal      nfsvers=3
+
+  - name: autofs map data
+    copy:
+      dest: /etc/auto.data
+      backup: yes
+      content: |
+        0       -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data3/galaxy/net/data/&
+        1       -rw,hard,intr,nosuid,quota      sn03.bi.uni-freiburg.de:/export/galaxy1/data/&
+        2       -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data4/galaxy/net/data/&
+        3       -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data5/galaxy/net/data/&
+        4       -rw,hard,intr,nosuid,quota      sn03.bi.uni-freiburg.de:/export/galaxy1/data/&
+        5       -rw,hard,intr,nosuid,quota      sn03.bi.uni-freiburg.de:/export/galaxy1/data/&
+        6       -rw,hard,intr,nosuid,quota      sn03.bi.uni-freiburg.de:/export/galaxy1/data/&
+        7       -rw,hard,intr,nosuid,quota      sn03.bi.uni-freiburg.de:/export/galaxy1/data/&
+        dnb01   -rw,hard,intr,nosuid,quota      ufr.isi1.public.ads.uni-freiburg.de:/ifs/isi1/ufr/nfs/denbi
+        db      -rw,hard,intr,nosuid,quota      sn02.bi.uni-freiburg.de:/export/fdata1/galaxy/net/data/&
+
+  - name: autofs map scratch
+    copy:
+      dest: /etc/auto.scratch
+      backup: yes
+      content: |
+        RNAseq  -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data2/scratch/&
+        align   -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data2/scratch/&
+        bi01    -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data1/scratch/&
+        bi02    -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data2/scratch/&
+        db      -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data2/scratch/&
+        genomes -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data2/scratch/&
+        moss    -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data2/scratch/&
+        #
+        #rna    -rw,hard,intr,nosuid,quota,vers=3  horus.informatik.uni-freiburg.de:/export/scratch/rna
+        rna     -rw,hard,intr,nosuid,quota,vers=3  sn02.bi.uni-freiburg.de:/export/fdata1/scratch/rna
+
+  - name: autofs map usrlocal
+    copy:
+      dest: /etc/auto.usrlocal
+      backup: yes
+      content: |
+        python          sn01.bi.uni-freiburg.de:/var/local/usr.local/sclx/6.4/x64/&
+        galaxy          cn029.bi.uni-freiburg.de:/export/local/0/usr.local/galaxy/&
+        tools           cn029.bi.uni-freiburg.de:/export/local/0/usr.local/galaxy/&
+
+  - name: autofs service enable
+    service:
+      name: autofs
+      enabled: yes
+

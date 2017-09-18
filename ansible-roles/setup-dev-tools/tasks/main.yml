@@ -1,0 +1,8 @@
+---
+# Get packages names for the target distro
+- include: tasks/distro.yml
+
+# Finally lets install those packages
+- name: Install dev tools
+  package: name={{ item }} state=installed
+  with_items: "{{ pkgnames }}"

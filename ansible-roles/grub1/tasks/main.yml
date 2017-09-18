@@ -1,0 +1,8 @@
+---
+  - name: grub config
+    replace:
+      dest: /boot/grub/grub.conf
+      regexp: 'rhgb quiet'
+      replace: 'console=tty1 console=ttyS0'
+      backup: yes
+

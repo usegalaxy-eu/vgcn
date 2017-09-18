@@ -1,0 +1,5 @@
+---
+  - name: network interface fix
+    shell: sed -e 's/eth0/eth1/g' -e '/^HWADDR=/d' ifcfg-eth0 > ifcfg-eth1
+           chdir=/etc/sysconfig/network-scripts 
+

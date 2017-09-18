@@ -1,0 +1,31 @@
+---
+- hosts: default
+
+  vars:
+    condor_enable_autoshutdown: false
+    # delay=90d grace=2d
+    condor_drain_delay: 7776000
+    condor_drain_grace: 172800
+    cloud: bwCloud
+
+  vars_files:
+    - "secret_group_vars/default.yml"
+
+  roles:
+    - basic
+    - grub2
+    - sshserver
+    - cloudinit
+    - htcondor
+    - htcondorexec
+    - autofs
+    - galaxy2
+    - packages
+    - systemupdate
+    - root
+    - dynmotd
+    # hxr: added for monitoring of the VMs
+    - dj-wasabi.telegraf
+    # hxr: added for use of docker and java universes in htcondor. For experiments / testing.
+    - geerlingguy.java
+    - geerlingguy.docker

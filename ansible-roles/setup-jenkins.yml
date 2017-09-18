@@ -1,0 +1,21 @@
+---
+- hosts: default
+
+  vars_files:
+    #- "group_vars/all.yml" should be loaded automatically
+    - "secret_group_vars/default.yml"
+    - "group_vars/jenkins.yml"
+
+  roles:
+    - basic
+    - grub2
+    - sshserver
+    - cloudinit
+    - packages
+    - systemupdate
+    - root
+    - dynmotd
+    - jenkins
+    # hxr: added for monitoring of the VMs
+    - dj-wasabi.telegraf
+    - geerlingguy.java

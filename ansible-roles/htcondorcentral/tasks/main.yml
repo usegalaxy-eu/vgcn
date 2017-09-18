@@ -1,0 +1,16 @@
+---
+  - name: condor config
+    template:
+      src: local.j2
+      dest: "{{ condor_local_config }}"
+
+  - name: condor service enable
+    service:
+      name: condor
+      enabled: yes
+
+  - name: Disable firewalld
+    systemd:
+      name: firewalld
+      enabled: no
+      state: stopped

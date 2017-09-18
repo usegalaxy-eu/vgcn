@@ -1,0 +1,125 @@
+--- FreiburgSiteAdapter.py.ORIG	2017-01-25 13:09:21.000000000 +0100
++++ FreiburgSiteAdapter.py	2017-05-09 16:28:24.642999278 +0200
+@@ -30,6 +30,9 @@
+ from Util.PythonTools import Caching, merge_dicts
+ from Util.ScaleTools import Ssh
+ 
++# janky 2017-05-09: for our vanishedVMs-hack
++from collections import Counter
++
+ 
+ class FreiburgSiteAdapter(SiteAdapterBase):
+     """Site Adapter for Freiburg bwForCluster ENM OpenStack setup."""
+@@ -42,6 +45,8 @@
+     configMaxMachinesPerCycle = "max_machines_per_cycle"
+     configIgnoreDrainingMachines = "ignore_draining_machines"
+     configDrainWorkingMachines = "drain_working_machines"
++    # janky 2017-05-09: for our vanishedVMs-hack
++    vanishedVMs = Counter()
+ 
+     reg_site_server_condor_name = HTCondor.reg_site_server_condor_name
+     regMachineJobId = "batch_job_id"
+@@ -50,7 +55,7 @@
+     This python script has to be adapted on the server with user name, OpenStack Dashboard PW,
+     image GUID, etc.
+     """
+-    __condorNamePrefix = "moab-vm-"
++    __condorNamePrefix = "vgcn"
+     """VM machine name. This is also used as machine name in condor by us."""
+ 
+     def __init__(self):
+@@ -111,6 +116,7 @@
+                 if machine_[self.regMachineJobId] in runningJobs:
+                     self.mr.updateMachineStatus(mid, self.mr.statusUp)
+                 elif machine_[self.regMachineJobId] in completedJobs:
++                    self.logger.debug("Machine %s DOWN (M01)" % mid) # DBGBJ
+                     self.mr.updateMachineStatus(mid, self.mr.statusDown)
+                 else:
+                     self.logger.debug("Couldn't assign machine %s." % machine_[self.regMachineJobId])
+@@ -232,6 +238,9 @@
+ 
+         if len(idsRemoved + idsInvalidated) > 0:
+             # update status
++            [self.logger.debug("Machine %s DOWN (M05)" % mid) for mid, machine
++             in self.getSiteMachines().items()
++             if machine[self.regMachineJobId] in idsRemoved + idsInvalidated]	# DBGBJ
+             [self.mr.updateMachineStatus(mid, self.mr.statusDown) for mid, machine
+              in self.getSiteMachines().items()
+              if machine[self.regMachineJobId] in idsRemoved + idsInvalidated]
+@@ -297,6 +306,10 @@
+                         self.__cancelFreiburgMachines([self.mr.machines[evt.id].get(self.regMachineJobId)])
+                 except Exception as err:
+                     self.logger.warning("Canceling machine failed with exception %s" % err)
++                self.logger.debug("Machine %s DOWN (M02)" % evt.id) # DBGBJ
++                self.logger.debug("Event is %s" % repr(evt)) # DBGBJ
++                if hasattr(evt, '__dict__'):
++                    self.logger.debug("Event dict is %s" % repr(evt.__dict__)) # DBGBJ
+                 self.mr.updateMachineStatus(evt.id, self.mr.statusDown)
+ 
+     def manage(self):
+@@ -355,6 +368,7 @@
+                             self.logger.info("VM (%s) died!" % batchJobId)
+                         else:
+                             self.logger.debug("VM (%s) died with status 0!" % batchJobId)
++                    self.logger.debug("Machine %s DOWN (M03)" % mid) # DBGBJ
+                     self.mr.updateMachineStatus(mid, self.mr.statusDown)
+             elif batchJobId in frJobsCompleted or self.mr.calcLastStateChange(mid) > 24 * 60 * 60:
+                 # Remove machines, which are:
+@@ -371,11 +385,24 @@
+             if mr[mid][self.mr.regStatus] == self.mr.statusBooting:
+                 # batch job running: machine -> up
+                 if batchJobId in frJobsRunning:
++                    del self.vanishedVMs[mid] # see elif-branch below
+                     self.mr.updateMachineStatus(mid, self.mr.statusUp)
+                     frJobsRunning.pop(batchJobId)
+-                # Machine disappeared. If the machine later appears again, it will be added automatically.
++                # > Machine disappeared. If the machine later appears again, it will be added automatically.
++                # janky 2017-05-09: whatever the exact reason, it will *not* be added again :\
++                # we have had VMs killed in droves due to this... Now we require a machine to be
++                # absent for at least 3 consecutive management cycles before pronouncing it down!
+                 elif batchJobId not in frJobsIdle and batchJobId not in frJobsCompleted:
+-                    self.mr.updateMachineStatus(mid, self.mr.statusDown)
++                    self.vanishedVMs[mid] += 1
++                    if self.vanishedVMs[mid] >= 3:
++                        self.logger.debug("Machine %s DOWN (M04)" % mid) # DBGBJ
++                        self.mr.updateMachineStatus(mid, self.mr.statusDown)
++                        del self.vanishedVMs[mid]
++                else:
++                    del self.vanishedVMs[mid]
++
++        # janky 2017-05-09: debug vanishedVMs-hack
++        self.logger.debug("Machines currently MIA: %s", repr(self.vanishedVMs))
+ 
+         # All remaining unaccounted batch jobs
+         for batchJobId in frJobsRunning:
+@@ -492,12 +519,13 @@
+                                     R                   # Job = Running
+                                     \s+                 # whitespace(s)
+                                     (?:[\S]+\s+){7}     # 7 entries [stuff + spaces]
+-                                    (\d)                # cores = result 2
++                                    (\d+)                # cores = result 2
+                                     \s+                 # whitespace(s)
+                                     ((?:\d{1,2}:?){3,4})# time limit: 3-4 digit pairs = res3
+                                     \s+.+               # more waste
+                                     $                   # line end
+                                     """, frResult[1], re.MULTILINE | re.VERBOSE)}
++#            self.logger.debug("M11: frResult/Running = %s" % frResult[1]) # DBGBJ
+         elif frResult[0] == 255:
+             frJobsRunning = {}
+             self.logger.warning("SSH connection (showq -r) could not be established.")
+@@ -523,6 +551,7 @@
+             # returns a list containing all running batch jobs in Freiburg
+             # Negative lookahead for "eligible", otherwise he catches "0 eligible jobs".
+             frJobsIdle = re.findall("^(\d+)\s+(?!eligible)", frResult[1], re.MULTILINE)
++#            self.logger.debug("M12: frResult/Idle = %s" % frResult[1]) # DBGBJ
+         elif frResult[0] == 255:
+             frJobsIdle = []
+             self.logger.warning("SSH connection (showq -i) could not be established.")
+@@ -557,6 +586,7 @@
+                                ([-A-Z0-9]+)  # Return-code = result 2: +/- int or CNCLD
+                                \s+.+$        # useless rest
+                                """, frResult[1], re.MULTILINE | re.VERBOSE)}
++#            self.logger.debug("M10: frResult/Completed = %s" % frResult[1]) # DBGBJ
+         elif frResult[0] == 255:
+             frJobsCompleted = {}
+             self.logger.warning("SSH connection (showq -c) could not be established.")
