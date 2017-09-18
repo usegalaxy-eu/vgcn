@@ -11,7 +11,7 @@
     group: root
     mode: 0755
 
-#- name: add to profile
-  #lineinfile:
-    #path: /etc/profile
-    #line: "/usr/bin/dynmotd"
+- name: add to profile
+  lineinfile:
+    path: /etc/profile
+    line: "/usr/bin/dynmotd"
