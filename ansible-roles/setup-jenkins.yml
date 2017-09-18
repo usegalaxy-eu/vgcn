@@ -1,10 +1,14 @@
 ---
 - hosts: default
 
+  vars:
+    vgcn_build: 3
+    vgcn_cluster: "vjcn"
+    cloud: "jenkins"
+
   vars_files:
     #- "group_vars/all.yml" should be loaded automatically
     - "secret_group_vars/default.yml"
-    - "group_vars/jenkins.yml"
 
   roles:
     - basic
@@ -19,3 +23,4 @@
     # hxr: added for monitoring of the VMs
     - dj-wasabi.telegraf
     - geerlingguy.java
+    - geerlingguy.docker
