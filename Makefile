@@ -4,7 +4,7 @@
 # 	* support building with non-qemu builders and convert to qemu afterwards
 # 	* testing target
 # 	* auto-detect flavors
-PACKER=pk
+PACKER=packer
 ANSIBLE_DIR=ansible-roles
 # the "provisioning" flavor, expects a 'setup-<flavor>.yml' playbook
 # in the 'ansible-roles' submodule! This will likely change...
