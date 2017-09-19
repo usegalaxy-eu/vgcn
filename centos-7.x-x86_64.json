@@ -3,9 +3,9 @@
 		"iso_url": "https://mirrors.kernel.org/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1708.iso",
 		"iso_checksum": "fe3d960cce4d2c1c9f1b66817fe87cc0ee1a1c6c5dd126204cb5c33d51a45620",
 		"iso_checksum_type": "sha256",
-		"vm_name": "centos-7.3-x86_64",
+		"vm_name": "centos-7.x-x86_64",
 		"http_dir": "http",
-		"kickstart_path": "centos-7.3/anaconda-ks.cfg",
+		"kickstart_path": "centos-7.x/anaconda-ks.cfg",
 		"shutdown_command": "systemctl poweroff",
 		"ssh_password": "{{ env `ROOTPW` }}"
 	},
