@@ -15,7 +15,7 @@
 		"ssh_timeout": "{{ user `ssh_timeout` }}",
 		"ssh_username": "{{ user `ssh_username` }}",
 		"ssh_password": "{{ user `ssh_password` }}",
-		"shutdown_command": "systemctl poweroff",
+		"shutdown_command": "shutdown -P now",
 		"qemuargs": [
 			["-m", "{{ user `memory` }}"],
 			["-smp", "{{ user `cpus` }}"]

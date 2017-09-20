@@ -1,0 +1,11 @@
+---
+
+# janky 2016-12-07: this is an old bug that is patched in e.g. the version
+# of cloud-init in the Ubuntu repos; for CentOS we have to do it ourselves.
+# (the bug causes the instance to have a one hostname on initial bootup and
+# another one on every subsequent boot)
+  - name: cloud-init patch
+    patch:
+      src: "sl72-cloudinit.patch"
+      dest: /usr/lib/python2.7/site-packages/cloudinit/distros/__init__.py
+      backup: yes

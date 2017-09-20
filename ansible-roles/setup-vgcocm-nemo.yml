@@ -1,0 +1,36 @@
+# Setup for Virtual Galaxy central manager/NEMO version.
+# This setup is valid for Redhat 6.x systems; Redhat 7.x
+# systems need the roles 'grub2' and 'galaxy2' instead.
+---
+- hosts: default
+
+  vars:
+    condor_enable_autoshutdown: false
+    # delay and grace values are provided but meaningless
+    # for the Central Manager
+    condor_drain_delay: 86400
+    condor_drain_grace: 84600
+    cloud: NEMO
+
+  vars_files:
+    - "group_vars/condor.yml"
+    - "secret_group_vars/default.yml"
+
+  roles:
+    - basic
+    - remove-repo-sl6x
+    - fixnetif
+    - grub1
+    - sshserver
+    - cloudinit
+    - htcondor-6x
+    - htcondorcentral-6x
+    - roced
+    - autofs
+    - galaxy
+    - packages
+    - systemupdate
+    - root
+    - dynmotd
+    # hxr: added for monitoring of the VMs
+    #- dj-wasabi.telegraf

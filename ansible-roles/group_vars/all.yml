@@ -11,6 +11,8 @@ vgcn_build: 21
 vgcn_cluster: "vgcn"
 cloud: "default"
 
+vgcocm_build: 12
+
 telegraf_agent_tags:
   - tag_name: datacenter
     tag_value: rz

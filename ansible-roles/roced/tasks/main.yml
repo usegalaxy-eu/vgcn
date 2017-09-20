@@ -14,13 +14,6 @@
       dest: /opt
       creates: no
 
-  # interim patch for ROCED b60d0575
-  - name: roced patch
-    patch:
-      src: roced-b60d0575-patch
-      dest: /opt/ROCED/src/ROCED/IntegrationAdapter/HTCondorIntegrationAdapter.py
-      backup: yes
-
   - name: roced owner fix
     file: dest=/opt/ROCED owner=root recurse=yes
 
