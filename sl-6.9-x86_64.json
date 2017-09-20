@@ -1,0 +1,98 @@
+{
+	"variables": {
+		"iso_url": "http://ftp1.scientificlinux.org/linux/scientific/6.9/x86_64/iso/SL-6-x86_64-netinstall.iso",
+		"iso_checksum": "618e731c08b62ad0d93bedcc278cad72e8029f5ddd49c5d8a7031a06031f91da",
+		"iso_checksum_type": "sha256",
+		"vm_name": "sl-6.9-x86_64",
+		"http_dir": "http",
+		"kickstart_path": "sl-6.9/anaconda-ks.cfg",
+		"shutdown_command": "shutdown -P now",
+		"ssh_password": "{{ env `ROOTPW` }}"
+	},
+	"builders": [{
+		"type": "qemu",
+		"iso_url": "{{ user `iso_url` }}",
+		"iso_checksum": "{{ user `iso_checksum` }}",
+		"iso_checksum_type": "{{ user `iso_checksum_type` }}",
+		"output_directory": "output-{{ user `vm_name` }}-{{ build_type }}",
+		"vm_name": "{{ user `vm_name` }}",
+		"format": "qcow2",
+		"disk_size": "{{ user `disk_size` }}",
+		"disk_interface": "virtio-scsi",
+		"headless": "{{ user `headless` }}",
+		"http_directory": "{{ user `http_dir` }}",
+		"boot_command": [ 
+			"<esc><wait>",
+			"linux biosdevname=0 net.ifnames=0 ",
+			"rootpw={{ user `ssh_password` }} ",
+			"ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{ user `kickstart_path` }}",
+			"<enter>"
+		],
+		"boot_wait": "{{ user `boot_wait` }}",
+		"ssh_timeout": "{{ user `ssh_timeout` }}",
+		"ssh_username": "{{ user `ssh_username` }}",
+		"ssh_password": "{{ user `ssh_password` }}",
+		"shutdown_command": "{{ user `shutdown_command` }}",
+		"qemuargs": [
+			["-m", "{{ user `memory` }}"]
+		]
+	}, {
+		"type": "virtualbox-iso",
+		"guest_os_type": "RedHat_64",
+		"iso_url": "{{ user `iso_url` }}",
+		"iso_checksum": "{{ user `iso_checksum` }}",
+		"iso_checksum_type": "{{ user `iso_checksum_type` }}",
+		"output_directory": "output-{{ user `vm_name` }}-{{ build_type }}",
+		"vm_name": "{{ user `vm_name` }}",
+		"disk_size": "{{ user `disk_size` }}",
+		"headless": "{{ user `headless` }}",
+		"http_directory": "{{ user `http_dir` }}",
+		"boot_command": [ 
+			"<esc><wait>",
+			"linux inst.gpt biosdevname=0 net.ifnames=0 ",
+			"rootpw={{ user `ssh_password` }} ",
+			"inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{ user `kickstart_path` }}",
+			"<enter>"
+		],
+		"boot_wait": "{{ user `boot_wait` }}",
+		"ssh_timeout": "{{ user `ssh_timeout` }}",
+		"ssh_username": "{{ user `ssh_username` }}",
+		"ssh_password": "{{ user `ssh_password` }}",
+		"shutdown_command": "{{ user `shutdown_command` }}",
+		"vboxmanage": [
+			["modifyvm", "{{ .Name }}", "--memory", "{{ user `memory` }}"],
+			["modifyvm", "{{ .Name }}", "--cpus", "{{ user `cpus` }}"]
+		]
+	}, {
+		"type": "vmware-iso",
+		"guest_os_type": "centos-64",
+		"iso_url": "{{ user `iso_url` }}",
+		"iso_checksum": "{{ user `iso_checksum` }}",
+		"iso_checksum_type": "{{ user `iso_checksum_type` }}",
+		"output_directory": "output-{{ user `vm_name` }}-{{ build_type }}",
+		"vm_name": "{{ user `vm_name` }}",
+		"disk_size": "{{ user `disk_size` }}",
+		"headless": "{{ user `headless` }}",
+		"http_directory": "{{ user `http_dir` }}",
+		"boot_command": [ 
+			"<esc><wait>",
+			"linux inst.gpt biosdevname=0 net.ifnames=0 ",
+			"rootpw={{ user `ssh_password` }} ",
+			"inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{ user `kickstart_path` }}",
+			"<enter>"
+		],
+		"boot_wait": "{{ user `boot_wait` }}",
+		"ssh_timeout": "{{ user `ssh_timeout` }}",
+		"ssh_username": "{{ user `ssh_username` }}",
+		"ssh_password": "{{ user `ssh_password` }}",
+		"shutdown_command": "{{ user `shutdown_command` }}",
+		"vmx_data": {
+			"memsize": "{{ user `memory` }}",
+			"numvcpus": "{{ user `cpus` }}"
+		}
+	}],
+	"post-processors": [{
+		"type": "manifest",
+		"output": "output-{{ user `vm_name` }}-{{ build_type }}/manifest.json"
+	}]
+}
