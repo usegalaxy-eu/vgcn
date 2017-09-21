@@ -18,12 +18,13 @@
 		"vm_name": "{{ user `vm_name` }}",
 		"format": "qcow2",
 		"disk_size": "{{ user `disk_size` }}",
-		"disk_interface": "virtio-scsi",
+		"net_device": "virtio-net",
+		"disk_interface": "virtio",
 		"headless": "{{ user `headless` }}",
 		"http_directory": "{{ user `http_dir` }}",
 		"boot_command": [ 
 			"<esc><wait>",
-			"linux inst.gpt biosdevname=0 net.ifnames=0 ",
+			"linux inst.mbr biosdevname=0 net.ifnames=0 ",
 			"rootpw={{ user `ssh_password` }} ",
 			"inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{ user `kickstart_path` }}",
 			"<enter>"
@@ -36,60 +37,6 @@
 		"qemuargs": [
 			["-m", "{{ user `memory` }}"]
 		]
-	}, {
-		"type": "virtualbox-iso",
-		"guest_os_type": "RedHat_64",
-		"iso_url": "{{ user `iso_url` }}",
-		"iso_checksum": "{{ user `iso_checksum` }}",
-		"iso_checksum_type": "{{ user `iso_checksum_type` }}",
-		"output_directory": "output-{{ user `vm_name` }}-{{ build_type }}",
-		"vm_name": "{{ user `vm_name` }}",
-		"disk_size": "{{ user `disk_size` }}",
-		"headless": "{{ user `headless` }}",
-		"http_directory": "{{ user `http_dir` }}",
-		"boot_command": [ 
-			"<esc><wait>",
-			"linux inst.gpt biosdevname=0 net.ifnames=0 ",
-			"rootpw={{ user `ssh_password` }} ",
-			"inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{ user `kickstart_path` }}",
-			"<enter>"
-		],
-		"boot_wait": "{{ user `boot_wait` }}",
-		"ssh_timeout": "{{ user `ssh_timeout` }}",
-		"ssh_username": "{{ user `ssh_username` }}",
-		"ssh_password": "{{ user `ssh_password` }}",
-		"shutdown_command": "{{ user `shutdown_command` }}",
-		"vboxmanage": [
-			["modifyvm", "{{ .Name }}", "--memory", "{{ user `memory` }}"],
-			["modifyvm", "{{ .Name }}", "--cpus", "{{ user `cpus` }}"]
-		]
-	}, {
-		"type": "vmware-iso",
-		"guest_os_type": "centos-64",
-		"iso_url": "{{ user `iso_url` }}",
-		"iso_checksum": "{{ user `iso_checksum` }}",
-		"iso_checksum_type": "{{ user `iso_checksum_type` }}",
-		"output_directory": "output-{{ user `vm_name` }}-{{ build_type }}",
-		"vm_name": "{{ user `vm_name` }}",
-		"disk_size": "{{ user `disk_size` }}",
-		"headless": "{{ user `headless` }}",
-		"http_directory": "{{ user `http_dir` }}",
-		"boot_command": [ 
-			"<esc><wait>",
-			"linux inst.gpt biosdevname=0 net.ifnames=0 ",
-			"rootpw={{ user `ssh_password` }} ",
-			"inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{ user `kickstart_path` }}",
-			"<enter>"
-		],
-		"boot_wait": "{{ user `boot_wait` }}",
-		"ssh_timeout": "{{ user `ssh_timeout` }}",
-		"ssh_username": "{{ user `ssh_username` }}",
-		"ssh_password": "{{ user `ssh_password` }}",
-		"shutdown_command": "{{ user `shutdown_command` }}",
-		"vmx_data": {
-			"memsize": "{{ user `memory` }}",
-			"numvcpus": "{{ user `cpus` }}"
-		}
 	}],
 	"post-processors": [{
 		"type": "manifest",

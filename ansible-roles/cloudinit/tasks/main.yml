@@ -4,6 +4,13 @@
       name: cloud-init
       state: latest
       use: yum
+
+  - name: cloud-utils-growpart install
+    package:
+      name: cloud-utils-growpart
+      state: latest
+      use: yum
+
 # cloud-init
 
 # janky 2016-12-07: this is an old bug that is patched in e.g. the version
