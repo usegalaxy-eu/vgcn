@@ -21,6 +21,7 @@
     state: present
   with_items:
     - qemu-system-x86
+    - qemu-img
     - unzip
     - seabios
 
