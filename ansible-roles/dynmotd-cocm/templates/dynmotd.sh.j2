@@ -1,0 +1,16 @@
+#!/bin/bash
+echo "
+{{ dynmotd_logo }}
+====================================================
+Hostname..........: `hostname -f` (Central Manager/{{ cloud }})
+Release...........: {{ ansible_distribution }} Linux release {{ ansible_distribution_version }} ({{ ansible_distribution_release }})
+Build.............: {{ cloud }} {{ vgcocm_cluster }}  build v{{ vgcocm_build }}
+Build Date........: {{ ansible_date_time.iso8601 }}
+====================================================
+Current user......: root
+Load..............: `cat /proc/loadavg`
+{% for custom_command in dynmotd_custom %}
+{%set periods = custom_command.name | length%}
+{{ custom_command.name }}{%for i in range(18 - periods)%}.{% endfor %}: `{{ custom_command.command }}`
+{% endfor %}
+===================================================="

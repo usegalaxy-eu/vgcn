@@ -18,11 +18,11 @@
 
   roles:
     - basic
-    - remove-repo-sl6x
+    - inhibit-point-upgrade-sl6x
     - fixnetif
     - grub1
     - sshserver
-    - cloudinit
+    - cloudinit-sl6x
     - htcondor-6x
     - htcondorcentral-6x
     - roced
@@ -31,6 +31,6 @@
     - packages
     - systemupdate
     - root
-    - dynmotd
+    - dynmotd-cocm
     # hxr: added for monitoring of the VMs
     #- dj-wasabi.telegraf

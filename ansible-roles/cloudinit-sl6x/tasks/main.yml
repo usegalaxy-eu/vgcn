@@ -1,0 +1,31 @@
+---
+  - name: cloud-init install
+    package:
+      name: cloud-init
+      state: latest
+      use: yum
+# cloud-init
+
+  - name: cloud-init config 1
+    blockinfile:
+      dest: /etc/cloud/cloud.cfg
+      backup: yes
+      block: |
+        system_info:
+          default_user:
+            name: sl
+            gecos: SL Cloud User
+            groups: [wheel, adm]
+            sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+            shell: /bin/bash
+          distro: rhel
+          paths:
+            cloud_dir: /var/lib/cloud
+            templates_dir: /etc/cloud/templates
+          ssh_svcname: sshd
+
+  - name: cloud-init config 2
+    lineinfile:
+      dest: /etc/cloud/cloud.cfg
+      line: 'manage_etc_hosts: true'
+      insertafter: '^syslog_fix_perms:.*$'

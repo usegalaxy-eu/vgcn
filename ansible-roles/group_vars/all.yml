@@ -12,6 +12,7 @@ vgcn_cluster: "vgcn"
 cloud: "default"
 
 vgcocm_build: 12
+vgcocm_cluster: "vgcocm"
 
 telegraf_agent_tags:
   - tag_name: datacenter
