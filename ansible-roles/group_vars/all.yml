@@ -7,11 +7,11 @@ condor_allowed_write: 10.19.0.0/16, 10.5.68.0/24, 132.230.68.0/24, *.bi.uni-frei
 condor_allowed_admin: 10.19.0.0/16, 10.5.68.0/24
 condor_local_config: /etc/condor/condor_config.local
 
-vgcn_build: 21
+vgcn_build: 22
 vgcn_cluster: "vgcn"
 cloud: "default"
 
-vgcocm_build: 12
+vgcocm_build: 13
 vgcocm_cluster: "vgcocm"
 
 telegraf_agent_tags:
