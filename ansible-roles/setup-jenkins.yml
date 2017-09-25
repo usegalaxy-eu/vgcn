@@ -1,3 +1,5 @@
+# Setup for Virtual Jenkins Compute Node
+# This setup is valid for RHEL 7.x based systems.
 ---
 - hosts: default
 
