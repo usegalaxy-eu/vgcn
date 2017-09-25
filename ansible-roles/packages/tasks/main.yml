@@ -7,4 +7,5 @@
     - screen
     - ansible
     - vim
+    - collectl
     - "@development"
