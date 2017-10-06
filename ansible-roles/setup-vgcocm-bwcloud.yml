@@ -1,11 +1,12 @@
 # Setup for Virtual Galaxy central manager/NEMO version.
-# This setup is valid for Redhat 6.x systems; Redhat 7.x
-# systems need the roles 'grub2' and 'galaxy2' instead.
+# This setup is valid for Redhat 7.x systems; Redhat 6.x
+# systems need the roles 'grub1' 'galaxy' plus the
+# 6.x-specific roles for cloud-init and Condor.
 ---
 - hosts: default
 
   vars:
-    cloud: NEMO
+    cloud: bwCloud
 
   vars_files:
     - "group_vars/condor.yml"
@@ -14,16 +15,16 @@
 
   roles:
     - basic
-    - inhibit-point-upgrade-sl6x
     - fixnetif
-    - grub1
+    - grub2
     - sshserver
-    - cloudinit-sl6x
-    - htcondor-6x
-    - htcondorcentral-6x
-    - roced
+    - cloudinit
+    - htcondor
+    - htcondorcentral
+    # janky: roced not needed on bwcloud
+    #- roced
     - autofs
-    - galaxy
+    - galaxy2
     - packages
     - systemupdate
     - root

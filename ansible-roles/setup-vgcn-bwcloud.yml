@@ -4,14 +4,11 @@
 - hosts: default
 
   vars:
-    condor_enable_autoshutdown: false
-    # delay=90d grace=2d
-    condor_drain_delay: 7776000
-    condor_drain_grace: 172800
     cloud: bwCloud
 
   vars_files:
     - "group_vars/condor.yml"
+    - "group_vars/cloud-{{ cloud }}.yml"
     - "secret_group_vars/default.yml"
 
   roles:

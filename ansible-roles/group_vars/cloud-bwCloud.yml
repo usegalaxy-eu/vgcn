@@ -1,0 +1,6 @@
+condor_enable_autoshutdown: false 
+condor_drain_delay: 7776000
+condor_drain_grace: 172800
+condor_master: 10.5.68.16
+condor_allowed_write: 10.5.68.0/24, 132.230.68.0/24, *.bi.uni-freiburg.de
+condor_allowed_admin: 10.5.68.0/24
