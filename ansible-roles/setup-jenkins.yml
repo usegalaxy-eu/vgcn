@@ -4,7 +4,7 @@
 
   vars:
     vgcn_build: 7
-    vgcn_cluster: "vjcn"
+    vg_cluster: "vjcn"
     cloud: "jenkins"
 
   vars_files:
