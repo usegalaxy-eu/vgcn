@@ -17,7 +17,7 @@
     - grub
     - sshserver
     - cloudinit
-    - htcondor-6x
+    - htcondor
     - htcondorcentral-6x
     - roced
     - autofs
