@@ -1,4 +1,4 @@
 ---
 central_manager: true
-vgcocm_build: 13
+vg_build: 13
 vg_cluster: "vgcocm"
