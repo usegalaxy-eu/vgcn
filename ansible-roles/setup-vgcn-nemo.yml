@@ -19,7 +19,7 @@
     - htcondor
     - htcondorexec
     - autofs
-    - galaxy2
+    - galaxy
     - packages
     - systemupdate
     - root

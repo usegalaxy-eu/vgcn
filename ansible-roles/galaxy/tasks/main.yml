@@ -1,11 +1,14 @@
 # galaxy account
+---
   - name: galaxy account group
+    when: ansible_distribution_major_version == '6'
     group:
       gid: "{{ galaxy_gid }}"
       name: galaxy
       state: present
 
   - name: galaxy account user
+    when: ansible_distribution_major_version == '6'
     user:
       uid: "{{ galaxy_uid }}"
       name: galaxy
@@ -14,3 +17,30 @@
       state: present
       comment: Galaxy Service-Acct
       createhome: no
+
+# janky 2016-12-06: uid/gid 999 are already taken on RHEL 7,
+# need to find a different solution
+#
+# galaxy account
+#  - name: galaxy account group
+#    group:
+#      gid: 999
+#      name: galaxy
+#      state: present
+
+# janky 2016-12-07: the 'group' module does not support non_unique
+  - name: galaxy account group, via shell
+    shell: "grep -q ^galaxy: /etc/group || echo galaxy:x:{{ galaxy_gid }}: >> /etc/group"
+    when: ansible_distribution_major_version == '7'
+
+  - name: galaxy account user
+    when: ansible_distribution_major_version == '7'
+    user:
+      uid: "{{ galaxy_uid }}"
+      name: galaxy
+      group: galaxy
+      home: /usr/local/galaxy
+      state: present
+      comment: Galaxy Service-Acct
+      createhome: no
+      non_unique: yes

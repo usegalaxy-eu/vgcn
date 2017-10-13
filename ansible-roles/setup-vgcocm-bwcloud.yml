@@ -21,7 +21,7 @@
     # janky: roced not needed on bwcloud
     #- roced
     - autofs
-    - galaxy2
+    - galaxy
     - packages
     - systemupdate
     - root
