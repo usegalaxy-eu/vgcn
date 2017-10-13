@@ -18,7 +18,7 @@
     - fixnetif
     - grub1
     - sshserver
-    - cloudinit-sl6x
+    - cloudinit
     - htcondor-6x
     - htcondorcentral-6x
     - roced
