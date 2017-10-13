@@ -9,7 +9,6 @@
 
   vars_files:
     - "group_vars/java.yml"
-    #- "group_vars/all.yml" should be loaded automatically
     - "secret_group_vars/default.yml"
 
   roles:
@@ -22,7 +21,6 @@
     - root
     - dynmotd
     - jenkins
-    # hxr: added for monitoring of the VMs
     - dj-wasabi.telegraf
     - geerlingguy.java
     - geerlingguy.docker

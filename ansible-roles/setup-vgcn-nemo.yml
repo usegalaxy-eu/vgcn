@@ -24,5 +24,4 @@
     - systemupdate
     - root
     - dynmotd
-    # hxr: added for monitoring of the VMs
     - dj-wasabi.telegraf
