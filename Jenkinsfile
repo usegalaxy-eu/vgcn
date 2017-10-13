@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh '''yum install -y epel-release;
+        sh '''yum install -y epel-release make;
 yum install -y qemu-system-x86  seabios-bin seabios
 make'''
         sh '''
