@@ -25,3 +25,5 @@
     - root
     - dynmotd
     - dj-wasabi.telegraf
+    - geerlingguy.java
+    - geerlingguy.docker
