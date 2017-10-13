@@ -1,5 +1,4 @@
 # Setup for Virtual Jenkins Compute Node
-# This setup is valid for RHEL 7.x based systems.
 ---
 - hosts: default
 
@@ -15,7 +14,7 @@
 
   roles:
     - basic
-    - grub2
+    - grub
     - sshserver
     - cloudinit
     - packages

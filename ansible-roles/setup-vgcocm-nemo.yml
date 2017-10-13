@@ -1,6 +1,6 @@
 # Setup for Virtual Galaxy central manager/NEMO version.
 # This setup is valid for Redhat 6.x systems; Redhat 7.x
-# systems need the roles 'grub2' and 'galaxy2' instead.
+# systems need the 'galaxy2' role instead.
 ---
 - hosts: default
 
@@ -16,7 +16,7 @@
     - basic
     - inhibit-point-upgrade-sl6x
     - fixnetif
-    - grub1
+    - grub
     - sshserver
     - cloudinit
     - htcondor-6x
