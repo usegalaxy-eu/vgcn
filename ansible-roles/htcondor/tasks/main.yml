@@ -73,7 +73,7 @@
         gpgcheck=1
 
   - name: condor repo file
-    when: ansible_distribution_major_version == '7'
+    when: ansible_distribution_major_version == '6'
     copy:
       dest: /etc/yum.repos.d/htcondor-stable-rhel6.repo
       backup: yes
