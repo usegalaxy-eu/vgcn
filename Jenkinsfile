@@ -9,7 +9,8 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh '''yum install -y qemu-system-x86  seabios-bin seabios
+        sh '''yum install -y epel-release;
+yum install -y qemu-system-x86  seabios-bin seabios
 make'''
         sh '''
 ROOTPW=password make centos-7.x-x86_64/jenkins;'''
