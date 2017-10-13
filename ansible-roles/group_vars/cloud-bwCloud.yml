@@ -1,4 +1,4 @@
-condor_enable_autoshutdown: false 
+condor_enable_autoshutdown: false
 condor_drain_delay: 7776000
 condor_drain_grace: 172800
 condor_master: 10.5.68.16

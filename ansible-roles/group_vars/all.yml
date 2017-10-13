@@ -1,12 +1,6 @@
 ---
 galaxy_uid: 999
 galaxy_gid: 999
-# janky: the following 4 variable definitions have been moved to cloud-specific
-# vars-files
-#condor_enable_autoshutdown: false 
-#condor_master: 10.19.0.16
-#condor_allowed_write: 10.19.0.0/16, 10.5.68.0/24, 132.230.68.0/24, *.bi.uni-freiburg.de
-#condor_allowed_admin: 10.19.0.0/16, 10.5.68.0/24
 condor_local_config: /etc/condor/condor_config.local
 
 vgcn_build: 22
