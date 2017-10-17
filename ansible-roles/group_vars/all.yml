@@ -3,6 +3,7 @@ galaxy_uid: 999
 galaxy_gid: 999
 condor_local_config: /etc/condor/condor_config.local
 
+central_manager: false
 vg_build: 22
 vg_cluster: "vgcn"
 cloud: "default"
