@@ -13,6 +13,7 @@
 
   roles:
     - basic
+    - inhibit-point-upgrade
     - fixnetif
     - grub
     - sshserver

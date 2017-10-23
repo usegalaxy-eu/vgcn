@@ -1,5 +1,0 @@
----
-  # this repo package enables updating to the latest point release
-  # we don't want that for the central manager, so we remove it
-  - name: yum-conf-sl6x removal
-    yum: name=yum-conf-sl6x state=absent
