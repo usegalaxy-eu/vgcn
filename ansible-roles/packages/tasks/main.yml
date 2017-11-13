@@ -8,4 +8,14 @@
     - ansible
     - vim
     - collectl
+    - iotop
+    - iftop
+    - htop
+    - atop
     - "@development"
+
+- name: Ensure atop service and ensure it is started.
+  systemd:
+    name: atop
+    enabled: yes
+    state: started

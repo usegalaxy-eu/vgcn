@@ -1,21 +1,19 @@
 # Setup for Virtual Jenkins Compute Node
-# This setup is valid for RHEL 7.x based systems.
 ---
 - hosts: default
 
   vars:
-    vgcn_build: 7
-    vgcn_cluster: "vjcn"
+    vg_build: 7
+    vg_cluster: "vjcn"
     cloud: "jenkins"
 
   vars_files:
     - "group_vars/java.yml"
-    #- "group_vars/all.yml" should be loaded automatically
     - "secret_group_vars/default.yml"
 
   roles:
     - basic
-    - grub2
+    - grub
     - sshserver
     - cloudinit
     - packages
@@ -23,7 +21,6 @@
     - root
     - dynmotd
     - jenkins
-    # hxr: added for monitoring of the VMs
     - dj-wasabi.telegraf
     - geerlingguy.java
     - geerlingguy.docker
