@@ -9,11 +9,11 @@
 
 - name: Set up authorized key(s)
   authorized_key:
-    user: jenkins 
+    user: jenkins
     state: present
     key: '{{ item }}'
   with_file:
-    - jenkins-v1.pub
+    - jenkins-v2.pub
 
 - name: Install packages
   yum:
