@@ -8,7 +8,7 @@ Release...........: {{ ansible_distribution }} Linux release {{ ansible_distribu
 Build.............: {{ cloud }} {{ vg_cluster }} build v{{ vg_build }}
 Build Date........: {{ ansible_date_time.iso8601 }}
 ====================================================
-Current user......: root
+Current user......: `whoami`
 Load..............: `cat /proc/loadavg`
 Uptime............: `uptime -p`
 {% for custom_command in dynmotd_custom %}
