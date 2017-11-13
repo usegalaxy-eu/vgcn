@@ -4,4 +4,3 @@
       name: '*'
       state: latest
       use: yum
-
