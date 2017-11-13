@@ -10,6 +10,7 @@ Build Date........: {{ ansible_date_time.iso8601 }}
 ====================================================
 Current user......: root
 Load..............: `cat /proc/loadavg`
+Uptime............: `uptime -p`
 {% for custom_command in dynmotd_custom %}
 {%set periods = custom_command.name | length%}
 {{ custom_command.name }}{%for i in range(18 - periods)%}.{% endfor %}: `{{ custom_command.command }}`
