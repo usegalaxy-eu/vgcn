@@ -1,0 +1,23 @@
+# Setup for Virtual Galaxy Compute Node
+# This setup is valid for RHEL 7.x based systems.
+---
+- hosts: default
+
+  vars:
+    cloud: bwCloud
+
+  vars_files:
+    - "group_vars/ftp.yml"
+    - "secret_group_vars/default.yml"
+
+  roles:
+    - basic
+    - grub
+    - sshserver
+    - cloudinit
+    - autofs
+    - packages
+    - systemupdate
+    - root
+    - dynmotd
+    - dj-wasabi.telegraf
