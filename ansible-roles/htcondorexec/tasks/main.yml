@@ -27,45 +27,48 @@
   - name: condor autodrain hack 2
     file: dest=/etc/rc.d/rc.local mode=a+x
 
-# > janky 2016-12-09: this was supposed to fix the cloud-init hostname problem,
-# > but it turns out that, due to bizarre systemd behaviour, an SL-7 instance
-# > works better without it...
-# janky 2017-05-18: retesting, result:
-# - WITHOUT this fix, Condor *always* announces a host name of the form
-#   host-WW-XX-YY-ZZ, e.g. host-10-19-0-5.
-# - WITH this fix, Condor announces the correct FQDN for the host name
-#   ON THE FIRST BOOT OF THE VM ONLY and uses the form host-WW-XX-YY-ZZ
-#   on every subsequent boot!
-# Since in our use case a given VM instance is never booted more than
-# once, the behaviour of the second option, though inconsistent, is
-# actually preferable.
-  - name: condor service unit fix
-    copy:
-      dest: /etc/systemd/system/condor.service
-      content: |
-        
-        [Unit]
-        Description=Condor Distributed High-Throughput-Computing
-        After=syslog.target network-online.target nslcd.service ypbind.service cloud-config.service
-        Wants=network-online.target
-        Requires=cloud-config.service
-        
-        [Service]
-        EnvironmentFile=-/etc/sysconfig/condor
-        ExecStart=/usr/sbin/condor_master -f
-        ExecStop=/usr/sbin/condor_off -master
-        ExecReload=/bin/kill -HUP $MAINPID
-        Restart=always
-        RestartSec=1minute
-        WatchdogSec=20minutes
-        TimeoutStopSec=90seconds
-        StandardOutput=syslog
-        NotifyAccess=main
-        KillSignal=SIGKILL
-        LimitNOFILE=16384
-        
-        [Install]
-        WantedBy=multi-user.target
+## >> janky 2016-12-09: this was supposed to fix the cloud-init hostname problem,
+## >> but it turns out that, due to bizarre systemd behaviour, an SL-7 instance
+## >> works better without it...
+## > janky 2017-05-18: retesting, result:
+## > - WITHOUT this fix, Condor *always* announces a host name of the form
+## >   host-WW-XX-YY-ZZ, e.g. host-10-19-0-5.
+## > - WITH this fix, Condor announces the correct FQDN for the host name
+## >   ON THE FIRST BOOT OF THE VM ONLY and uses the form host-WW-XX-YY-ZZ
+## >   on every subsequent boot!
+## > Since in our use case a given VM instance is never booted more than
+## > once, the behaviour of the second option, though inconsistent, is
+## > actually preferable.
+## janky 2017-12-08: this issue appears to be resolved in CentOS 7.4
+## this fix now does more bad than good (prevents clean condor termination
+## during system shutdown)
+#  - name: condor service unit fix
+#    copy:
+#      dest: /etc/systemd/system/condor.service
+#      content: |
+#        
+#        [Unit]
+#        Description=Condor Distributed High-Throughput-Computing
+#        After=syslog.target network-online.target nslcd.service ypbind.service cloud-config.service
+#        Wants=network-online.target
+#        Requires=cloud-config.service
+#        
+#        [Service]
+#        EnvironmentFile=-/etc/sysconfig/condor
+#        ExecStart=/usr/sbin/condor_master -f
+#        ExecStop=/usr/sbin/condor_off -master
+#        ExecReload=/bin/kill -HUP $MAINPID
+#        Restart=always
+#        RestartSec=1minute
+#        WatchdogSec=20minutes
+#        TimeoutStopSec=90seconds
+#        StandardOutput=syslog
+#        NotifyAccess=main
+#        KillSignal=SIGKILL
+#        LimitNOFILE=16384
+#        
+#        [Install]
+#        WantedBy=multi-user.target
 
   - name: condor service enable
     service:
