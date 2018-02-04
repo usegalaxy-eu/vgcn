@@ -1,8 +1,18 @@
 ---
-  - name: condor config
-    template:
-      src: local.j2
-      dest: "{{ condor_local_config }}"
+# janky 2017-11-13: the config file is now on an NFS share
+
+  - name: condor config require local config file
+    lineinfile:
+      dest: /etc/condor/condor_config
+      line: 'REQUIRE_LOCAL_CONFIG_FILE = true'
+      regexp: '^ *REQUIRE_LOCAL_CONFIG_FILE *='
+      backup: yes
+
+  - name: condor config set local config file name
+    lineinfile:
+      dest: /etc/condor/condor_config
+      line: "LOCAL_CONFIG_FILE = /config/condor/condor_config.vgcn.{{ cloud }}"
+      regexp: '^ *LOCAL_CONFIG_FILE *='
 
   - name: condor autodrain hack 1
     lineinfile:
@@ -12,46 +22,6 @@
 
   - name: condor autodrain hack 2
     file: dest=/etc/rc.d/rc.local mode=a+x
-
-# > janky 2016-12-09: this was supposed to fix the cloud-init hostname problem,
-# > but it turns out that, due to bizarre systemd behaviour, an SL-7 instance
-# > works better without it...
-# janky 2017-05-18: retesting, result:
-# - WITHOUT this fix, Condor *always* announces a host name of the form
-#   host-WW-XX-YY-ZZ, e.g. host-10-19-0-5.
-# - WITH this fix, Condor announces the correct FQDN for the host name
-#   ON THE FIRST BOOT OF THE VM ONLY and uses the form host-WW-XX-YY-ZZ
-#   on every subsequent boot!
-# Since in our use case a given VM instance is never booted more than
-# once, the behaviour of the second option, though inconsistent, is
-# actually preferable.
-  - name: condor service unit fix
-    copy:
-      dest: /etc/systemd/system/condor.service
-      content: |
-        
-        [Unit]
-        Description=Condor Distributed High-Throughput-Computing
-        After=syslog.target network-online.target nslcd.service ypbind.service cloud-config.service
-        Wants=network-online.target
-        Requires=cloud-config.service
-        
-        [Service]
-        EnvironmentFile=-/etc/sysconfig/condor
-        ExecStart=/usr/sbin/condor_master -f
-        ExecStop=/usr/sbin/condor_off -master
-        ExecReload=/bin/kill -HUP $MAINPID
-        Restart=always
-        RestartSec=1minute
-        WatchdogSec=20minutes
-        TimeoutStopSec=90seconds
-        StandardOutput=syslog
-        NotifyAccess=main
-        KillSignal=SIGKILL
-        LimitNOFILE=16384
-        
-        [Install]
-        WantedBy=multi-user.target
 
   - name: condor service enable
     service:

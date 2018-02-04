@@ -10,9 +10,17 @@
       dest: /etc/auto.master
       backup: yes
       content: |
+        /config         /etc/auto.config        nfsvers=3
         /data           /etc/auto.data          nfsvers=3
         /scratch        /etc/auto.scratch       nfsvers=3
         /usr/local      /etc/auto.usrlocal      nfsvers=3
+
+  - name: autofs map config
+    copy:
+      dest: /etc/auto.config
+      backup: yes
+      content: |
+        condor  -rw,hard,intr,nosuid,quota      sn03.bi.uni-freiburg.de:/export/galaxy1/system/config/&
 
   - name: autofs map data
     copy:
@@ -51,9 +59,9 @@
       dest: /etc/auto.usrlocal
       backup: yes
       content: |
-        python          sn01.bi.uni-freiburg.de:/var/local/usr.local/sclx/6.4/x64/&
-        galaxy          cn029.bi.uni-freiburg.de:/export/local/0/usr.local/galaxy/&
-        tools           cn029.bi.uni-freiburg.de:/export/local/0/usr.local/galaxy/&
+        python          sn03.bi.uni-freiburg.de:/export/usr.local/sclx/6/x64/&
+        galaxy          sn03.bi.uni-freiburg.de:/export/galaxy1/system/&
+        tools           sn03.bi.uni-freiburg.de:/export/galaxy1/system/&
 
   - name: autofs service enable
     service:
