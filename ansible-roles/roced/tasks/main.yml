@@ -114,3 +114,10 @@
   - name: roced cfg machines/req
     ini_file: dest={{ roced_fr }} section=htcondor_req_freiburg
               option=machines value='{"vm-default":{"cores":20,"memory":"120gb","walltime":"2:00:00:00"}}'
+
+  - name: opt-bin create
+    file: path=/opt/bin state=directory mode=0755
+
+  - name: util jspp install
+    copy: src=jspp dest=/opt/bin/jspp mode=0755
+
