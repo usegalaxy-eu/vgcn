@@ -65,7 +65,7 @@
 
   - name: roced cfg vm_prefix
     ini_file: dest={{ roced_fr }} section=freiburg_cloud
-              option=vm_prefix value=vgcn
+              option=vm_prefix value=vgcnnemo
 
   - name: roced cfg condor_user/int
     ini_file: dest={{ roced_fr }} section=htcondor_int_freiburg
@@ -99,9 +99,13 @@
     ini_file: dest={{ roced_fr }} section=htcondor_int_freiburg
               option=condor_wait_working value=5
 
+  # janky 2018-02-09: setting the deadline to 48 hours effectively
+  # disables the feature on NEMO; it's not needed as our VM images
+  # are set to self-terminate if idle; and the deadline-timout has 
+  # occasionally caused trouble in the past.
   - name: roced cfg condor_deadline
     ini_file: dest={{ roced_fr }} section=htcondor_int_freiburg
-              option=condor_deadline value=45
+              option=condor_deadline value=2880
 
   - name: roced cfg machines/frcl
     ini_file: dest={{ roced_fr }} section=freiburg_cloud
