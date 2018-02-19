@@ -25,7 +25,7 @@
 		"type": "ansible",
 		"playbook_file": "{{ template_dir }}/{{ user `playbook` }}",
 		"extra_arguments": [
-			"--vault-password-file=/root/.vault_pass"
+			"--vault-password-file=.vault_pass"
 		]
 	}]
 }
