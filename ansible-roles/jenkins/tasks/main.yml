@@ -8,6 +8,8 @@
     - qemu-img
     - unzip
     - seabios
+    - texlive
+    - texlive-xetex
 
 - name: Download packer
   shell: wget https://releases.hashicorp.com/packer/1.1.0/packer_1.1.0_linux_amd64.zip -O /tmp/packer.zip
