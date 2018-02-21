@@ -3,6 +3,6 @@
   "disk_size": "4000",
   "headless": "true",
   "memory": "1024",
-  "ssh_timeout": "60m",
+  "ssh_timeout": "600m",
   "ssh_username": "root"
 }

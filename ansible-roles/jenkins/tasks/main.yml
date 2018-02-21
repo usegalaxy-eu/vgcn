@@ -16,3 +16,9 @@
 
 - name: Extract packer
   shell: unzip /tmp/packer.zip -d /usr/bin
+
+- name: Adding existing user centos to group kvm
+  user:
+    name: centos
+    groups: kvm
+    append: yes
