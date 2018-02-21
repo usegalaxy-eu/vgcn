@@ -1,6 +1,6 @@
 {
 	"variables": {
-		"iso_url": "https://mirrors.kernel.org/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1708.iso",
+		"iso_url": "http://mirror1.hs-esslingen.de/pub/Mirrors/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1708.iso",
 		"iso_checksum": "fe3d960cce4d2c1c9f1b66817fe87cc0ee1a1c6c5dd126204cb5c33d51a45620",
 		"iso_checksum_type": "sha256",
 		"vm_name": "centos-7.x-x86_64",
@@ -11,6 +11,7 @@
 	},
 	"builders": [{
 		"type": "qemu",
+		"accelerator": "kvm",
 		"iso_url": "{{ user `iso_url` }}",
 		"iso_checksum": "{{ user `iso_checksum` }}",
 		"iso_checksum_type": "{{ user `iso_checksum_type` }}",
@@ -19,7 +20,7 @@
 		"format": "qcow2",
 		"disk_size": "{{ user `disk_size` }}",
 		"net_device": "virtio-net",
-		"disk_interface": "virtio",
+		"disk_interface": "virtio-scsi",
 		"headless": "{{ user `headless` }}",
 		"http_directory": "{{ user `http_dir` }}",
 		"boot_command": [ 
@@ -36,6 +37,7 @@
 		"shutdown_command": "{{ user `shutdown_command` }}",
 		"qemuargs": [
 			["-m", "{{ user `memory` }}"]
+			["-smp", "{{ user `cpus` }}"]
 		]
 	}],
 	"post-processors": [{
