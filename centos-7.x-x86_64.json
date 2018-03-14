@@ -20,7 +20,7 @@
 		"format": "qcow2",
 		"disk_size": "{{ user `disk_size` }}",
 		"net_device": "virtio-net",
-		"disk_interface": "virtio-scsi",
+		"disk_interface": "virtio",
 		"headless": "{{ user `headless` }}",
 		"http_directory": "{{ user `http_dir` }}",
 		"boot_command": [
