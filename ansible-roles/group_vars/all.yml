@@ -35,6 +35,7 @@ telegraf_plugins_default:
   - plugin: netstat
   - plugin: processes
   - plugin: kernel
+  - plugin: chrony
   - plugin: exec
     config:
       - commands = ["/bin/iamalive"]

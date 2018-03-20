@@ -21,3 +21,4 @@
     - root
     - dynmotd
     - dj-wasabi.telegraf
+    - influxdata.chrony

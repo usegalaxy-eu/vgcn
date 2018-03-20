@@ -22,5 +22,6 @@
     - dynmotd
     - jenkins
     - dj-wasabi.telegraf
+    - influxdata.chrony
     - geerlingguy.java
     - geerlingguy.docker

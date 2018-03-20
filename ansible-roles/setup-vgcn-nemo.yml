@@ -25,5 +25,6 @@
     - root
     - dynmotd
     - dj-wasabi.telegraf
+    - influxdata.chrony
     - geerlingguy.java
     - geerlingguy.docker
