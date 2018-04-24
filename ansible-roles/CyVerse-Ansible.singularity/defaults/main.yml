@@ -187,4 +187,5 @@ singularity_config:
     # errors when accessed from container (typically bind mounts)
     #autofs bug path: /nfs
     #autofs bug path: /cifs-share
-    autofs_bug_paths: []
+    autofs_bug_paths:
+        - /data/
