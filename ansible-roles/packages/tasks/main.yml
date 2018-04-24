@@ -12,6 +12,7 @@
     - iftop
     - htop
     - atop
+    - mosh
     - "@development"
 
 - name: Ensure atop service and ensure it is started.
