@@ -38,3 +38,11 @@
 
 - name: execute make install
   command: make install chdir=/opt/singularity
+
+- name: Deploy conf file
+  template:
+    src: singularity.conf.j2
+    dest: /etc/singularity/singularity.conf
+    owner: root
+    group: root
+    mode: 0644
