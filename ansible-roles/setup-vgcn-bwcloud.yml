@@ -26,5 +26,6 @@
     - dynmotd
     - dj-wasabi.telegraf
     - influxdata.chrony
+    - CyVerse-Ansible.singularity
     - geerlingguy.java
     - geerlingguy.docker
