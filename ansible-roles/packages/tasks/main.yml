@@ -13,6 +13,7 @@
     - htop
     - atop
     - mosh
+    - libcgroup-tools
     - "@development"
 
 - name: Ensure atop service and ensure it is started.
