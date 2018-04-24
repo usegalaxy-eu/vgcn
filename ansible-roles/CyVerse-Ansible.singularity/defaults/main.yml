@@ -102,7 +102,7 @@ singularity_config:
     # DEFAULT: no
     # Probe for all mounted file systems that are mounted on the host, and bind
     # those into the container?
-    mount_hostfs: no
+    mount_hostfs: 'no'
 
 
     # BIND PATH: [STRING]
