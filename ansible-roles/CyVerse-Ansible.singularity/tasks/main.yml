@@ -1,0 +1,40 @@
+---
+# tasks file for ansible-singularity
+- name: Ubuntu package installation
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - autogen
+    - autoconf
+    - libtool
+  when: ansible_distribution == "Ubuntu"
+
+- name: CentOS package installation
+  yum:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - autoconf
+    - libtool
+  when: ansible_distribution == "CentOS"
+
+- name: clone the singularity repo
+  git:
+    repo: 'https://github.com/singularityware/singularity.git'
+    dest: /opt/singularity
+    version: "{{ singularity_version }}"
+
+- name: execute autogen.sh
+  command: /opt/singularity/autogen.sh chdir=/opt/singularity
+
+- name: execute configure
+  command: /opt/singularity/configure --prefix=/usr/local chdir=/opt/singularity
+
+- name: execute make
+  command: make chdir=/opt/singularity
+
+- name: execute make install
+  command: make install chdir=/opt/singularity
