@@ -4,7 +4,7 @@ galaxy_gid: 999
 condor_local_config: /etc/condor/condor_config.local
 
 central_manager: false
-vg_build: 27
+vg_build: 28
 vg_cluster: "vgcn"
 cloud: "default"
 
@@ -44,8 +44,10 @@ telegraf_plugins_default:
 telegraf_agent_output:
   - type: influxdb
     config:
-      - urls = ["http://influxdb.denbi.uni-freiburg.de:8086"]
+      - urls = ["https://influxdb.usegalaxy.eu:8086"]
       - database = "rancher"
+      - username = "galaxy"
+      - password = "{{ influxdb_password }}"
 
 java_packages:
  - java-1.8.0-openjdk
