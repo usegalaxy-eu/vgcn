@@ -1,4 +1,2 @@
 ---
-- user:
-    name: root
-    password: "{{ root_password_hash }}"
+- command: usermod --lock root
