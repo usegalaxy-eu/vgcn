@@ -11,12 +11,11 @@
     - "group_vars/cloud-{{ cloud }}.yml"
 
   roles:
-    - basic
+    - packages
     - grub
     - cloudinit
     - htcondor
     - galaxy
-    - packages
     - systemupdate
     - root
     - dynmotd

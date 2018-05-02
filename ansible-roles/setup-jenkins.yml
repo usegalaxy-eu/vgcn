@@ -11,10 +11,9 @@
     - "group_vars/java.yml"
 
   roles:
-    - basic
+    - packages
     - grub
     - cloudinit
-    - packages
     - systemupdate
     - root
     - dynmotd

@@ -4,6 +4,9 @@
     name: "{{ item }}"
     state: present
   with_items:
+    - epel-release
+    - patch
+    - lsof
     - screen
     - ansible
     - vim
@@ -25,3 +28,6 @@
   with_items:
     - atop
     - autofs
+
+- name: yum-autoupdate removal
+  yum: name=yum-autoupdate state=absent
