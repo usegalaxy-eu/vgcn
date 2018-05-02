@@ -17,7 +17,6 @@
     - grub
     - cloudinit
     - htcondor
-    - htcondorcentral
     - autofs
     - galaxy
     - packages
