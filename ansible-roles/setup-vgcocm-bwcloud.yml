@@ -12,7 +12,6 @@
 
   roles:
     - packages
-    - inhibit-point-upgrade
     - cloudinit
     - htcondor
     - galaxy
