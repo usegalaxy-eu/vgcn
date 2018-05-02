@@ -13,7 +13,6 @@
   roles:
     - packages
     - inhibit-point-upgrade
-    - grub
     - cloudinit
     - htcondor
     - roced

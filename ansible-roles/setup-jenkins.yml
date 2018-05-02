@@ -12,7 +12,6 @@
 
   roles:
     - packages
-    - grub
     - cloudinit
     - systemupdate
     - root
