@@ -97,13 +97,13 @@ help:
 	@echo "General syntax: <template>/<flavor>[/boot]"
 	@echo
 	@echo "Detected builders:"
-	@(for B in $(AVAILABLE_BUILDERS); do echo -e "\t$$B"; done)
+	@(for B in $(AVAILABLE_BUILDERS); do echo "\t$$B"; done)
 	@echo
 	@echo "Base images:"
-	@(for T in $(BASETARGETS); do echo -e "\t$$T"; done)
+	@(for T in $(BASETARGETS); do echo "\t$$T"; done)
 	@echo
 	@echo "Provisioning: "
-	@(for P in $(PROVTARGETS); do echo -e "\t$$P"; done)
+	@(for P in $(PROVTARGETS); do echo "\t$$P"; done)
 	@echo
 
 # The builds are directories named after the template name
