@@ -5,7 +5,6 @@
 # 	* testing target
 # 	* auto-detect flavors
 PACKER=/usr/bin/packer
-ROOTPW=password
 ANSIBLE_DIR=ansible-roles
 # the "provisioning" flavor, expects a 'setup-<flavor>.yml' playbook
 # in the 'ansible-roles' submodule! This will likely change...
