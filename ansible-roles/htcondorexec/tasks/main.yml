@@ -6,7 +6,6 @@
       dest: /etc/condor/condor_config
       line: 'REQUIRE_LOCAL_CONFIG_FILE = true'
       regexp: '^ *REQUIRE_LOCAL_CONFIG_FILE *='
-      backup: yes
 
   - name: condor config set local config file name
     lineinfile:

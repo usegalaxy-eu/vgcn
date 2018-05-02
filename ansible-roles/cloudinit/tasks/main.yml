@@ -16,7 +16,6 @@
     when: ansible_distribution == 'CentOS'
     blockinfile:
       dest: /etc/cloud/cloud.cfg
-      backup: yes
       block: |
         system_info:
           default_user:
@@ -36,7 +35,6 @@
     when: ansible_distribution == 'Scientific'
     blockinfile:
       dest: /etc/cloud/cloud.cfg
-      backup: yes
       block: |
         system_info:
           default_user:
@@ -66,11 +64,9 @@
     patch:
       src: "sl68-cloudinit.patch"
       dest: /usr/lib/python2.7/site-packages/cloudinit/distros/__init__.py
-      backup: yes
 
   - name: cloud-init patch
     when: ansible_distribution == 'Scientific' and ansible_distribution_major_version == '7'
     patch:
       src: "sl72-cloudinit.patch"
       dest: /usr/lib/python2.7/site-packages/cloudinit/distros/__init__.py
-      backup: yes

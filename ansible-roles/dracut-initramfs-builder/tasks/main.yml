@@ -15,7 +15,6 @@
     dest: "{{ gittarget }}/builder/modules.d/dnbd3-rootfs/scripts/build.sh"
     regexp: 'make -j4 dnbd3 dnbd3-client'
     replace: 'sed -i "s/KERNEL_VERSION.*/KERNEL_VERSION\(3, 10, 0\)/g" blk.h && make -j4 dnbd3 dnbd3-client'
-    backup: yes
   when:
     - ansible_distribution == "CentOS"
 - name: Build initramfs with dracut

@@ -8,7 +8,6 @@
   - name: autofs map master 
     copy:
       dest: /etc/auto.master
-      backup: yes
       content: |
         /config         /etc/auto.config        nfsvers=3
         /data           /etc/auto.data          nfsvers=3
@@ -18,14 +17,12 @@
   - name: autofs map config
     copy:
       dest: /etc/auto.config
-      backup: yes
       content: |
         condor  -rw,hard,intr,nosuid,quota      sn03.bi.uni-freiburg.de:/export/galaxy1/system/config/&
 
   - name: autofs map data
     copy:
       dest: /etc/auto.data
-      backup: yes
       content: |
         0       -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data3/galaxy/net/data/&
         1       -rw,hard,intr,nosuid,quota      sn03.bi.uni-freiburg.de:/export/galaxy1/data/&
@@ -41,7 +38,6 @@
   - name: autofs map scratch
     copy:
       dest: /etc/auto.scratch
-      backup: yes
       content: |
         RNAseq  -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data2/scratch/&
         align   -rw,hard,intr,nosuid,quota      sn01.bi.uni-freiburg.de:/export/data2/scratch/&
@@ -57,7 +53,6 @@
   - name: autofs map usrlocal
     copy:
       dest: /etc/auto.usrlocal
-      backup: yes
       content: |
         python          sn03.bi.uni-freiburg.de:/export/usr.local/sclx/6/x64/&
         galaxy          sn03.bi.uni-freiburg.de:/export/galaxy1/system/&

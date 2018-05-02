@@ -3,7 +3,6 @@
   - name: condor repo pubkey file
     copy:
       dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-HTCondor
-      backup: yes
       content: |
         -----BEGIN PGP PUBLIC KEY BLOCK-----
         Version: GnuPG v1.4.11 (GNU/Linux)
@@ -47,7 +46,6 @@
 #  - name: condor epel exclude, via ini_file
 #    ini_file:
 #      dest: /etc/yum.repos.d/epel.repo
-#      backup: yes
 #      section: epel
 #      option: exclude
 #      value: 'condor*'
@@ -56,7 +54,6 @@
   - name: condor epel exclude, via lineinfile
     lineinfile:
       dest: /etc/yum.repos.d/epel.repo
-      backup: yes
       line: 'exclude=condor*'
       insertafter: '^ *enabled=1'
 
@@ -64,7 +61,6 @@
     when: ansible_distribution_major_version == '7'
     copy:
       dest: /etc/yum.repos.d/htcondor-stable-rhel7.repo
-      backup: yes
       content: |
         [htcondor-stable]
         name=HTCondor Stable RPM Repository for RHEL7
@@ -76,7 +72,6 @@
     when: ansible_distribution_major_version == '6'
     copy:
       dest: /etc/yum.repos.d/htcondor-stable-rhel6.repo
-      backup: yes
       content: |
         [htcondor-stable]
         name=HTCondor Stable RPM Repository for RHEL6

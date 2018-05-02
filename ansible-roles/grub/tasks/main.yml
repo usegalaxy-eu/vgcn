@@ -4,7 +4,6 @@
       dest: /boot/grub/grub.conf
       regexp: 'rhgb quiet'
       replace: 'console=tty1 console=ttyS0'
-      backup: yes
     when: ansible_distribution_major_version == '6'
 
   - name: grub2 config
@@ -12,7 +11,6 @@
       dest: /etc/default/grub
       line: 'GRUB_CMDLINE_LINUX="crashkernel=auto console=tty1 console=ttyS0"'
       regexp: ^GRUB_CMDLINE_LINUX=
-      backup: yes
     when: ansible_distribution_major_version == '7'
 
   - name: grub2 generate boot file
