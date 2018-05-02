@@ -1,0 +1,19 @@
+---
+- name: Download VGCN agent
+  get_url:
+    url: https://github.com/usegalaxy-eu/vgcn-agent/releases/download/v1/vgcn-agent_linux_amd64
+    dest: /usr/bin/vgcn-agent
+    mode: 0755
+
+- name: Deploy systemd unit
+  copy:
+    src: vgcn-agent.service
+    dest: /etc/systemd/system/vgcn-agent.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Make sure the service is enabled
+  systemd:
+    name: vgcn-agent
+    enabled: yes

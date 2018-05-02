@@ -1,0 +1,12 @@
+[Unit]
+Description=Galaxy Cookie Proxy
+After=network-online.target cloud-final.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/vgcn-agent -file /etc/vgcn-agent.conf
+Restart=always
+User=root
+
+[Install]
+WantedBy=cloud-final.service
