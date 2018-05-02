@@ -105,9 +105,6 @@ help:
 	@echo "Provisioning: "
 	@(for P in $(PROVTARGETS); do echo -e "\t$$P"; done)
 	@echo
-	@echo "Generate boot files:"
-	@(for N in $(BOOTTARGETS); do echo -e "\t$$N"; done)
-	@echo
 
 # The builds are directories named after the template name
 clean:
