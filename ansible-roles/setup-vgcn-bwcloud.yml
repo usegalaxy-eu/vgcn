@@ -27,4 +27,3 @@
     - CyVerse-Ansible.singularity
     - geerlingguy.java
     - geerlingguy.docker
-    - vgcn-agent
