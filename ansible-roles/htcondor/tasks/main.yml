@@ -84,3 +84,15 @@
       name: condor-all
       state: latest
       use: yum
+
+  - name: condor service enable
+    service:
+      name: condor
+      enabled: yes
+
+  - name: Disable firewalld
+    when: ansible_distribution_major_version == '7'
+    systemd:
+      name: firewalld
+      enabled: no
+      state: stopped

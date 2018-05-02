@@ -22,19 +22,8 @@
   - name: condor autodrain hack 2
     file: dest=/etc/rc.d/rc.local mode=a+x
 
-  - name: condor service enable
-    service:
-      name: condor
-      enabled: yes
-
   - name: condor walltime script
     copy:
       dest: /etc/condor/meta_walltime.py
       src:  meta_walltime.py
       mode: 0755
-
-  - name: Disable firewalld
-    systemd:
-      name: firewalld
-      enabled: no
-      state: stopped
