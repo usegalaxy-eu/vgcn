@@ -1,2 +1,0 @@
-gitsource: "git://git.openslx.org/openslx-ng/systemd-init"
-gittarget: "/opt/systemd-init"

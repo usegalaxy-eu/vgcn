@@ -5,6 +5,7 @@
 # 	* testing target
 # 	* auto-detect flavors
 PACKER=/usr/bin/packer
+ROOTPW=password
 ANSIBLE_DIR=ansible-roles
 # the "provisioning" flavor, expects a 'setup-<flavor>.yml' playbook
 # in the 'ansible-roles' submodule! This will likely change...
@@ -20,8 +21,6 @@ TEMPLATES := $(basename $(filter-out base.json,$(wildcard *.json)))
 
 BASETARGETS := $(foreach template, $(TEMPLATES), $(template)/base)
 PROVTARGETS := $(foreach template, $(TEMPLATES), $(foreach flavor, $(FLAVORS), $(template)/$(flavor)))
-BOOTTARGETS := $(foreach template, $(TEMPLATES), $(template)/base/boot)
-BOOTTARGETS += $(foreach prov, $(PROVTARGETS), $(prov)/boot)
 
 PACKER_OPTS := -var-file=base.json
 ifdef DEBUG
@@ -69,29 +68,6 @@ $(foreach flav, $(FLAVORS), %/$(flav)): %/base
 	@rmdir output-$(@D)
 	@echo "** Success **"
 
-##
-#		Generating boot files
-##
-# This should use provisioned image
-$(BOOTTARGETS):
-%/boot: %
-# no evil eval tricks...
-	$(info ** Generating boot files for '$(patsubst %/,%,$(dir $(@D))):$(notdir $(@D))' **)
-	$(PACKER) build -only=$(BUILDER) \
-		$(PACKER_OPTS) \
-		-var='vm_name=$(notdir $(@D)).tmp' \
-		-var='image_dir=$(patsubst %/,%,$(dir $(@D)))/$(notdir $(@D))' \
-	 	-var='image_name=image' \
-		-var='playbook=build-dracut-initramfs.yml' \
-		$(ANSIBLE_DIR)/run-playbook-only.json
-	@test -f $(ANSIBLE_DIR)/boot_files/initramfs || false
-	@-test -d $(patsubst %/,%,$(dir $(@D)))/$(notdir $(@D))/boot && \
-					rm -rf $(patsubst %/,%,$(dir $(@D)))/$(notdir $(@D))/boot
-	@mv $(ANSIBLE_DIR)/boot_files $(patsubst %/,%,$(dir $(@D)))/$(notdir $(@D))/boot
-ifndef DEBUG
-	@rm -rf output-$(patsubst %/,%,$(dir $(@D)))/
-endif
-	@echo "** Success **"
 
 help:
 	@echo "General syntax: <template>/<flavor>[/boot]"
