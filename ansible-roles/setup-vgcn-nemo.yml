@@ -26,3 +26,4 @@
     - influxdata.chrony
     - geerlingguy.java
     - geerlingguy.docker
+    - vgcn-agent
