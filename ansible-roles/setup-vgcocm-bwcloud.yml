@@ -13,7 +13,6 @@
   roles:
     - basic
     - inhibit-point-upgrade
-    - fixnetif
     - grub
     - cloudinit
     - htcondor
