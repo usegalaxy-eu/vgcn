@@ -12,7 +12,6 @@
   roles:
     - basic
     - grub
-    - sshserver
     - cloudinit
     - autofs
     - packages

@@ -15,7 +15,6 @@
     - inhibit-point-upgrade
     - fixnetif
     - grub
-    - sshserver
     - cloudinit
     - htcondor
     - htcondorcentral
