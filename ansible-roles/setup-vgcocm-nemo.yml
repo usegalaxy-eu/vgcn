@@ -18,7 +18,6 @@
     - cloudinit
     - htcondor
     - roced
-    - autofs
     - galaxy
     - packages
     - systemupdate

@@ -108,3 +108,13 @@
       dest: /etc/condor/meta_walltime.py
       src:  meta_walltime.py
       mode: 0755
+
+  - name: condor autodrain hack 1
+    lineinfile:
+      dest: /etc/rc.d/rc.local
+      line: "( /bin/sleep {{ condor_drain_delay }} && /usr/bin/condor_drain -graceful `/bin/hostname` ) &"
+    when: central_manager
+
+  - name: condor autodrain hack 2
+    file: dest=/etc/rc.d/rc.local mode=a+x
+    when: central_manager

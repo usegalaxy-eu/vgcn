@@ -15,8 +15,6 @@
     - grub
     - cloudinit
     - htcondor
-    - htcondorexec
-    - autofs
     - galaxy
     - packages
     - systemupdate

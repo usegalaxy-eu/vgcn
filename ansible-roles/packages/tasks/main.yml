@@ -14,10 +14,14 @@
     - atop
     - mosh
     - libcgroup-tools
+    - autofs
     - "@development"
 
-- name: Ensure atop service and ensure it is started.
+- name: Ensure services are enabled + started
   systemd:
-    name: atop
+    name: "{{ item }}"
     enabled: yes
     state: started
+  with_items:
+    - atop
+    - autofs

@@ -1,8 +1,0 @@
----
-  - name: condor autodrain hack 1
-    lineinfile:
-      dest: /etc/rc.d/rc.local
-      line: "( /bin/sleep {{ condor_drain_delay }} && /usr/bin/condor_drain -graceful `/bin/hostname` ) &"
-
-  - name: condor autodrain hack 2
-    file: dest=/etc/rc.d/rc.local mode=a+x
