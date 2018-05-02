@@ -11,10 +11,9 @@
     - "group_vars/java.yml"
 
   roles:
-    - packages
+    - basic
     - cloudinit
     - systemupdate
-    - root
     - dynmotd
     - jenkins
     - dj-wasabi.telegraf

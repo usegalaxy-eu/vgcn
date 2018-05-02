@@ -11,12 +11,11 @@
     - "group_vars/cloud-{{ cloud }}.yml"
 
   roles:
-    - packages
+    - basic
     - cloudinit
     - htcondor
     - galaxy
     - systemupdate
-    - root
     - dynmotd
     - dj-wasabi.telegraf
     - influxdata.chrony
