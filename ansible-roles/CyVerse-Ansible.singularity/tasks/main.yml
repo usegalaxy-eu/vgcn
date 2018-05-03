@@ -21,6 +21,8 @@
     - autoconf
     - libtool
     - make
+    - squashfs-tools
+    - libarchive-devel
   when: ansible_distribution == "CentOS"
 
 - name: clone the singularity repo
