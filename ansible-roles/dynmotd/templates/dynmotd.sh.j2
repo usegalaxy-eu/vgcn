@@ -2,8 +2,7 @@
 echo "
 {{ dynmotd_logo }}
 ====================================================
-Hostname..........: `hostname -f`{% if central_manager %} (Central Manager/{{ cloud }}){% endif %}
-
+Hostname..........: `hostname -f`
 Release...........: {{ ansible_distribution }} Linux release {{ ansible_distribution_version }} ({{ ansible_distribution_release }})
 Build.............: {{ cloud }} {{ vg_cluster }} build v{{ vg_build }}
 Build Date........: {{ ansible_date_time.iso8601 }}
