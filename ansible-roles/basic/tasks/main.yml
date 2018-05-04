@@ -18,6 +18,7 @@
     - mosh
     - libcgroup-tools
     - autofs
+    - bind-utils
     - "@development"
 
 - name: Ensure services are enabled + started
