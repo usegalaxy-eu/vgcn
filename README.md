@@ -35,5 +35,14 @@ qemu                                           | 2.5.0
 
 ## Building This Yourself
 
-All of the images are designed to be as generic as possible
+All of the images are designed to be as generic as possible so you can use them
+as-is. We will provide built images, but if you wish to build them yourself,
+you'll simply want to do:
 
+```
+make centos-7.x-x86_64/vgcn-bwcloud
+```
+
+## Running It
+
+Please see https://github.com/usegalaxy-eu/terraform/ for examples of how to launch and configure this.
