@@ -41,13 +41,5 @@ telegraf_plugins_default:
       - commands = ["/bin/iamalive"]
       - name_suffix = "_alive"
 
-telegraf_agent_output:
-  - type: influxdb
-    config:
-      - urls = ["https://influxdb.usegalaxy.eu:8086"]
-      - database = "rancher"
-      - username = "galaxy"
-      - password = "{{ influxdb_password | default('') }}"
-
 java_packages:
  - java-1.8.0-openjdk
