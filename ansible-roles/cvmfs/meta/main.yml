@@ -1,5 +1,0 @@
----
-
-dependencies:
-  # need epel for the jq package
-  - role: geerlingguy.repo-epel
