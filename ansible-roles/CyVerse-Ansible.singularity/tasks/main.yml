@@ -35,7 +35,7 @@
   command: /opt/singularity/autogen.sh chdir=/opt/singularity
 
 - name: execute configure
-  command: /opt/singularity/configure --prefix=/usr/local chdir=/opt/singularity --sysconfdir=/etc
+  command: /opt/singularity/configure --prefix=/usr chdir=/opt/singularity --sysconfdir=/etc
 
 - name: execute make
   command: make chdir=/opt/singularity
