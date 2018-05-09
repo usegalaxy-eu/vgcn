@@ -61,7 +61,7 @@
     mode: 0644
 
 - name: Fix permissions
-  command: chmod ugo+rx /usr/local/libexec/ /etc/singularity
+  command: chmod ugo+rx /usr/libexec/singularity/ /etc/singularity
 
 - name: Fix permissions v2
-  command: chmod ugo+rx -R /usr/local/lib/singularity/ /usr/local/libexec/singularity/
+  command: chmod ugo+rx -R /usr/lib/singularity/ /usr/libexec/singularity/
