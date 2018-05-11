@@ -4,10 +4,10 @@
 
   vars:
     vg_build: 8
-    vg_cluster: "vjcn"
     cloud: "jenkins"
 
   vars_files:
+    - "group_vars/all.yml"
     - "group_vars/java.yml"
 
   roles:

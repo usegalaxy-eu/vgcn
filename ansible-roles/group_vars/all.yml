@@ -1,18 +1,10 @@
 ---
 galaxy_uid: 999
 galaxy_gid: 999
-condor_local_config: /etc/condor/condor_config.local
-
-central_manager: false
-vg_build: 28
-vg_cluster: "vgcn"
-cloud: "default"
 
 telegraf_agent_tags:
   - tag_name: datacenter
     tag_value: rz
-  - tag_name: cluster
-    tag_value: "{{ vg_cluster }}"
   - tag_name: cloud
     tag_value: "{{ cloud }}"
   - tag_name: vgcn_build
