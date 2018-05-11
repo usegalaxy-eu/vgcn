@@ -20,6 +20,7 @@
     - autofs
     - bind-utils
     - strace
+    - nfs-utils
     - "@development"
 
 - name: Ensure services are enabled + started
