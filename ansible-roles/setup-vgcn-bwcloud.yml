@@ -3,10 +3,6 @@
 ---
 - hosts: default
 
-  vars:
-    vg_build: 29
-    cloud: bwCloud
-
   vars_files:
     - "group_vars/all.yml"
     - "group_vars/condor.yml"
