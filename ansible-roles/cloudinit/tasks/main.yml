@@ -30,43 +30,8 @@
             templates_dir: /etc/cloud/templates
           ssh_svcname: sshd
 
-  # SL
-  - name: cloud-init config 1
-    when: ansible_distribution == 'Scientific'
-    blockinfile:
-      dest: /etc/cloud/cloud.cfg
-      block: |
-        system_info:
-          default_user:
-            name: sl
-            gecos: SL Cloud User
-            groups: [wheel, adm, systemd-journal]
-            sudo: ["ALL=(ALL) NOPASSWD:ALL"]
-            shell: /bin/bash
-          distro: rhel
-          paths:
-            cloud_dir: /var/lib/cloud
-            templates_dir: /etc/cloud/templates
-          ssh_svcname: sshd
-
   - name: cloud-init config 2
     lineinfile:
       dest: /etc/cloud/cloud.cfg
       line: 'manage_etc_hosts: true'
       insertafter: '^syslog_fix_perms:.*$'
-
-  # janky 2016-12-07: this is an old bug that is patched in e.g. the version
-  # of cloud-init in the Ubuntu repos; for CentOS we have to do it ourselves.
-  # (the bug causes the instance to have a one hostname on initial bootup and
-  # another one on every subsequent boot)
-  - name: cloud-init patch
-    when: ansible_distribution == 'Scientific' and ansible_distribution_major_version == '6'
-    patch:
-      src: "sl68-cloudinit.patch"
-      dest: /usr/lib/python2.7/site-packages/cloudinit/distros/__init__.py
-
-  - name: cloud-init patch
-    when: ansible_distribution == 'Scientific' and ansible_distribution_major_version == '7'
-    patch:
-      src: "sl72-cloudinit.patch"
-      dest: /usr/lib/python2.7/site-packages/cloudinit/distros/__init__.py
