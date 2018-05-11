@@ -58,24 +58,12 @@
       insertafter: '^ *enabled=1'
 
   - name: condor repo file
-    when: ansible_distribution_major_version == '7'
     copy:
       dest: /etc/yum.repos.d/htcondor-stable-rhel7.repo
       content: |
         [htcondor-stable]
         name=HTCondor Stable RPM Repository for RHEL7
         baseurl=http://research.cs.wisc.edu/htcondor/yum/stable/rhel7
-        enabled=1
-        gpgcheck=1
-
-  - name: condor repo file
-    when: ansible_distribution_major_version == '6'
-    copy:
-      dest: /etc/yum.repos.d/htcondor-stable-rhel6.repo
-      content: |
-        [htcondor-stable]
-        name=HTCondor Stable RPM Repository for RHEL6
-        baseurl=http://research.cs.wisc.edu/htcondor/yum/stable/rhel6
         enabled=1
         gpgcheck=1
 
@@ -91,7 +79,6 @@
       enabled: yes
 
   - name: Disable firewalld
-    when: ansible_distribution_major_version == '7'
     systemd:
       name: firewalld
       enabled: no
