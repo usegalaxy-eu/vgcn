@@ -38,3 +38,5 @@ telegraf_plugins_default:
 
 java_packages:
  - java-1.8.0-openjdk
+
+cvmfs_role: client
