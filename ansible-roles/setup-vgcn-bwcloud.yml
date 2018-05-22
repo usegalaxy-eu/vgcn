@@ -20,3 +20,4 @@
     - geerlingguy.docker
     - galaxy
     - cvmfs
+    - vault
