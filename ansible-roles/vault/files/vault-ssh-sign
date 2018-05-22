@@ -1,3 +1,4 @@
+#!/bin/bash
 export VAULT_ADDR=${1:-https://vault.usegalaxy.eu}
 VAULT_AUTH_USER=${2:-openstack}
 VAULT_AUTH_PASS=${3:-password}
@@ -5,10 +6,11 @@ VAULT_AUTH_PASS=${3:-password}
 vault login -method=userpass username=$VAULT_AUTH_USER password=$VAULT_AUTH_PASS
 for i in /etc/ssh/ssh*key.pub; do
 	certname=$(basename $i .pub)-cert.pub;
-	outfile=/etc/ssh/$certname.pub
+	outfile=/etc/ssh/${certname}
 	vault write -field=signed_key ssh-host-signer/sign/hostrole cert_type=host public_key=@$i > $outfile;
 	echo "HostCertificate $outfile" >> /etc/ssh/sshd_config
 done;
 
+vault read -field=public_key ssh-client-signer/config/ca > /etc/ssh/trusted-user-ca-keys.pem
 echo "TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pem" >> /etc/ssh/sshd_config
-systemctl restart ssh
+systemctl restart sshd
