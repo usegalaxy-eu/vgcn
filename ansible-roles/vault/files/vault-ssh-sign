@@ -8,6 +8,7 @@ for i in /etc/ssh/ssh*key.pub; do
 	certname=$(basename $i .pub)-cert.pub;
 	outfile=/etc/ssh/${certname}
 	vault write -field=signed_key ssh-host-signer/sign/hostrole cert_type=host public_key=@$i > $outfile;
+	chmod 640 $outfile
 	echo "HostCertificate $outfile" >> /etc/ssh/sshd_config
 done;
 
