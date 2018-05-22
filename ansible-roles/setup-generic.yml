@@ -1,0 +1,14 @@
+# Setup for Virtual Galaxy Compute Node
+# This setup is valid for RHEL 7.x based systems.
+---
+- hosts: default
+
+  vars_files:
+    - "group_vars/all.yml"
+
+  roles:
+    - basic
+    - cloudinit
+    - systemupdate
+    - influxdata.chrony
+    - vault
