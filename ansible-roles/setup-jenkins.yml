@@ -4,21 +4,16 @@
 
   vars:
     vg_build: 8
-    vg_cluster: "vjcn"
     cloud: "jenkins"
 
   vars_files:
+    - "group_vars/all.yml"
     - "group_vars/java.yml"
-    - "secret_group_vars/default.yml"
 
   roles:
     - basic
-    - grub
-    - sshserver
     - cloudinit
-    - packages
     - systemupdate
-    - root
     - dynmotd
     - jenkins
     - dj-wasabi.telegraf

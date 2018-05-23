@@ -5,19 +5,10 @@
 
   vars_files:
     - "group_vars/all.yml"
-    - "group_vars/condor.yml"
 
   roles:
     - basic
     - cloudinit
-    - htcondor
     - systemupdate
-    - dynmotd
-    - dj-wasabi.telegraf
     - influxdata.chrony
-    - CyVerse-Ansible.singularity
-    - geerlingguy.java
-    - geerlingguy.docker
-    - galaxy
-    - cvmfs
     - vault

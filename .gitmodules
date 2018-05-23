@@ -1,3 +1,3 @@
-[submodule "ansible-roles/ansible-galaxy-extras"]
-	path = ansible-roles/galaxyprojectdotorg.galaxyextras
-	url = https://github.com/galaxyproject/ansible-galaxy-extras
+[submodule "ansible-roles/cvmfs"]
+	path = ansible-roles/cvmfs
+	url = https://github.com/usegalaxy-eu/ansible-cvmfs/

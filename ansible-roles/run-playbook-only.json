@@ -1,6 +1,6 @@
 {
 	"variables": {
-		"ssh_password": "{{ env `ROOTPW` }}"
+		"ssh_password": "password"
 	},
 	"builders": [{
 		"type": "qemu",
@@ -23,9 +23,6 @@
 	}],
 	"provisioners": [{
 		"type": "ansible",
-		"playbook_file": "{{ template_dir }}/{{ user `playbook` }}",
-		"extra_arguments": [
-			"--vault-password-file=.vault_pass"
-		]
+		"playbook_file": "{{ template_dir }}/{{ user `playbook` }}"
 	}]
 }

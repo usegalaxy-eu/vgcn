@@ -1,15 +1,48 @@
-# Packer templates for Virtual Galaxy Compute Nodes (among other things)
+# Virtual Galaxy Compute Nodes
 
-Packer-based generation of reference systems using distro's ISOs.
+This repo contains all of the components required to build the "Virtual Galaxy
+Compute Nodes" (VGCN) that make up the HTCondor cloud used in UseGalaxy.eu
+
+## Makefile
+
+We include a makefile that should build the images, running `make` will inform you of the available targets:
+
+```console
+$ make
+General syntax: <template>/<flavor>[/boot]
+Detected builders:
+        qemu
+Base images:
+        centos-7.x-x86_64/base
+Provisioning:
+        centos-7.x-x86_64/bwlp
+        centos-7.x-x86_64/vgcn-bwcloud
+        centos-7.x-x86_64/vgcn-nemo
+        centos-7.x-x86_64/vgcocm-bwcloud
+        centos-7.x-x86_64/vgcocm-nemo
+        centos-7.x-x86_64/jenkins
+```
 
 ## Dependencies
 
-Packer => 0.12.2
-Download: https://www.packer.io/downloads.html
+We have listed the versions we use, but other versions may work.
 
-## Usage
+Component                                      | Version
+---------------------------------------------- | --------
+[Packer](https://www.packer.io/downloads.html) | 1.0.4
+Ansible                                        | >= 2.4.3.0
+qemu                                           | 2.5.0
+
+## Building This Yourself
+
+All of the images are designed to be as generic as possible so you can use them
+as-is. We will provide built images, but if you wish to build them yourself,
+you'll simply want to do:
 
 ```
-ROOTPW=temporaryrootpw make centos-7.3-x86_64/vgcn-bwcloud
+make centos-7.x-x86_64/vgcn-bwcloud
 ```
 
+## Running It
+
+Please see https://github.com/usegalaxy-eu/terraform/ for examples of how to launch and configure this.

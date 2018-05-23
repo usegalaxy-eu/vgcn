@@ -7,7 +7,7 @@
 		"http_dir": "http",
 		"kickstart_path": "centos-7.x/anaconda-ks.cfg",
 		"shutdown_command": "systemctl poweroff",
-		"ssh_password": "{{ env `ROOTPW` }}"
+		"ssh_password": "password"
 	},
 	"builders": [{
 		"type": "qemu",

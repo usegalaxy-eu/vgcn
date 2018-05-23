@@ -20,7 +20,6 @@
   - name: roced bangpath fix
     lineinfile:
       dest: /opt/ROCED/src/ROCED/scale.py
-      backup: yes
       regexp: '^#!'
       line: '#!/opt/python-3.5/bin/python3'
 
@@ -46,7 +45,6 @@
   - name: roced cfg freiburg_user
     ini_file: dest={{ roced_fr }} section=freiburg_cloud
               option=freiburg_user value=fr_sj7
-              backup=yes
 
   # > at our 2017-04-24-workshop it was found this could potentially
   # > disturb ROCED operation by including unrelated MOAB jobs

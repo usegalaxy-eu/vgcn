@@ -1,0 +1,22 @@
+---
+- name: hashicorp vault
+  get_url:
+    url: https://releases.hashicorp.com/vault/0.10.1/vault_0.10.1_linux_amd64.zip
+    dest: /tmp/vault.zip
+
+- name: install hashicorp vault client
+  unarchive:
+    src: /tmp/vault.zip
+    dest: /usr/bin/
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 755
+
+- name: deploy automatic ssh key signing script
+  copy:
+    src: vault-ssh-sign
+    dest: /usr/sbin/vault-ssh-sign
+    owner: root
+    group: root
+    mode: 750

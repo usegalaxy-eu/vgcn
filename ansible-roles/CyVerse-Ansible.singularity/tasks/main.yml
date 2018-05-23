@@ -21,6 +21,8 @@
     - autoconf
     - libtool
     - make
+    - squashfs-tools
+    - libarchive-devel
   when: ansible_distribution == "CentOS"
 
 - name: clone the singularity repo
@@ -33,7 +35,7 @@
   command: /opt/singularity/autogen.sh chdir=/opt/singularity
 
 - name: execute configure
-  command: /opt/singularity/configure --prefix=/usr/local chdir=/opt/singularity --sysconfdir=/etc
+  command: /opt/singularity/configure --prefix=/usr chdir=/opt/singularity --sysconfdir=/etc
 
 - name: execute make
   command: make chdir=/opt/singularity
@@ -59,7 +61,7 @@
     mode: 0644
 
 - name: Fix permissions
-  command: chmod ugo+rx /usr/local/libexec/ /etc/singularity
+  command: chmod ugo+rx /usr/libexec/singularity/ /etc/singularity
 
 - name: Fix permissions v2
-  command: chmod ugo+rx -R /usr/local/lib/singularity/ /usr/local/libexec/singularity/
+  command: chmod ugo+rx -R /usr/lib/singularity/ /usr/libexec/singularity/
