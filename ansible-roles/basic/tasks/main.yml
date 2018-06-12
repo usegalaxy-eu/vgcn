@@ -23,6 +23,19 @@
     - nfs-utils
     - "@development"
     - jq
+    # Fonts
+    - dejavu-fonts-common
+    - dejavu-sans-fonts
+    - fontconfig
+    - fontconfig-devel
+    - fontpackages-filesystem
+    - ghostscript-fonts
+    - libXfont
+    - liberation-fonts-common
+    - liberation-sans-fonts
+    - libfontenc
+    - urw-fonts
+    - xorg-x11-font-utils
 
 - name: Ensure services are enabled + started
   systemd:
