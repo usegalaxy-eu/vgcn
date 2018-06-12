@@ -1,3 +1,15 @@
+pulsar_owner: pulsar
+pulsar_group: pulsar
+pulsar_user_create: true
+pulsar_user_homedir: "{{ pulsar_config_dir }}"
+pulsar_config_filemode: 0640
+pulsar_config_backup: false
+
+pulsar_systemd: true
+# we install in every VM so be sure it is not running
+pulsar_systemd_enabled: no
+pulsar_systemd_state: stopped
+
 pulsar_venv_dir: /opt/pulsar/venv
 pulsar_config_dir: /opt/pulsar/config
 pulsar_persistence_dir: /scratch/persisted_data

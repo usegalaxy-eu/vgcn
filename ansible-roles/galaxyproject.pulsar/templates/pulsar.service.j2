@@ -5,6 +5,7 @@ After=syslog.target network.target
 [Service]
 Type=simple
 ExecStart={{ pulsar_venv_dir }}/bin/python {{ pulsar_venv_dir }}/bin/paster serve {{ pulsar_config_dir }}/server.ini
+User={{ pulsar_owner }}
 
 [Install]
 WantedBy=multi-user.target
