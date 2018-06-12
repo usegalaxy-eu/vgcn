@@ -42,7 +42,7 @@ pulsar_install_environments: []
 pulsar_owner: root
 pulsar_group: root
 pulsar_user_create: false
-pulsar_user_homdir: "{{ pulsar_config_dir }}"
+pulsar_user_homedir: "{{ pulsar_config_dir }}"
 
 pulsar_config_filemode: 0444
 pulsar_config_backup: true

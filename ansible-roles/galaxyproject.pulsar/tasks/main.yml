@@ -18,8 +18,8 @@
     name: "{{ item }}"
     state: installed
   with_items:
-    python-pip
-    python-virtualenv
+    - python-pip
+    - python-virtualenv
 
 - name: Create virtualenv dir
   file:
@@ -73,20 +73,20 @@
 - name: Install Pulsar (source)
   git: dest={{ pulsar_server_dir }} force=no repo={{ pulsar_git_repo }} version={{ pulsar_changeset_id | default('master') }} executable={{ git_executable | default(omit) }}
   become: true
-  become_user: "{{ pulsar_server_owner }}"
+  become_user: "{{ pulsar_owner }}"
   when: pulsar_pip_install == false
 
 - name: Install Pulsar base dependencies for source install
   pip: requirements={{ pulsar_server_dir }}/requirements.txt virtualenv={{ pulsar_venv_dir }} virtualenv_command={{ pip_virtualenv_command | default(omit) }}
   become: true
-  become_user: "{{ pulsar_server_owner }}"
+  become_user: "{{ pulsar_owner }}"
   when: pulsar_pip_install == false
 
 - name: Install Pulsar dependencies (optional)
   pip: name={{ item }} virtualenv={{ pulsar_venv_dir }} virtualenv_command={{ pip_virtualenv_command | default(omit) }}
   environment: "{{ pulsar_install_environments[item.split('=')[0]] if item.split('=')[0] in pulsar_install_environments else {} }}"
   become: true
-  become_user: "{{ pulsar_server_owner }}"
+  become_user: "{{ pulsar_owner }}"
   with_items: "{{ pulsar_optional_dependencies }}"
 
 - name: Create Pulsar config dir
