@@ -4,12 +4,39 @@
 # Deploy a Pulsar server
 #   http://pulsar.readthedocs.org/
 
+- name: Create user if requested
+  user:
+    name: "{{ pulsar_owner }}"
+    create_home: no
+    append: yes
+    system: yes
+    home: "{{ pulsar_user_homedir }}"
+  when: pulsar_user_create
+
+- name: Ensure pip and virtualenv commands are available
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    python-pip
+    python-virtualenv
+
+- name: Create virtualenv dir
+  file:
+    state: directory
+    path: "{{ pulsar_venv_dir }}"
+    mode: 0755
+    owner: "{{ pulsar_owner }}"
+    group: "{{ pulsar_group }}"
+
 - name: Create/update virtualenv
   pip:
     name: "{{ item }}"
     state: latest
     virtualenv: "{{ pulsar_venv_dir }}"
     virtualenv_command: "{{ pip_virtualenv_command | default(omit) }}"
+  become: true
+  become_user: "{{ pulsar_owner }}"
   with_items:
     - pip
     - setuptools
@@ -21,6 +48,8 @@
     virtualenv: "{{ pulsar_venv_dir }}"
     editable: false
     state: forcereinstall
+  become: true
+  become_user: "{{ pulsar_owner }}"
   when: pulsar_pip_install == true and pulsar_changeset_id is defined
 
 - name: Install Pulsar (pip)
@@ -28,35 +57,92 @@
     name: pulsar-app
     state: latest
     virtualenv: "{{ pulsar_venv_dir }}"
+  become: true
+  become_user: "{{ pulsar_owner }}"
   when: pulsar_pip_install == true and pulsar_changeset_id is not defined
+
+- name: Create server directory
+  file:
+    state: directory
+    path: "{{ pulsar_server_dir }}"
+    mode: 0755
+    owner: "{{ pulsar_owner }}"
+    group: "{{ pulsar_group }}"
+  when: pulsar_pip_install == false
 
 - name: Install Pulsar (source)
   git: dest={{ pulsar_server_dir }} force=no repo={{ pulsar_git_repo }} version={{ pulsar_changeset_id | default('master') }} executable={{ git_executable | default(omit) }}
+  become: true
+  become_user: "{{ pulsar_server_owner }}"
   when: pulsar_pip_install == false
 
 - name: Install Pulsar base dependencies for source install
   pip: requirements={{ pulsar_server_dir }}/requirements.txt virtualenv={{ pulsar_venv_dir }} virtualenv_command={{ pip_virtualenv_command | default(omit) }}
+  become: true
+  become_user: "{{ pulsar_server_owner }}"
   when: pulsar_pip_install == false
 
 - name: Install Pulsar dependencies (optional)
   pip: name={{ item }} virtualenv={{ pulsar_venv_dir }} virtualenv_command={{ pip_virtualenv_command | default(omit) }}
   environment: "{{ pulsar_install_environments[item.split('=')[0]] if item.split('=')[0] in pulsar_install_environments else {} }}"
+  become: true
+  become_user: "{{ pulsar_server_owner }}"
   with_items: "{{ pulsar_optional_dependencies }}"
 
 - name: Create Pulsar config dir
-  file: state=directory path={{ pulsar_config_dir }}
+  file:
+    state: directory
+    path: "{{ pulsar_config_dir }}"
+    mode: 0755
+    owner: "{{ pulsar_owner }}"
+    group: "{{ pulsar_group }}"
 
 - name: Create Pulsar app configuration file
-  template: src=app.yml.j2 dest={{ pulsar_config_dir }}/app.yml mode=0444 backup=yes
+  template:
+    src: app.yml.j2
+    dest: "{{ pulsar_config_dir }}/app.yml"
+    mode: "{{ pulsar_config_filemode }}"
+    owner: "{{ pulsar_owner }}"
+    group: "{{ pulsar_group }}"
+    backup: "{{ pulsar_config_backup }}"
   when: pulsar_yaml_config is defined
 
 - name: Create Pulsar job manager configuration file
-  template: src=job_managers.ini.j2 dest={{ pulsar_job_managers_config }} mode=0444 backup=yes
+  template:
+    src: "job_managers.ini.j2"
+    dest: "{{ pulsar_job_managers_config }}"
+    mode: "{{ pulsar_config_filemode }}"
+    owner: "{{ pulsar_owner }}"
+    group: "{{ pulsar_group }}"
+    backup: "{{ pulsar_config_backup }}"
   when: pulsar_job_managers is defined
 
 - name: Create additional Pulsar config files
-  template: src={{ item }}.j2 dest={{ pulsar_config_dir }}/{{ item }} mode=0444 backup=yes
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ pulsar_config_dir }}/{{ item }}"
+    mode: "{{ pulsar_config_filemode }}"
+    owner: "{{ pulsar_owner }}"
+    group: "{{ pulsar_group }}"
+    backup: "{{ pulsar_config_backup }}"
   with_items:
     - server.ini
     - local_env.sh
     - job_metrics_conf.xml
+
+- name: Create Pulsar systemd unit file
+  template:
+    src: "pulsar.service.j2"
+    dest: "/etc/systemd/system/pulsar.service"
+    mode: "0640"
+    owner: "root"
+    group: "root"
+  when: pulsar_systemd is defined
+
+- name: SystemD daemon-reload and enable/start service
+  systemd:
+    state: "{{ pulsar_systemd_state }}"
+    enabled: "{{ pulsar_systemd_enabled }}"
+    name: pulsar.service
+    daemon_reload: yes
+  when: pulsar_systemd is defined

@@ -1,0 +1,10 @@
+[Unit]
+Description=Pulsar
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart={{ pulsar_venv_dir }}/bin/python {{ pulsar_venv_dir }}/bin/paster serve {{ pulsar_config_dir }}/server.ini
+
+[Install]
+WantedBy=multi-user.target

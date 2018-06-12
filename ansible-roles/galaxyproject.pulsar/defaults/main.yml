@@ -38,3 +38,15 @@ pulsar_optional_dependencies: []
 # OpenSSL, libffi) are not installed system wide on destination, environment
 # variables can be used to target other paths.
 pulsar_install_environments: []
+
+pulsar_owner: root
+pulsar_group: root
+pulsar_user_create: false
+pulsar_user_homdir: "{{ pulsar_config_dir }}"
+
+pulsar_config_filemode: 0444
+pulsar_config_backup: true
+# To deploy a systemd unit file
+# pulsar_systemd: true
+pulsar_systemd_enabled: yes
+pulsar_systemd_state: started
