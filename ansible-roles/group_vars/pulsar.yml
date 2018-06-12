@@ -10,6 +10,7 @@ pulsar_systemd: true
 pulsar_systemd_enabled: no
 pulsar_systemd_state: stopped
 
+pulsar_server_dir: /opt/pulsar/server
 pulsar_venv_dir: /opt/pulsar/venv
 pulsar_config_dir: /opt/pulsar/config
 pulsar_persistence_dir: /scratch/persisted_data
