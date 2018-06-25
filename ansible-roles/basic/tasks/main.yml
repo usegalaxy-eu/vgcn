@@ -36,6 +36,7 @@
     - libfontenc
     - urw-fonts
     - xorg-x11-font-utils
+    - at
 
 - name: Ensure services are enabled + started
   systemd:
@@ -45,6 +46,7 @@
   with_items:
     - atop
     - autofs
+    - atd
 
 - name: yum-autoupdate removal
   yum: name=yum-autoupdate state=absent
