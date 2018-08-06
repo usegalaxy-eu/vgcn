@@ -22,6 +22,7 @@
     - strace
     - nfs-utils
     - "@development"
+    - jq
 
 - name: Ensure services are enabled + started
   systemd:
