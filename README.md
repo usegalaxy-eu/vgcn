@@ -15,11 +15,7 @@ Detected builders:
 Base images:
         centos-7.x-x86_64/base
 Provisioning:
-        centos-7.x-x86_64/bwlp
         centos-7.x-x86_64/vgcn-bwcloud
-        centos-7.x-x86_64/vgcn-nemo
-        centos-7.x-x86_64/vgcocm-bwcloud
-        centos-7.x-x86_64/vgcocm-nemo
         centos-7.x-x86_64/jenkins
 ```
 
