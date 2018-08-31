@@ -84,3 +84,7 @@ help:
 # The builds are directories named after the template name
 clean:
 	-$(foreach build_dir,$(TEMPLATES),test -d $(build_dir) && rm -rf $(build_dir);)
+
+
+cloud_cleanup:
+	openstack image list -c ID -c Name -f value | grep vggp | awk '{print $1}' | xargs openstack image delete
