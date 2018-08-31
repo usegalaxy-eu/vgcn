@@ -8,7 +8,7 @@ PACKER=/usr/bin/packer
 ANSIBLE_DIR=ansible-roles
 # the "provisioning" flavor, expects a 'setup-<flavor>.yml' playbook
 # in the 'ansible-roles' submodule! This will likely change...
-FLAVORS = vgcn-bwcloud jenkins
+FLAVORS = vgcn-bwcloud jenkins generic
 SUPPORTED_BUILDERS = qemu
 # check which hypervisors are available
 ifeq ($(shell which qemu-system-$(shell uname -m | sed 's/i686/i386/') 2>&1 > /dev/null && echo $$?), 0)
@@ -20,6 +20,7 @@ TEMPLATES := $(basename $(filter-out base.json,$(wildcard *.json)))
 
 BASETARGETS := $(foreach template, $(TEMPLATES), $(template)/base)
 PROVTARGETS := $(foreach template, $(TEMPLATES), $(foreach flavor, $(FLAVORS), $(template)/$(flavor)))
+INTERNALTARGETS := $(foreach template, $(TEMPLATES), $(foreach flavor, $(FLAVORS), $(template)/$(flavor)-internal))
 
 PACKER_OPTS := -var-file=base.json
 ifdef DEBUG
@@ -51,6 +52,23 @@ $(BASETARGETS):
 ##
 # This should still only use base images
 $(PROVTARGETS):
+$(foreach flav, $(FLAVORS), %/$(flav)-internal): %/base
+	$(info ** Provisioning '$(@D)' with '$(@F)' **)
+	$(PACKER) build -only=$(BUILDER) \
+		$(PACKER_OPTS) \
+		-var='vm_name=$(@F)' \
+		-var='image_dir=$(@D)' \
+		-var='image_name=base/image' \
+		-var='playbook=internal.yml' \
+		$(ANSIBLE_DIR)/run-playbook-only-internal.json
+	@test -f output-$(@D)/$(@F) || false
+	@-test -d $(@D)/$(@F) && rm -rf $(@D)/$(@F)
+	@-mkdir $(@D)/$(@F)
+	@mv output-$(@D)/$(@F) $(@D)/$(@F)/image
+	@rmdir output-$(@D)
+	@echo "** Success **"
+
+$(INTERNALTARGETS):
 $(foreach flav, $(FLAVORS), %/$(flav)): %/base
 	$(info ** Provisioning '$(@D)' with '$(@F)' **)
 	$(PACKER) build -only=$(BUILDER) \
@@ -66,7 +84,6 @@ $(foreach flav, $(FLAVORS), %/$(flav)): %/base
 	@mv output-$(@D)/$(@F) $(@D)/$(@F)/image
 	@rmdir output-$(@D)
 	@echo "** Success **"
-
 
 help:
 	@echo "General syntax: <template>/<flavor>[/boot]"
