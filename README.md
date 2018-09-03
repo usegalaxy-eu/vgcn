@@ -1,4 +1,4 @@
-# Virtual Galaxy Compute Nodes
+# Virtual Galaxy Compute Nodes (VGCN)
 
 This repo contains all of the components required to build the "Virtual Galaxy
 Compute Nodes" (VGCN) that make up the HTCondor cloud used in UseGalaxy.eu
