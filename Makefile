@@ -51,7 +51,7 @@ $(BASETARGETS):
 #		Provisioning images
 ##
 # This should still only use base images
-$(PROVTARGETS):
+$(INTERNALTARGETS):
 $(foreach flav, $(FLAVORS), %/$(flav)-internal): %/base
 	$(info ** Provisioning '$(@D)' with '$(@F)' **)
 	$(PACKER) build -only=$(BUILDER) \
@@ -68,7 +68,7 @@ $(foreach flav, $(FLAVORS), %/$(flav)-internal): %/base
 	@rmdir output-$(@D)
 	@echo "** Success **"
 
-$(INTERNALTARGETS):
+$(PROVTARGETS):
 $(foreach flav, $(FLAVORS), %/$(flav)): %/base
 	$(info ** Provisioning '$(@D)' with '$(@F)' **)
 	$(PACKER) build -only=$(BUILDER) \
