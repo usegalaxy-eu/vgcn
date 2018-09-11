@@ -35,3 +35,11 @@
       dest: /etc/cloud/cloud.cfg
       line: 'manage_etc_hosts: true'
       insertafter: '^syslog_fix_perms:.*$'
+
+  - name: cloud-init config 3
+    blockinfile:
+      dest: /etc/cloud/cloud.cfg
+      block: |
+        runcmd:
+         - 'sed -i "s|localhost.localdomain|$(hostname -f)|g" /etc/telegraf/telegraf.conf'
+         - 'systemctl restart telegraf'

@@ -50,11 +50,3 @@
     group: telegraf
     mode: 0755
   become: yes
-
-- name: cloud-init config 3
-  blockinfile:
-    dest: /etc/cloud/cloud.cfg
-    block: |
-      runcmd:
-       - 'sed -i "s|localhost.localdomain|$(hostname -f)|g" /etc/telegraf/telegraf.conf'
-       - 'systemctl restart telegraf'
