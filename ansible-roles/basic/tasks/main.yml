@@ -50,6 +50,3 @@
 
 - name: yum-autoupdate removal
   yum: name=yum-autoupdate state=absent
-
-- name: lock root account
-  command: usermod --lock root

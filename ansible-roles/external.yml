@@ -5,4 +5,3 @@
 
   roles:
     - lock-root
-    - ssh-host-sign
