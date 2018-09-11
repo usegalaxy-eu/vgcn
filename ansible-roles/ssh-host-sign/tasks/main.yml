@@ -27,3 +27,7 @@
   file:
     path: server_ca
     state: absent
+
+- name: "Helper"
+  debug:
+    msg: "Please add the following to your known_hosts file: @cert-authority <ip-range|*.domain> {{ lookup('file', 'server_ca.pub')  }}"
