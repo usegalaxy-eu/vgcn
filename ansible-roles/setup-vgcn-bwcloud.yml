@@ -10,7 +10,6 @@
 
   roles:
     - basic
-    - cloudinit
     - htcondor
     - systemupdate
     - dynmotd
@@ -21,5 +20,4 @@
     - geerlingguy.docker
     - galaxy
     - cvmfs
-    - vault
     - galaxyproject.pulsar

@@ -5,3 +5,4 @@
 
   roles:
     - lock-root
+    - cloudinit
