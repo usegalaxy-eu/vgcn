@@ -3,8 +3,24 @@
 This repo contains all of the components required to build the "Virtual Galaxy
 Compute Nodes" (VGCN) that make up the HTCondor cloud used in UseGalaxy.eu
 
+Pre-built images are available here: [https://usegalaxy.eu/static/vgcn/](https://usegalaxy.eu/static/vgcn/)
+
 ## Features
 
+All in one image, a single image gets you:
+
+- HTCondor
+- Pulsar
+- NFS
+- CVMFS
+- Singularity
+- Docker
+
+Everything you need to run Galaxy jobs. You can structure this in various ways that meet your needs:
+
+- Like useGalaxy.eu: one VM as the condor master, another N as job runners
+- Like EU's remote clusters: one VM as the condor master + pulsar, another as NFS, and the rest as job runners
+- For BYOC: A single node that does condor master + pulsar + job execution
 
 ## Changelog
 
