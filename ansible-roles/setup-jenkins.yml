@@ -12,7 +12,6 @@
 
   roles:
     - basic
-    - cloudinit
     - systemupdate
     - dynmotd
     - jenkins
@@ -20,5 +19,3 @@
     - influxdata.chrony
     - geerlingguy.java
     - geerlingguy.docker
-    - lock-root
-    - ssh-host-sign

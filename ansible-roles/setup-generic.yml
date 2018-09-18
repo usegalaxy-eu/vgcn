@@ -8,11 +8,8 @@
 
   roles:
     - basic
-    - cloudinit
     - systemupdate
     - dynmotd
     - jenkins
     - dj-wasabi.telegraf
     - influxdata.chrony
-    - lock-root
-    - ssh-host-sign
