@@ -8,7 +8,5 @@
 
   roles:
     - basic
-    - cloudinit
     - systemupdate
     - influxdata.chrony
-    - vault

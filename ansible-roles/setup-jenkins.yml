@@ -20,3 +20,5 @@
     - influxdata.chrony
     - geerlingguy.java
     - geerlingguy.docker
+    - lock-root
+    - ssh-host-sign

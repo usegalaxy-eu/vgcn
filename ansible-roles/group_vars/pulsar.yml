@@ -1,0 +1,37 @@
+pulsar_owner: pulsar
+pulsar_group: pulsar
+pulsar_user_create: true
+pulsar_user_homedir: "{{ pulsar_config_dir }}"
+pulsar_config_filemode: 0640
+pulsar_config_backup: false
+
+pulsar_systemd: true
+# we install in every VM so be sure it is not running
+pulsar_systemd_enabled: no
+pulsar_systemd_state: stopped
+
+pulsar_server_dir: /opt/pulsar/server
+pulsar_venv_dir: /opt/pulsar/venv
+pulsar_config_dir: /opt/pulsar/config
+pulsar_persistence_dir: /scratch/persisted_data
+pulsar_staging_dir: /scratch/staging
+pulsar_drmaa_library_path: /usr/lib64/condor/libdrmaa.so
+pulsar_pip_install: true
+pulsar_optional_dependencies:
+  - kombu
+  - psutil
+  - drmaa
+pulsar_yaml_config:
+  dependency_resolvers_config_file : dependency_resolvers_conf.xml
+  conda_auto_init : True
+  conda_auto_install : True
+  staging_directory: /scratch/
+  tool_dependency_dir: /usr/local/tools/
+  message_queue_url: REAL_MESSAGE_QUEUE_URL
+  #pyamqp://username:password@proxy.usegalaxy.eu:5671//pulsar/galaxy_test?ssl=1
+  managers:
+    _default_:
+      type: queued_condor
+      production: true
+      submit_universe: vanilla
+      submit_should_transfer_files: yes

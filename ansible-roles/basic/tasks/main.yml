@@ -23,6 +23,20 @@
     - nfs-utils
     - "@development"
     - jq
+    # Fonts
+    - dejavu-fonts-common
+    - dejavu-sans-fonts
+    - fontconfig
+    - fontconfig-devel
+    - fontpackages-filesystem
+    - ghostscript-fonts
+    - libXfont
+    - liberation-fonts-common
+    - liberation-sans-fonts
+    - libfontenc
+    - urw-fonts
+    - xorg-x11-font-utils
+    - at
 
 - name: Ensure services are enabled + started
   systemd:
@@ -32,9 +46,7 @@
   with_items:
     - atop
     - autofs
+    - atd
 
 - name: yum-autoupdate removal
   yum: name=yum-autoupdate state=absent
-
-- name: lock root account
-  command: usermod --lock root

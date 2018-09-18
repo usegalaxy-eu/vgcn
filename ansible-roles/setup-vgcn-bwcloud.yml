@@ -5,11 +5,11 @@
 
   vars_files:
     - "group_vars/all.yml"
+    - "group_vars/pulsar.yml"
     - "group_vars/condor.yml"
 
   roles:
     - basic
-    - cloudinit
     - htcondor
     - systemupdate
     - dynmotd
@@ -20,4 +20,4 @@
     - geerlingguy.docker
     - galaxy
     - cvmfs
-    - vault
+    - galaxyproject.pulsar

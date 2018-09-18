@@ -21,7 +21,7 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - urllib3
+    #- urllib3
     - pyopenssl
     - ndg-httpsclient
 
