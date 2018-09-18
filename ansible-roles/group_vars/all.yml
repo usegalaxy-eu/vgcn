@@ -43,3 +43,5 @@ java_packages:
  - java-1.8.0-openjdk
 
 cvmfs_role: client
+
+dynmotd_custom: []
