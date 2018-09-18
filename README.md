@@ -3,6 +3,20 @@
 This repo contains all of the components required to build the "Virtual Galaxy
 Compute Nodes" (VGCN) that make up the HTCondor cloud used in UseGalaxy.eu
 
+## Features
+
+
+## Changelog
+
+- 31:
+    - ADDED: Puslar
+    - ADDED: Fonts for some jobs
+    - ADDED: `at` daemon
+    - MODIFIED: Additional 'internal' and 'external' targets allowing us to include signed SSH host keys.
+    - REMOVED: vault
+    - REMOVED: roced
+- 21: Initial Release
+
 ## Makefile
 
 We include a makefile that should build the images, running `make` will inform you of the available targets:
