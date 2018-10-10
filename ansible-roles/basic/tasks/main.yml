@@ -23,6 +23,7 @@
     - nfs-utils
     - "@development"
     - jq
+    - pdsh
     # Fonts
     - dejavu-fonts-common
     - dejavu-sans-fonts

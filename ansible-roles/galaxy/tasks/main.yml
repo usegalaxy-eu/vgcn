@@ -1,28 +1,41 @@
 ---
-  - name: galaxy account group, via shell
-    shell: "grep -q ^galaxy: /etc/group || echo galaxy:x:{{ galaxy_gid }}: >> /etc/group"
-    when: ansible_distribution_major_version == '7'
+- name: galaxy account group, via shell
+  shell: "grep -q ^galaxy: /etc/group || echo galaxy:x:{{ galaxy_gid }}: >> /etc/group"
+  when: ansible_distribution_major_version == '7'
 
-  - name: galaxy account user
-    when: ansible_distribution_major_version == '7'
-    user:
-      uid: "{{ galaxy_uid }}"
-      name: galaxy
-      group: galaxy
-      home: /usr/local/galaxy
-      state: present
-      comment: Galaxy Service-Acct
-      createhome: no
-      non_unique: yes
+- name: galaxy account user
+  when: ansible_distribution_major_version == '7'
+  user:
+    uid: "{{ galaxy_uid }}"
+    name: galaxy
+    group: galaxy
+    home: /usr/local/galaxy
+    state: present
+    comment: Galaxy Service-Acct
+    createhome: no
+    non_unique: yes
 
-  - name: Adding existing user galaxy to group docker
-    user:
-      name: galaxy
-      groups: docker
-      append: yes
+- name: Adding existing user galaxy to group docker
+  user:
+    name: galaxy
+    groups: docker
+    append: yes
 
-  - name: Adding existing user condor to group docker
-    user:
-      name: condor
-      groups: docker
-      append: yes
+- name: Adding existing user condor to group docker
+  user:
+    name: condor
+    groups: docker
+    append: yes
+
+ Create some symlinks
+- name: link to galaxy.
+  file:
+   src: "/data/gxmnt"
+   dest: "/usr/local/galaxy"
+   state: link
+
+- name: link to tools
+  file:
+   src: "/data/tools"
+   dest: "/usr/local/tools"
+   state: link
