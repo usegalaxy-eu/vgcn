@@ -9,6 +9,7 @@
     line: 'input:x:500:'
 
 - command: "find / -group 999 -exec chgrp 500 '{}' +"
+  ignore_errors: yes
 
 - lineinfile:
     path: /etc/passwd
@@ -16,6 +17,7 @@
     line: 'polkitd:x:500:998:User for polkitd:/:/sbin/nologin'
 
 - command: "find / -owner 999 -exec chown 500 '{}' +"
+  ignore_errors: yes
 
 - name: galaxy account user
   when: ansible_distribution_major_version == '7'
