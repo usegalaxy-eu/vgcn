@@ -39,3 +39,9 @@
    src: "/data/tools"
    dest: "/usr/local/tools"
    state: link
+
+- name: link to python
+  file:
+   src: "/data/python"
+   dest: "/usr/local/python"
+   state: link
