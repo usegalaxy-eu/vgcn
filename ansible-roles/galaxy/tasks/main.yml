@@ -29,7 +29,13 @@
     state: present
     comment: Galaxy Service-Acct
     createhome: no
-    non_unique: yes
+
+- command: 'find /usr/local/galaxy'
+  register: out
+
+- debug:
+    var: out
+    verbosity: 2
 
 - name: Adding existing user galaxy to group docker
   user:
