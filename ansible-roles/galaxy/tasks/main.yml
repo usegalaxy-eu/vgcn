@@ -42,6 +42,19 @@
     groups: docker
     append: yes
 
+
+- name: 'disable selinux'
+  command: setenforce Permissive
+
+- command: 'ls -al /usr/local/'
+  register: out
+  ignore_errors: yes
+
+- debug:
+    var: out
+    verbosity: 2
+  ignore_errors: yes
+
 - name: link to galaxy.
   file:
    src: "/data/gxmnt"
