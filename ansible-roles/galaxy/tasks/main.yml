@@ -53,21 +53,21 @@
 
 - name: link to galaxy.
   file:
-   src: "/data/gxmnt"
-   dest: "/usr/local/galaxy"
+   src: "/usr/local/galaxy"
+   dest: "/data/gxmnt"
    state: link
    force: yes
 
 - name: link to tools
   file:
-   src: "/data/tools"
-   dest: "/usr/local/tools"
+   src: "/usr/local/tools"
+   dest: "/data/tools"
    state: link
    force: yes
 
 - name: link to python
   file:
-   src: "/data/python"
-   dest: "/usr/local/python"
+   src: "/usr/local/python"
+   dest: "/data/python"
    state: link
    force: yes
