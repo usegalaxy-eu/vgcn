@@ -27,7 +27,6 @@
     groups: docker
     append: yes
 
- Create some symlinks
 - name: link to galaxy.
   file:
    src: "/data/gxmnt"
