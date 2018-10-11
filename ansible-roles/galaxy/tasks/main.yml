@@ -32,10 +32,12 @@
 
 - command: 'find /usr/local/galaxy'
   register: out
+  ignore_errors: yes
 
 - debug:
     var: out
     verbosity: 2
+  ignore_errors: yes
 
 - name: Adding existing user galaxy to group docker
   user:
