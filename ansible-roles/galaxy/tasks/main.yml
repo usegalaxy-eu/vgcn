@@ -3,6 +3,20 @@
   shell: "grep -q ^galaxy: /etc/group || echo galaxy:x:{{ galaxy_gid }}: >> /etc/group"
   when: ansible_distribution_major_version == '7'
 
+- lineinfile:
+    path: /etc/group
+    regexp: 'input:x:999:'
+    line: 'input:x:500:'
+
+- command: "find / -group 999 -exec chgrp 500 '{}' \;"
+
+- lineinfile:
+    path: /etc/passwd
+    regexp: 'polkitd:x:999:998:User for polkitd:/:/sbin/nologin'
+    line: 'polkitd:x:500:998:User for polkitd:/:/sbin/nologin'
+
+- command: "find / -owner 999 -exec chown 500 '{}' \;"
+
 - name: galaxy account user
   when: ansible_distribution_major_version == '7'
   user:
