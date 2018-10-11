@@ -7,7 +7,18 @@
     - "group_vars/all.yml"
     - "group_vars/pulsar.yml"
     - "group_vars/condor.yml"
+  post_tasks:
+    - name: Adding existing user galaxy to group docker
+      user:
+        name: galaxy
+        groups: docker
+        append: yes
 
+    - name: Adding existing user condor to group docker
+      user:
+        name: condor
+        groups: docker
+        append: yes
   roles:
     - galaxy
     - basic
