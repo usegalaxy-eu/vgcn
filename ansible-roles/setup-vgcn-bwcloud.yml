@@ -9,6 +9,7 @@
     - "group_vars/condor.yml"
 
   roles:
+    - galaxy
     - basic
     - htcondor
     - systemupdate
@@ -18,6 +19,5 @@
     - CyVerse-Ansible.singularity
     - geerlingguy.java
     - geerlingguy.docker
-    - galaxy
     - cvmfs
     - galaxyproject.pulsar
