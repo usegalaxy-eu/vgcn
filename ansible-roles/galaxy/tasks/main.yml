@@ -48,15 +48,18 @@
    src: "/data/gxmnt"
    dest: "/usr/local/galaxy"
    state: link
+   force: yes
 
 - name: link to tools
   file:
    src: "/data/tools"
    dest: "/usr/local/tools"
    state: link
+   force: yes
 
 - name: link to python
   file:
    src: "/data/python"
    dest: "/usr/local/python"
    state: link
+   force: yes
