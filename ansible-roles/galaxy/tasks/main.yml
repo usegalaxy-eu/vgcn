@@ -17,6 +17,7 @@
 
 - name: galaxy account group
   group:
+      gid: "{{ galaxy_gid }}"
       name: galaxy
       state: present
 
