@@ -1,17 +1,22 @@
 #!/bin/bash
-icon="$(hostname -f | /usr/bin/identicon)"
+data=$(hostname -f)
+icon="$(echo "$data" | /usr/bin/identicon)"
+color_fg=$((16#$(echo "$data" | tr -d '\n' | sha256sum | cut -c1-2)))
+color_bg=$(( color_fg + 15 ))
+bg="\033[48;5;${color_bg}m"
+fg="\033[38;5;${color_fg}m"
+clear="\033[0m"
 
 line() {
 	head -n $1 | tail -n 1
 }
 
-echo "
- ,--.  ,--.,----.    ,-----.,--.  ,--. $(line 1 <<< "$icon")
- \  \.'  /'  .-./   '  .--./|  ,'.|  | $(line 2 <<< "$icon")
-  \     / |  | .---.|  |    |  |' '  | $(line 3 <<< "$icon")
-   \   /  '  '--'  |'  '--'\|  | \   | $(line 4 <<< "$icon")
-    \-'    \------'  \-----'\--'  \--' $(line 5 <<< "$icon")
-====================================================
+echo -e "${fg}${bg} ██╗   ██╗ ██████╗   ██████╗ ██████╗ ${clear} $(line 1 <<< "$icon")"
+echo -e "${fg}${bg} ██║   ██║██╔════╝  ██╔════╝ ██╔══██╗${clear} $(line 2 <<< "$icon")"
+echo -e "${fg}${bg} ╚██╗ ██╔╝██║  ███╗ ██║  ███╗██████╔╝${clear} $(line 3 <<< "$icon")"
+echo -e "${fg}${bg}  ╚████╔╝ ╚██████╔╝ ╚██████╔╝██╔═══╝ ${clear} $(line 4 <<< "$icon")"
+echo -e "${fg}${bg}   ╚═══╝   ╚═════╝   ╚═════╝ ╚═╝     ${clear} $(line 5 <<< "$icon")"
+echo "====================================================
 Hostname..........: `hostname -f`
 Release...........: {{ ansible_distribution }} Linux release {{ ansible_distribution_version }} ({{ ansible_distribution_release }})
 Build.............: VGGP build {{ cloud }} {{ build_tag }}

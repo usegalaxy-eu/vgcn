@@ -74,6 +74,7 @@
   with_items:
     - colordiff
     - timestamped
+    - colorcodes
 
 - name: Install ranger
   pip:
