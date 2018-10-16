@@ -51,3 +51,9 @@
 
 - name: yum-autoupdate removal
   yum: name=yum-autoupdate state=absent
+
+- name: Fix journald default
+  lineinfile:
+    dest: /etc/systemd/journald.conf
+    line: "Storage=persistent"
+    regexp: "^.*Storage=.*"
