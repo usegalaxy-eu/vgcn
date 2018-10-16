@@ -52,6 +52,9 @@
 - name: yum-autoupdate removal
   yum: name=yum-autoupdate state=absent
 
+# https://www.freedesktop.org/software/systemd/man/journald.conf.html#Storage=
+# The "auto" option defaults to dropping data if a magic directory doesn't
+# exist. We switch this to persistent because that's the desired behaviour.
 - name: Fix journald default
   lineinfile:
     dest: /etc/systemd/journald.conf
