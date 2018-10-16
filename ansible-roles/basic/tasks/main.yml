@@ -38,6 +38,9 @@
     - urw-fonts
     - xorg-x11-font-utils
     - at
+    - perl-Digest-SHA
+    - telnet
+    - python-pip
 
 - name: Ensure services are enabled + started
   systemd:
@@ -60,3 +63,18 @@
     dest: /etc/systemd/journald.conf
     line: "Storage=persistent"
     regexp: "^.*Storage=.*"
+
+- name: Upload utils
+  copy:
+    src: '{{ item }}'
+    dest: '/usr/bin/{{ item }}'
+    mode: 0755
+    owner: root
+    group: root
+  with_items:
+    - colordiff
+    - timestamped
+
+- name: Install ranger
+  pip:
+    name: ranger-fm
