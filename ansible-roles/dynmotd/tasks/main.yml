@@ -20,10 +20,10 @@
     path: /etc/profile
     line: "/usr/bin/dynmotd"
 
-#- name: Add tag file
-  #template:
-    #src: vgcn-release.j2
-    #dest: /etc/vgcn-release
-    #owner: root
-    #group: root
-    #mode: 0444
+- name: Add tag file
+  template:
+    src: vgcn-release.j2
+    dest: /etc/vgcn-release
+    owner: root
+    group: root
+    mode: 0444
