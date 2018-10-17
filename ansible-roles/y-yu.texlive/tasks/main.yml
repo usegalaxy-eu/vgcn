@@ -1,5 +1,5 @@
-- name: "Include OS specific variables"
-  include_vars: "{{ ansible_os_family }}.yml"
+#- name: "Include OS specific variables"
+  #include_vars: "{{ ansible_os_family }}.yml"
 
 - name: "Download TeXLive Installer"
   get_url:
@@ -30,14 +30,14 @@
   when: scheme == "full"
 
 - name: "Install TeXLive from Remote"
-  shell: "cd /tmp/install-tl-* && ./install-tl -profile /tmp/install-tl.profile -repository {{ texlive_mirror }}" 
-  when: scheme != "full" 
+  shell: "cd /tmp/install-tl-* && ./install-tl -profile /tmp/install-tl.profile -repository {{ texlive_mirror }}"
+  when: scheme != "full"
 
 - name: "Show LaTeX Version"
   shell: latex -v
   register: latex
   environment:
-    PATH: "{{ texlive_directory }}/bin/x86_64-{{ os }}:{{ ansible_env.PATH }}"
+    PATH: "{{ texlive_directory }}/bin/x86_64-linux:{{ ansible_env.PATH }}"
 
 - debug: msg="{{ latex.stdout }}"
-  
+
