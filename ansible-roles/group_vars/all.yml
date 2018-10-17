@@ -45,3 +45,5 @@ java_packages:
 cvmfs_role: client
 
 dynmotd_custom: []
+
+nodejs_version: "8.x"

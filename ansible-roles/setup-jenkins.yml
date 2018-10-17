@@ -19,3 +19,4 @@
     - influxdata.chrony
     - geerlingguy.java
     - geerlingguy.docker
+    - geerlingguy.nodejs
