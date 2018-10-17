@@ -41,6 +41,8 @@
     - perl-Digest-SHA
     - telnet
     - python-pip
+    - wget
+    - perl-Digest-MD5
 
 - name: Ensure services are enabled + started
   systemd:

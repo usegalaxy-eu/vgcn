@@ -5,8 +5,9 @@ import sys
 import hashlib
 
 
-def colored(num, value):
-    return '\x1b[38;5;{0}m{1}\x1b[0m'.format(num, value)
+def colored(num, value, bg=False):
+    x = 48 if bg else 38
+    return '\x1b[{0};5;{1}m{2}\x1b[0m'.format(x, num, value)
 
 
 class Iden:
@@ -25,7 +26,7 @@ class Iden:
         for x in self.build(hash_string):
             yield ''.join([
                 colored(num, '██') if q else
-                colored((num + 15) % 255, '██')
+                colored((num + 15) % 255, '  ', bg=True)
                 for q in x
             ])
 
