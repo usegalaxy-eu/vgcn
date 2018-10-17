@@ -47,6 +47,7 @@ cvmfs_role: client
 dynmotd_custom: []
 
 nodejs_version: "8.x"
+nodejs_install_npm_user: root
 
 
 texlive_directory: /usr/local/texlive
