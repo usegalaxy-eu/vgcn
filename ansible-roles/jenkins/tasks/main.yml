@@ -38,3 +38,9 @@
 
 - name: Install recent ruby
   shell: rvm install 2.4.1
+
+- name: Download google chrome rpm
+  shell: wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+
+- name: Install it
+  shell: yum install -y google-chrome-stable_current_x86_64.rpm
