@@ -8,8 +8,6 @@
     - qemu-img
     - unzip
     - seabios
-    - texlive
-    - texlive-xetex
     - rubygems # should install ruby et al
 
 - name: Download packer

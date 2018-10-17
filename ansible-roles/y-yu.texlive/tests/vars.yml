@@ -1,0 +1,4 @@
+texlive_mirror:
+  http://ctan.sharelatex.com/tex-archive/systems/texlive/tlnet
+texlive_rsync:
+  rsync://mirror.jmu.edu/CTAN/systems/texlive/tlnet/

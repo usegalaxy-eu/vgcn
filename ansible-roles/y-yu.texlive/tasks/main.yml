@@ -1,0 +1,43 @@
+- name: "Include OS specific variables"
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: "Download TeXLive Installer"
+  get_url:
+    url: "{{ texlive_mirror }}/install-tl-unx.tar.gz"
+    dest: /tmp/install-tl-unx.tar.gz
+  when: scheme != "full"
+
+- name: "Unarchive TeXLive Installer"
+  shell: tar -xf /tmp/install-tl-unx.tar.gz -C /tmp
+  when: scheme != "full"
+
+- name: "Rsync TeXLive Repository"
+  shell: "rsync -a --no-perms --no-owner --no-group --delete --exclude=mactex* --partial {{ texlive_rsync }} /tmp/tlnet"
+  when: scheme == "full" and texlive_rsync is defined
+
+- name: "Create Profile"
+  template:
+    src: install-tl.profile.j2
+    dest: /tmp/install-tl.profile
+
+- name: "Make {{ texlive_directory }} Directory"
+  file:
+    path: "{{ texlive_directory }}"
+    state: directory
+
+- name: "Install TeXLive from Local"
+  shell: cd /tmp/tlnet && chmod +x install-tl && ./install-tl -profile /tmp/install-tl.profile -repository /tmp/tlnet
+  when: scheme == "full"
+
+- name: "Install TeXLive from Remote"
+  shell: "cd /tmp/install-tl-* && ./install-tl -profile /tmp/install-tl.profile -repository {{ texlive_mirror }}" 
+  when: scheme != "full" 
+
+- name: "Show LaTeX Version"
+  shell: latex -v
+  register: latex
+  environment:
+    PATH: "{{ texlive_directory }}/bin/x86_64-{{ os }}:{{ ansible_env.PATH }}"
+
+- debug: msg="{{ latex.stdout }}"
+  

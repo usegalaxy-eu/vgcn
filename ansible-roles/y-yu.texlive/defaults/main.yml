@@ -1,0 +1,10 @@
+texlive_directory:
+  /usr/local/texlive
+
+texlive_mirror:
+  http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet
+texlive_rsync:
+  rsync://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/
+
+scheme:
+  small

@@ -47,3 +47,9 @@ cvmfs_role: client
 dynmotd_custom: []
 
 nodejs_version: "8.x"
+
+
+texlive_directory: /usr/local/texlive
+texlive_mirror: "http://packages.oth-regensburg.de/ctan/systems/texlive/tlnet/"
+texlive_rsync: "rsync://packages.oth-regensburg.de/ctan/systems/texlive/tlnet/"
+scheme: full
