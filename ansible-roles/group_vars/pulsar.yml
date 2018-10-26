@@ -1,6 +1,6 @@
-pulsar_owner: pulsar
-pulsar_group: pulsar
-pulsar_user_create: true
+pulsar_owner: centos
+pulsar_group: centos
+pulsar_user_create: false
 pulsar_user_homedir: "{{ pulsar_config_dir }}"
 pulsar_config_filemode: 0640
 pulsar_config_backup: false
