@@ -41,7 +41,6 @@
   command: make chdir=/opt/singularity
 
 - name: execute make install
-  umask: 0022
   command: make install chdir=/opt/singularity
 
 - name: Make conf dir
