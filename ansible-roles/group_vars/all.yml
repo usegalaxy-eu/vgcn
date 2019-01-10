@@ -43,6 +43,12 @@ java_packages:
  - java-1.8.0-openjdk
 
 cvmfs_role: client
+galaxy_cvmfs_repos_enabled: true
+
+galaxy_cvmfs_server_urls:
+  - domain: galaxyproject.org
+    urls:
+      - "http://cvmfs1-ufr0.galaxyproject.eu/cvmfs/@fqrn@"
 
 dynmotd_custom: []
 
