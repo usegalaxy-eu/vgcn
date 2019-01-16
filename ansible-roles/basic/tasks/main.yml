@@ -43,6 +43,7 @@
     - python-pip
     - wget
     - perl-Digest-MD5
+    - mesa-libGL
 
 - name: Ensure services are enabled + started
   systemd:
