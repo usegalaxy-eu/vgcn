@@ -84,7 +84,7 @@
 
 - name: Install Pulsar dependencies (optional)
   pip: name={{ item }} virtualenv={{ pulsar_venv_dir }} virtualenv_command={{ pip_virtualenv_command | default(omit) }}
-  environment: "{{ pulsar_install_environments[item.split('=')[0]] if item.split('=')[0] in pulsar_install_environments else {} }}"
+  #environment: "{{ pulsar_install_environments[item.split('=')[0]] if item.split('=')[0] in pulsar_install_environments else {} }}"
   become: true
   become_user: "{{ pulsar_owner }}"
   with_items: "{{ pulsar_optional_dependencies }}"
@@ -129,6 +129,13 @@
     - server.ini
     - local_env.sh
     - job_metrics_conf.xml
+
+- name: Ensure the necessary directories are present
+  file: state=directory path={{ item }} owner={{ pulsar_owner }} group={{ pulsar_group }}
+  with_items:
+    - "{{ pulsar_yaml_config.persistence_directory }}"
+    - "{{ pulsar_yaml_config.staging_directory }}"
+    - "{{ pulsar_yaml_config.tool_dependency_dir }}"
 
 - name: Create Pulsar systemd unit file
   template:
