@@ -13,8 +13,6 @@ pulsar_systemd_state: stopped
 pulsar_server_dir: /opt/pulsar/server
 pulsar_venv_dir: /opt/pulsar/venv
 pulsar_config_dir: /opt/pulsar/config
-pulsar_persistence_dir: /scratch/persisted_data
-pulsar_staging_dir: /scratch/staging
 pulsar_drmaa_library_path: /usr/lib64/condor/libdrmaa.so
 pulsar_pip_install: true
 pulsar_optional_dependencies:
@@ -25,7 +23,8 @@ pulsar_yaml_config:
   dependency_resolvers_config_file : dependency_resolvers_conf.xml
   conda_auto_init : True
   conda_auto_install : True
-  staging_directory: /scratch/
+  persistence_directory: /scratch/persisted_data
+  staging_directory: /scratch/staging
   tool_dependency_dir: /usr/local/tools/
   message_queue_url: REAL_MESSAGE_QUEUE_URL
   #pyamqp://username:password@proxy.usegalaxy.eu:5671//pulsar/galaxy_test?ssl=1
