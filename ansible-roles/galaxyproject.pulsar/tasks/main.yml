@@ -131,7 +131,11 @@
     - job_metrics_conf.xml
 
 - name: Ensure the necessary directories are present
-  file: state=directory path={{ item }} owner={{ pulsar_owner }} group={{ pulsar_group }}
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ pulsar_owner }}"
+    group: "{{ pulsar_group }}"
   with_items:
     - "{{ pulsar_yaml_config.persistence_directory }}"
     - "{{ pulsar_yaml_config.staging_directory }}"
