@@ -22,6 +22,7 @@ pulsar_optional_dependencies:
   - kombu
   - psutil
   - drmaa
+  - poster
 pulsar_yaml_config:
   dependency_resolvers_config_file : dependency_resolvers_conf.xml
   conda_auto_init : True
