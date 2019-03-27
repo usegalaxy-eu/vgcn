@@ -4,7 +4,8 @@ After=syslog.target network.target
 
 [Service]
 Type=simple
-ExecStart={{ pulsar_venv_dir }}/bin/python {{ pulsar_venv_dir }}/bin/paster serve {{ pulsar_config_dir }}/server.ini
+Environment=PULSAR_VIRTUALENV={{ pulsar_venv_dir }}
+ExecStart={{ pulsar_venv_dir }}/bin/pulsar -c {{ pulsar_config_dir }}
 User={{ pulsar_owner }}
 
 [Install]

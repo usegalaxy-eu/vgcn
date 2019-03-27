@@ -8,6 +8,8 @@ cloud: bwCloud
 galaxy_uid: 999
 galaxy_gid: 999
 
+replace_non_galaxy_999: true
+
 telegraf_agent_tags:
   - tag_name: datacenter
     tag_value: rz
@@ -47,8 +49,10 @@ galaxy_cvmfs_repos_enabled: true
 
 galaxy_cvmfs_server_urls:
   - domain: galaxyproject.org
+    use_geoapi: true
     urls:
       - "http://cvmfs1-ufr0.galaxyproject.eu/cvmfs/@fqrn@"
+      - "http://galaxy.jrc.ec.europa.eu:8008/@fqrn@"
 
 dynmotd_custom: []
 
