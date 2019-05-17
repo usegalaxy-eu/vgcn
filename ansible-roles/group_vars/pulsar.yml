@@ -37,4 +37,3 @@ pulsar_yaml_config:
     _default_:
       type: queued_condor
       submit_universe: vanilla
-      submit_should_transfer_files: yes
