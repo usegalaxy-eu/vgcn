@@ -5,7 +5,7 @@ After=syslog.target network.target
 [Service]
 Type=simple
 Environment=PULSAR_VIRTUALENV={{ pulsar_venv_dir }}
-ExecStart={{ pulsar_venv_dir }}/bin/pulsar -c {{ pulsar_config_dir }}
+ExecStart={{ pulsar_venv_dir }}/bin/pulsar -m webless -c {{ pulsar_config_dir }}
 User={{ pulsar_owner }}
 
 [Install]
