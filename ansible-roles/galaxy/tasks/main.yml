@@ -30,7 +30,7 @@
     uid: "{{ galaxy_uid }}"
     name: galaxy
     group: galaxy
-    home: /usr/local/galaxy
+    home: /opt/galaxy
     state: present
     comment: Galaxy Service-Acct
     createhome: no
