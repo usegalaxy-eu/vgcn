@@ -18,7 +18,7 @@ echo -e "${fg}${bg}  ╚████╔╝ ╚██████╔╝ ╚██
 echo -e "${fg}${bg}   ╚═══╝   ╚═════╝   ╚═════╝ ╚═╝     ${clear} $(line 5 <<< "$icon")"
 echo "====================================================
 Hostname..........: `hostname -f`
-Release...........: {{ ansible_distribution }} Linux release {{ ansible_distribution_version }} ({{ ansible_distribution_release }})
+Release...........: `cat /etc/redhat-release`
 Build.............: VGGP build {{ cloud }} {{ build_tag }}
 Build Date........: {{ ansible_date_time.iso8601 }}
 ====================================================
