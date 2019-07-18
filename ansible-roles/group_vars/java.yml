@@ -1,5 +1,5 @@
 dynmotd_custom:
   - name: Java Version
-    command: "java -version 2>&1 | head -n 2 | tail -n 1"
+    command: "java -version 2>&1 | grep Runtime"
   - name: Java Server
-    command: "java -version 2>&1 | head -n 3 | tail -n 1"
+    command: "java -version 2>&1 | grep Server"

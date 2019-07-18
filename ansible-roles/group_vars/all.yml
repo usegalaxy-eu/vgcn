@@ -43,6 +43,7 @@ telegraf_plugins_default:
 
 java_packages:
  - java-1.8.0-openjdk
+ - java-1.8.0-openjdk-devel
 
 cvmfs_role: client
 galaxy_cvmfs_repos_enabled: true
@@ -58,7 +59,8 @@ dynmotd_custom: []
 
 nodejs_version: "8.x"
 nodejs_install_npm_user: root
-
+nodejs_npm_global_packages:
+ - yarn
 
 texlive_directory: /usr/local/texlive
 texlive_mirror: "http://packages.oth-regensburg.de/ctan/systems/texlive/tlnet/"
