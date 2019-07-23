@@ -4,7 +4,11 @@
 # 	* support building with non-qemu builders and convert to qemu afterwards
 # 	* testing target
 # 	* auto-detect flavors
-PACKER=/usr/bin/packer
+PACKER := $(shell which packer)
+ifndef PACKER
+$(error packer not found, please install it)
+endif
+
 ANSIBLE_DIR=ansible-roles
 # the "provisioning" flavor, expects a 'setup-<flavor>.yml' playbook
 # in the 'ansible-roles' submodule! This will likely change...
@@ -51,7 +55,7 @@ $(BASETARGETS):
 ##
 #		Provisioning images
 ##
-$(PROVTARGETS):
+$(PROVTARGETS): install_roles
 $(foreach flav, $(FLAVORS), %/$(flav)): %/base
 	$(info ** Provisioning '$(@D)' with '$(@F)' **)
 	$(PACKER) build -only=$(BUILDER) \
@@ -125,3 +129,7 @@ clean:
 
 cloud_cleanup:
 	openstack image list -c ID -c Name -f value | grep vggp | awk '{print $1}' | xargs openstack image delete
+
+install_roles:
+	mkdir -p $(ANSIBLE_DIR)
+	ansible-galaxy install -p $(ANSIBLE_DIR) -r requirements.yml

@@ -1,0 +1,2 @@
+- src: https://github.com/usegalaxy-eu/ansible-cuda.git
+  name: usegalaxy-eu.cuda
