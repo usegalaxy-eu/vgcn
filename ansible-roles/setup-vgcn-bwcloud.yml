@@ -7,9 +7,11 @@
     - "group_vars/all.yml"
     - "group_vars/pulsar.yml"
     - "group_vars/condor.yml"
+    - "group_vars/cuda.yml"
   post_tasks:
     - command: "usermod -a -G docker galaxy"
     - command: "usermod -a -G condor galaxy"
+    - command: "yum clean all"
   roles:
     - galaxy
     - basic
@@ -24,3 +26,4 @@
     - cvmfs
     - galaxyproject.pulsar
     - usegalaxy-eu.limits
+    - usegalaxy-eu.cuda
