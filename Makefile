@@ -132,4 +132,4 @@ cloud_cleanup:
 
 install_roles:
 	mkdir -p $(ANSIBLE_DIR)
-	ansible-galaxy install -p $(ANSIBLE_DIR) -r requirements.yml
+	ansible-galaxy install -f -p $(ANSIBLE_DIR) -r requirements.yml
