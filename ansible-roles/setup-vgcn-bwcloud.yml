@@ -9,6 +9,12 @@
     - "group_vars/condor.yml"
     - "group_vars/cuda.yml"
   post_tasks:
+    - yum:
+        name: "{{ packages }}"
+        state: latest
+      vars:
+        packages:
+          - singularity
     - command: "usermod -a -G docker galaxy"
     - command: "usermod -a -G condor galaxy"
     - command: "yum clean all"
@@ -20,7 +26,6 @@
     - dynmotd
     - dj-wasabi.telegraf
     - influxdata.chrony
-    - CyVerse-Ansible.singularity
     - geerlingguy.java
     - geerlingguy.docker
     - cvmfs
