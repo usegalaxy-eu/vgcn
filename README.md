@@ -5,7 +5,7 @@ Compute Nodes" (VGCN) that make up the HTCondor cloud used in UseGalaxy.eu
 
 Pre-built images are available here: [https://usegalaxy.eu/static/vgcn/](https://usegalaxy.eu/static/vgcn/)
 
-## Features 
+## Features
 
 All in one image, a single image gets you:
 
