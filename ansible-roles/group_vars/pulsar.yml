@@ -17,7 +17,8 @@ pulsar_server_dir: /opt/pulsar/server
 pulsar_venv_dir: /opt/pulsar/venv
 pulsar_config_dir: /opt/pulsar/config
 pulsar_drmaa_library_path: /usr/lib64/condor/libdrmaa.so
-pulsar_pip_install: false
+pulsar_pip_install: true
+pulsar_changeset_id: a56fb5f33b6add027b2a9542c593cc4dffac73c3
 pulsar_optional_dependencies:
   - kombu
   - psutil
