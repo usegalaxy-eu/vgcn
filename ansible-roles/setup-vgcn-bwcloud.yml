@@ -28,6 +28,7 @@
     - influxdata.chrony
     - geerlingguy.java
     - geerlingguy.docker
+    - docker-prune
     - cvmfs
     - galaxyproject.pulsar
     - usegalaxy-eu.limits
