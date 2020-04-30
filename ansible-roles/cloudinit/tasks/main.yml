@@ -43,3 +43,22 @@
         runcmd:
          - 'sed -i "s|localhost.localdomain|$(hostname -f)|g" /etc/telegraf/telegraf.conf'
          - 'systemctl restart telegraf'
+
+  - name: cloud-init config 4
+    blockinfile:
+      dest: /etc/cloud/cloud.cfg
+      block: |
+        disk_setup:
+          /dev/vdb:
+            table_type: mbr
+            layout: True
+            overwrite: True
+        fs_setup:
+          - label: None
+            filesystem: xfs
+            device: /dev/vdb
+            partition: auto
+        runcmd:
+          - mkdir /scratch/galaxy_db/job_working_directory
+        mounts:
+          - [ /dev/xvdb, /scratch/galaxy_db/job_working_directory, xfs, "defaults", "0", "2" ]
