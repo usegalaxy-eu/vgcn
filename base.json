@@ -1,5 +1,6 @@
 {
   "cpus": "2",
+  "boot_wait": "15s",
   "disk_size": "4000",
   "headless": "true",
   "memory": "1024",
