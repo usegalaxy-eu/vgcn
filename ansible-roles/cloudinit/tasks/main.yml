@@ -59,6 +59,17 @@
             device: /dev/vdb
             partition: auto
         runcmd:
-          - mkdir /scratch/galaxy_db/job_working_directory
+          - mkdir /scratch
         mounts:
-          - [ /dev/xvdb, /scratch/galaxy_db/job_working_directory, xfs, "defaults", "0", "2" ]
+          - [ /dev/vdb1, /scratch, xfs, "defaults", "0", "2" ]
+    when: internal
+
+  - name: cloud-init config 5
+    blockinfile:
+      dest: /etc/cloud/cloud.cfg
+      block: |
+        runcmd:
+          - mkdir -p /scratch/galaxy_db/job_working_directory
+          - mkdir -p /scratch/galaxy_db/tmp
+          - chown -R galaxy.galaxy /scratch/galaxy_db
+    when: internal
