@@ -2,3 +2,5 @@
   name: usegalaxy-eu.cuda
 - src: https://github.com/usegalaxy-eu/ansible-nvidia-container.git
   name: usegalaxy-eu.nvidia-container
+- src: geerlingguy.docker
+  version: 2.7.0
