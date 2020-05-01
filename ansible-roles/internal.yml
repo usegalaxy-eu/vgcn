@@ -1,5 +1,7 @@
 ---
 - hosts: default
+  vars:
+    internal: True
   vars_files:
     - "group_vars/all.yml"
 
