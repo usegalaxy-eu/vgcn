@@ -9,14 +9,14 @@
     - "group_vars/condor.yml"
     - "group_vars/cuda.yml"
   post_tasks:
-    - yum:
-        name: "{{ packages }}"
-        state: latest
-      vars:
-        packages:
-          - singularity
-    - command: "usermod -a -G docker galaxy"
-    - command: "usermod -a -G condor galaxy"
+    - user:
+        name: galaxy
+        groups: condor,docker
+        append: yes
+    - user:
+        name: centos
+        groups: docker
+        append: yes
     - command: "yum clean all"
   roles:
     - galaxy
