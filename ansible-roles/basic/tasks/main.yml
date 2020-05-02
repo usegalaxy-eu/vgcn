@@ -45,6 +45,7 @@
     - wget
     - perl-Digest-MD5
     - mesa-libGL
+    - singularity
 
 - name: Ensure services are enabled + started
   systemd:
