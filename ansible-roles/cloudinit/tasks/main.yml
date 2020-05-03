@@ -38,14 +38,16 @@
 
   - name: cloud-init config 3
     blockinfile:
+      marker: "# {mark} ANSIBLE MANAGED BLOCK 3"
       dest: /etc/cloud/cloud.cfg
       block: |
         runcmd:
-         - 'sed -i "s|localhost.localdomain|$(hostname -f)|g" /etc/telegraf/telegraf.conf'
-         - 'systemctl restart telegraf'
+          - sed -i "s|localhost.localdomain|$(hostname -f)|g" /etc/telegraf/telegraf.conf
+          - systemctl restart telegraf
 
   - name: cloud-init config 4
     blockinfile:
+      marker: "# {mark} ANSIBLE MANAGED BLOCK 4"
       dest: /etc/cloud/cloud.cfg
       block: |
         disk_setup:
@@ -62,14 +64,17 @@
           - mkdir /scratch
         mounts:
           - [ /dev/vdb1, /scratch, xfs, "defaults", "0", "2" ]
-    when: internal
+    when: internal | bool
 
   - name: cloud-init config 5
     blockinfile:
+      marker: "# {mark} ANSIBLE MANAGED BLOCK 5"
       dest: /etc/cloud/cloud.cfg
       block: |
         runcmd:
           - mkdir -p /scratch/galaxy_db/job_working_directory
           - mkdir -p /scratch/galaxy_db/tmp
           - chown -R galaxy.galaxy /scratch/galaxy_db
-    when: internal
+          - sed -i "s|localhost.localdomain|$(hostname -f)|g" /etc/telegraf/telegraf.conf
+          - systemctl restart telegraf
+    when: internal | bool
