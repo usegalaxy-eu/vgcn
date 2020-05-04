@@ -66,3 +66,8 @@ texlive_directory: /usr/local/texlive
 texlive_mirror: "http://packages.oth-regensburg.de/ctan/systems/texlive/tlnet/"
 texlive_rsync: "rsync://packages.oth-regensburg.de/ctan/systems/texlive/tlnet/"
 scheme: full
+
+# Filesystem maintenance
+jwd_path: "/scratch/galaxy_db/job_working_directory/"
+tmp_path: "/scratch/galaxy_db/tmp/"
+mtime: "+30"

@@ -23,12 +23,12 @@
     - basic
     - htcondor
     - systemupdate
+    - maintenance
     - dynmotd
     - dj-wasabi.telegraf
     - influxdata.chrony
     - geerlingguy.java
     - geerlingguy.docker
-    - docker-prune
     - cvmfs
     - galaxyproject.pulsar
     - usegalaxy-eu.limits

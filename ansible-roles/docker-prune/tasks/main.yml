@@ -1,8 +1,0 @@
----
-- name: Add to cron
-  cron:
-    name: "Prune unused Docker objects"
-    weekday: "6"
-    minute: "12"
-    hour: "1"
-    job: "docker system prune -f"
