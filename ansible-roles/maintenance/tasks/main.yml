@@ -3,7 +3,7 @@
   cron:
     name: "Prune unused Docker objects"
     weekday: "{{ 7 | random }}"
-    minute: "{{ 60 | random }"
+    minute: "{{ 60 | random }}"
     hour: "{{ 5 | random }}"
     job: "docker system prune -f"
 
@@ -18,13 +18,13 @@
 - name: Add filesystem maintenance to cron - jwd
   cron:
     name: "FS clean jwd"
-    minute: "{{ 60 | random }"
+    minute: "{{ 60 | random }}"
     hour: "{{ 5 | random }}"
     job: "/usr/bin/fs_cleaning.sh {{ jwd_path }} {{ mtime }}"
 
 - name: Add filesystem maintenance to cron - tmp
   cron:
     name: "FS clean tmp"
-    minute: "{{ 60 | random }"
+    minute: "{{ 60 | random }}"
     hour: "{{ 5 | random }}"
     job: "/usr/bin/fs_cleaning.sh {{ tmp_path }} {{ mtime }}"
