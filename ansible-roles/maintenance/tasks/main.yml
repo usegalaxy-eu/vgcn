@@ -1,5 +1,5 @@
 ---
-- name: Add to cron
+- name: Add docker prune to cron
   cron:
     name: "Prune unused Docker objects"
     weekday: "{{ 7 | random }}"
