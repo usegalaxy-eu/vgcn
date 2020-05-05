@@ -6,9 +6,9 @@
     - "group_vars/all.yml"
   post_tasks:
     - copy:
-      src: daemon.json
-      dest: /etc/docker/daemon.json
-      mode: '0644'
+        src: daemon.json
+        dest: /etc/docker/daemon.json
+        mode: '0644'
 
   roles:
     - lock-root

@@ -11,6 +11,12 @@
       state: latest
       use: yum
 
+  - name: gdisk install
+    package:
+      name: gdisk
+      state: latest
+      use: yum
+
   # Centos
   - name: cloud-init config 1
     when: ansible_distribution == 'CentOS'
