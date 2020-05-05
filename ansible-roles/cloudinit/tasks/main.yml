@@ -78,3 +78,20 @@
           - sed -i "s|localhost.localdomain|$(hostname -f)|g" /etc/telegraf/telegraf.conf
           - systemctl restart telegraf
     when: internal | bool
+
+  - name: cloud-init config 6
+    blockinfile:
+      marker: "# {mark} ANSIBLE MANAGED BLOCK 6"
+      dest: /etc/cloud/cloud.cfg
+      block: |
+        write_files:
+          - content: |
+              { 
+                  "graph": "/scratch/docker" 
+              }                
+            owner: root:root
+            path: /etc/docker/daemon.json
+            permissions: '0644'
+        runcmd:
+          - systemctl restart docker
+    when: internal | bool
