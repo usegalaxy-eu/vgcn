@@ -5,10 +5,15 @@
   vars_files:
     - "group_vars/all.yml"
   post_tasks:
-    - copy:
+    - name: Copy Docker daemon.json
+      copy:
         src: daemon.json
         dest: /etc/docker/daemon.json
         mode: '0644'
+    - name: Restart service Docker, in all cases
+      service:
+        name: docker
+        state: restarted
 
   roles:
     - lock-root

@@ -83,4 +83,5 @@
           - chown -R galaxy.galaxy /scratch/galaxy_db
           - sed -i "s|localhost.localdomain|$(hostname -f)|g" /etc/telegraf/telegraf.conf
           - systemctl restart telegraf
+          - systemctl restart docker
     when: internal | bool
