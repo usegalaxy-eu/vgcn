@@ -85,3 +85,9 @@
 - name: Install ranger
   pip:
     name: ranger-fm
+
+- name: Enable and start service ntpd
+  service:
+    name: ntpd
+    enabled: yes
+    state: started
