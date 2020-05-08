@@ -25,6 +25,8 @@
     - "@development"
     - jq
     - pdsh
+    - pdsh-mod-genders
+    - ntp
     # Fonts
     - dejavu-fonts-common
     - dejavu-sans-fonts
