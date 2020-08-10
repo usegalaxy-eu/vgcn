@@ -26,7 +26,6 @@
     - jq
     - pdsh
     - pdsh-mod-genders
-    - ntp
     # Fonts
     - dejavu-fonts-common
     - dejavu-sans-fonts
@@ -85,9 +84,3 @@
 - name: Install ranger
   pip:
     name: ranger-fm
-
-- name: Enable and start service ntpd
-  service:
-    name: ntpd
-    enabled: yes
-    state: started
