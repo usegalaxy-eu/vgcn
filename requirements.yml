@@ -6,3 +6,6 @@
   version: c2c1bbe259012971f70d42e8f5f442f8834505d2
 - src: geerlingguy.docker
   version: 2.7.0
+- src: https://github.com/usegalaxy-eu/ansible-chrony
+  name: influxdata.chrony
+  version: "0.1"

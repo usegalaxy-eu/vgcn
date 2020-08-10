@@ -71,3 +71,9 @@ scheme: full
 jwd_path: "/scratch/galaxy_db/job_working_directory/"
 tmp_path: "/scratch/galaxy_db/tmp/"
 mtime: "+30"
+
+# Chrony
+chrony_server: 'time.ruf.uni-freiburg.de iburst'
+chrony_acquisitionport: 0
+chrony_conf_file: '/etc/chrony.conf'
+chrony_keyfile: '/etc/chrony.keys'
