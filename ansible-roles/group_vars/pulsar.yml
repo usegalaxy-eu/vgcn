@@ -4,6 +4,7 @@ pulsar_root: /opt/pulsar
 pulsar_persistence_dir: /data/share/persisted_data
 pulsar_staging_dir: /data/share/staging
 pulsar_dependencies_dir: /data/share/tools
+pulsar_venv_dir: "{{ pulsar_root }}/venv3"
 pulsar_optional_dependencies:
   - pycurl
   - kombu
@@ -13,7 +14,7 @@ pulsar_systemd: true
 pulsar_systemd_enabled: false
 pulsar_systemd_runner: webless
 
-pulsar_virtualenv_command: python3.6 -m venv
+pulsar_virtualenv_command: virtualenv-3
 
 pulsar_separate_privileges: false
 pulsar_create_user: true
