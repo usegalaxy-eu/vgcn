@@ -8,6 +8,19 @@
     - "group_vars/pulsar.yml"
     - "group_vars/condor.yml"
     - "group_vars/cuda.yml"
+  pre_tasks:
+    - name: Install Pulsar dependencies
+      become: yes
+      package:
+        state: latest
+        name:
+        - git
+        - python36
+        - python3-devel
+        - python3-virtualenv
+        - gcc
+        - curl
+        - libcurl-devel
   post_tasks:
     - user:
         name: galaxy
@@ -17,6 +30,13 @@
         name: centos
         groups: docker
         append: yes
+    - package:
+        state: absent
+        name:
+        - python3-devel
+        - gcc
+        - libcurl-devel
+      become: yes
     - command: "yum clean all"
   roles:
     - galaxy

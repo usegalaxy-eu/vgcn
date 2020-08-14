@@ -1,40 +1,42 @@
-pulsar_owner: centos
-pulsar_group: centos
-pulsar_user_create: false
-pulsar_user_homedir: "{{ pulsar_config_dir }}"
-pulsar_config_filemode: 0640
-pulsar_config_backup: false
+pulsar_package_name: git+https://github.com/gmauro/pulsar.git@unicode
 
-pulsar_systemd: true
-# we install in every VM so be sure it is not running
-pulsar_systemd_enabled: no
-pulsar_systemd_state: stopped
-
-pulsar_host: "0.0.0.0"
-pulsar_port: 8913
-
-pulsar_server_dir: /opt/pulsar/server
-pulsar_venv_dir: /opt/pulsar/venv
-pulsar_config_dir: /opt/pulsar/config
-pulsar_drmaa_library_path: /usr/lib64/condor/libdrmaa.so
-pulsar_pip_install: true
-pulsar_changeset_id: a56fb5f33b6add027b2a9542c593cc4dffac73c3
+pulsar_root: /opt/pulsar
+pulsar_persistence_dir: /data/share/persisted_data
+pulsar_staging_dir: /data/share/staging
+pulsar_dependencies_dir: /data/share/tools
+pulsar_venv_dir: "{{ pulsar_root }}/venv3"
 pulsar_optional_dependencies:
+  - pycurl
   - kombu
   - psutil
-  - drmaa
-  - poster
+
+pulsar_systemd: true
+pulsar_systemd_enabled: false
+pulsar_systemd_runner: webless
+
+pulsar_virtualenv_command: virtualenv-3
+
+pulsar_separate_privileges: false
+pulsar_create_user: true
+pulsar_user:
+  name: pulsar
+  create_home: false
+  shell: /bin/bash
+  home: "{{ pulsar_root }}"
+
 pulsar_yaml_config:
-  dependency_resolvers_config_file : dependency_resolvers_conf.xml
-  conda_auto_init : True
-  conda_auto_install : True
-  persistence_directory: /data/share/persisted_data
-  staging_directory: /data/share/staging
-  tool_dependency_dir: /data/share/tools/
-  min_polling_interval:  0.5
+  conda_auto_init: true
+  conda_auto_install: true
+  assign_ids: none
   message_queue_url: REAL_MESSAGE_QUEUE_URL
-  #pyamqp://username:password@proxy.usegalaxy.eu:5671//pulsar/galaxy_test?ssl=1
+  min_polling_interval: 0.5
+  persistence_directory: "{{ pulsar_persistence_dir }}"
+  staging_directory: "{{ pulsar_staging_dir }}"
+  tool_dependency_dir: "{{ pulsar_dependencies_dir }}"
   managers:
-    _default_:
-      type: queued_condor
+    production:
       submit_universe: vanilla
+      type: queued_condor
+    test:
+      submit_universe: vanilla
+      type: queued_condor
