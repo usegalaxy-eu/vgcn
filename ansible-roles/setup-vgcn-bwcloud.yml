@@ -17,6 +17,7 @@
         - git
         - python36
         - python3-devel
+        - python3-virtualenv
         - gcc
         - curl
         - libcurl-devel
