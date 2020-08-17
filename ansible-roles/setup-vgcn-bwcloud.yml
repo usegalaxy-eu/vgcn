@@ -30,14 +30,16 @@
         name: centos
         groups: docker
         append: yes
-    - package:
+    - yum:
+        name: "{{ packages }}"
         state: absent
-        name:
+        autoremove: yes
+      vars:
+        packages:
         - python3-devel
         - gcc
-        - libcurl-devel
+        - libcurl-devel        
       become: yes
-    - command: "yum clean all"
   roles:
     - galaxy
     - basic
