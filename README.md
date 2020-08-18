@@ -24,6 +24,8 @@ Everything you need to run Galaxy jobs. You can structure this in various ways t
 
 ## Changelog
 
+- 32:
+    - MODIFIED: Pulsar toward Py3
 - 31:
     - ADDED: Puslar
     - ADDED: Fonts for some jobs
