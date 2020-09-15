@@ -33,13 +33,21 @@
     - yum:
         name: "{{ packages }}"
         state: absent
-        autoremove: yes
       vars:
         packages:
         - python3-devel
         - gcc
         - libcurl-devel        
       become: yes
+    - name: Copy Docker daemon.json
+      copy:
+        src: daemon.json
+        dest: /etc/docker/daemon.json
+        mode: '0644'
+    - name: Restart service Docker, in all cases
+      service:
+        name: docker
+        state: restarted
   roles:
     - galaxy
     - basic
