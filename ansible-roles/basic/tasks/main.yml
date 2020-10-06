@@ -5,13 +5,11 @@
     state: present
   vars:
     packages:
-    - epel-release
     - patch
     - lsof
     - screen
     - ansible
     - vim
-    - collectl
     - iotop
     - iftop
     - htop
@@ -24,16 +22,12 @@
     - nfs-utils
     - "@development"
     - jq
-    - pdsh
-    - pdsh-mod-genders
     # Fonts
     - dejavu-fonts-common
     - dejavu-sans-fonts
     - fontconfig
     - fontconfig-devel
     - fontpackages-filesystem
-    - ghostscript-fonts
-    - libXfont
     - liberation-fonts-common
     - liberation-sans-fonts
     - libfontenc
@@ -42,7 +36,6 @@
     - at
     - perl-Digest-SHA
     - telnet
-    - python-pip
     - wget
     - perl-Digest-MD5
     - mesa-libGL
