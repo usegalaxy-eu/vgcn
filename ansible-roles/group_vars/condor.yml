@@ -1,3 +1,5 @@
 dynmotd_custom:
   - name: Condor
     command: "condor_q | grep jobs"
+
+condor_copy_template: false

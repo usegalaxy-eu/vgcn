@@ -21,7 +21,25 @@
         - gcc
         - curl
         - libcurl-devel
+    - name: Put SELinux in permissive mode, logging actions that would be blocked.
+      selinux:
+        policy: targeted
+        state: permissive
   post_tasks:
+    - name: galaxy account group
+      group:
+        gid: "{{ galaxy_gid }}"
+        name: galaxy
+        state: present
+    - name: galaxy account user
+      user:
+        uid: "{{ galaxy_uid }}"
+        name: galaxy
+        group: galaxy
+        home: /opt/galaxy
+        state: present
+        comment: Galaxy Service-Acct
+        createhome: no
     - user:
         name: galaxy
         groups: condor,docker
@@ -49,17 +67,20 @@
         name: docker
         state: restarted
   roles:
-    - galaxy
-    - basic
-    - htcondor
+    - usegalaxy-eu.remap-user
+    #- basic
+    ## Dependencies
+    - geerlingguy.repo-epel # Install EPEL
+    - usegalaxy-eu.powertools # geerlingguy.repo-epel role doesn't enable (yet) PowerTools repository
+    - usegalaxy-eu.htcondor
     - systemupdate
     - maintenance
-    - dynmotd
+    - usegalaxy-eu.dynmotd
     - dj-wasabi.telegraf
     - influxdata.chrony
     - geerlingguy.java
     - geerlingguy.docker
-    - cvmfs
+    - galaxyproject.cvmfs
     - galaxyproject.pulsar
     - usegalaxy-eu.limits
     - usegalaxy-eu.cuda
