@@ -8,3 +8,4 @@
     option: enabled
     value: "1"
     no_extra_spaces: yes
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '8'
