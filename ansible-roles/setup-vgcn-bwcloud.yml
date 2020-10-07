@@ -67,8 +67,7 @@
         name: docker
         state: restarted
   roles:
-    - usegalaxy-eu.remap-user
-    #- basic
+    - basic
     ## Dependencies
     - geerlingguy.repo-epel # Install EPEL
     - usegalaxy-eu.powertools # geerlingguy.repo-epel role doesn't enable (yet) PowerTools repository
@@ -85,3 +84,5 @@
     - usegalaxy-eu.limits
     - usegalaxy-eu.cuda
     - usegalaxy-eu.nvidia-container
+    # needs to be at the end, otherwise dnsmasq will occupy 999 slot
+    - usegalaxy-eu.remap-user
