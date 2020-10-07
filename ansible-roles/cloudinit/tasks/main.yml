@@ -3,19 +3,16 @@
     package:
       name: cloud-init
       state: latest
-      use: yum
 
   - name: cloud-utils-growpart install
     package:
       name: cloud-utils-growpart
       state: latest
-      use: yum
 
   - name: gdisk install
     package:
       name: gdisk
       state: latest
-      use: yum
 
   # Centos
   - name: cloud-init config 1
