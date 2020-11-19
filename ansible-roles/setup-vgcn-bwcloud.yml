@@ -66,10 +66,19 @@
         src: daemon.json
         dest: /etc/docker/daemon.json
         mode: '0644'
-    - name: Restart service Docker, in all cases
+    - name: Restart Docker service, in all cases
       service:
         name: docker
         state: restarted
+    - name: Disable firewalld service
+      systemd:
+        name: firewalld
+        enabled: no
+        state: stopped
+    - name: Put SELinux in permissive mode, logging actions that would be blocked.
+      selinux:
+        policy: targeted
+        state: permissive
   roles:
     - basic
     ## Dependencies
