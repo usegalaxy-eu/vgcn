@@ -11,7 +11,7 @@
   version: "0.1"
 - src: https://github.com/galaxyproject/ansible-pulsar.git
   name: galaxyproject.pulsar
-  version: 12c140bc638a3ef9a746963b1443fe7fbbd228ec
+  version: 1.0.6
 - src: https://github.com/usegalaxy-eu/ansible-remap-user.git
   name: usegalaxy-eu.remap-user
   version: main
