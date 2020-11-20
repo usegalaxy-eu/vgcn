@@ -52,6 +52,10 @@
         name: centos
         groups: docker
         append: yes
+    - pip:
+        name: pycurl
+        virtualenv: "{{ pulsar_venv_dir }}"
+        extra_args: --no-cache-dir --compile --ignore-installed --install-option="--with-nss"
     - yum:
         name: "{{ packages }}"
         state: absent
