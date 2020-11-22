@@ -7,7 +7,6 @@ pulsar_staging_dir: /data/share/staging
 pulsar_dependencies_dir: /data/share/tools
 pulsar_venv_dir: "{{ pulsar_root }}/venv3"
 pulsar_optional_dependencies:
-  - pycurl
   - kombu
   - psutil
 
