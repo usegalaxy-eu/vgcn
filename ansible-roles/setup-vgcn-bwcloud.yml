@@ -21,6 +21,7 @@
         - gcc
         - curl
         - libcurl-devel
+        - openssl-devel
     - name: Set default version of Python
       alternatives:
         name: python
@@ -52,10 +53,6 @@
         name: centos
         groups: docker
         append: yes
-    - pip:
-        name: pycurl
-        virtualenv: "{{ pulsar_venv_dir }}"
-        extra_args: --no-cache-dir --compile --ignore-installed --install-option="--with-nss"
     - yum:
         name: "{{ packages }}"
         state: absent
@@ -63,7 +60,8 @@
         packages:
         - python3-devel
         - gcc
-        - libcurl-devel        
+        - libcurl-devel
+        - openssl-devel
       become: yes
     - name: Copy Docker daemon.json
       copy:
