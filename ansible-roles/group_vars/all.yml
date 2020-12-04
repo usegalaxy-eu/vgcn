@@ -49,13 +49,6 @@ java_packages:
 cvmfs_role: client
 galaxy_cvmfs_repos_enabled: config-repo
 
-galaxy_cvmfs_server_urls:
-  - domain: galaxyproject.org
-    use_geoapi: true
-    urls:
-      - "http://cvmfs1-ufr0.galaxyproject.eu/cvmfs/@fqrn@"
-      - "http://galaxy.jrc.ec.europa.eu:8008/@fqrn@"
-
 dynmotd_custom: []
 
 nodejs_version: "8.x"
