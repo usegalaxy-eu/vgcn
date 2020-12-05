@@ -39,12 +39,6 @@
       line: 'manage_etc_hosts: true'
       insertafter: '^syslog_fix_perms:.*$'
 
-  - name: cloud-init config 2a
-    lineinfile:
-      dest: /etc/resolv.conf
-      line: '^nameserver 10.0.2.3'
-      state: absent
-
   - name: cloud-init config 3
     blockinfile:
       marker: "# {mark} ANSIBLE MANAGED BLOCK 3"
@@ -85,6 +79,7 @@
           - mkdir -p /scratch/galaxy_db/tmp
           - chown -R galaxy.galaxy /scratch/galaxy_db
           - sed -i "s|localhost.localdomain|$(hostname -f)|g" /etc/telegraf/telegraf.conf
+          - sed -i "s|nameserver 10.0.2.3||g" /etc/resolv.conf        
           - systemctl restart telegraf
           - systemctl restart docker
     when: internal | bool
