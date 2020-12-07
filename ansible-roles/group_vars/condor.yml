@@ -1,5 +1,5 @@
 dynmotd_custom:
   - name: Condor
-    command: "condor_q | grep jobs"
+    command: "test -f /etc/condor/condor_config.local && condor_q | grep jobs"
 
 condor_copy_template: false
