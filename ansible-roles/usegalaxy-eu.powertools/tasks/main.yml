@@ -2,9 +2,9 @@
 # geerlingguy.repo-epel role doesn't enable (yet) PowerTools repository
 # but EPEL packages may depend on packages from it
 - name: Check if PowerTools repo exists.
-    stat:
-      path: "{{ powertools_repofile_path }}"
-    register: pt_repofile_result
+  stat:
+    path: "{{ powertools_repofile_path }}"
+  register: pt_repofile_result
 
 - name: Enable PowerTools repository
   ini_file:
