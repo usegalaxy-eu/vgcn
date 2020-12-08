@@ -22,7 +22,7 @@
   name: usegalaxy-eu.htcondor
   version: master
 - src: geerlingguy.repo-epel
-  version: 1.3.0
+  version: 3.0.0
 - src: geerlingguy.java
   version: 1.10.0
 - src: galaxyproject.cvmfs
