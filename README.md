@@ -24,6 +24,13 @@ Everything you need to run Galaxy jobs. You can structure this in various ways t
 
 ## Changelog
 
+- 40:
+    - ADDED: Nvidia driver
+    - ADDED: Cuda toolkit
+    - ADDED: GPU accelerated Docker containers support
+    - MODIFIED: moved to CENTOS8
+    - MODIFIED: updated Pulsar to version 0.14.0
+    - MODIFIED: updated HTCondor to version 8.8
 - 32:
     - MODIFIED: Pulsar toward Py3
 - 31:
