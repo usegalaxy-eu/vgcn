@@ -14,6 +14,7 @@
     owner: root
     group: root
     mode: 0755
+  when: scratch_maintenance | bool
 
 - name: Add filesystem maintenance to cron - jwd
   cron:
@@ -21,6 +22,7 @@
     minute: "{{ 60 | random }}"
     hour: "{{ 5 | random }}"
     job: "/usr/bin/fs_cleaning.sh {{ jwd_path }} {{ mtime }}"
+  when: scratch_maintenance | bool
 
 - name: Add filesystem maintenance to cron - tmp
   cron:
@@ -28,3 +30,5 @@
     minute: "{{ 60 | random }}"
     hour: "{{ 5 | random }}"
     job: "/usr/bin/fs_cleaning.sh {{ tmp_path }} {{ mtime }}"
+  when: scratch_maintenance | bool
+
