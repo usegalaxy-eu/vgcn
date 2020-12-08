@@ -1,7 +1,7 @@
 {
 	"variables": {
-		"iso_url": "http://mirror1.hs-esslingen.de/pub/Mirrors/centos/8/isos/x86_64/CentOS-8.3.2011-x86_64-boot.iso",
-		"iso_checksum": "2b801bc5801816d0cf27fc74552cf058951c42c7b72b1fe313429b1070c3876c",
+		"iso_url": "http://mirror1.hs-esslingen.de/pub/Mirrors/centos/8.2.2004/isos/x86_64/CentOS-8.2.2004-x86_64-boot.iso",
+		"iso_checksum": "c67876a5602faa17f68b40ccf2628799b87454aa67700f0f57eec15c6ccdd98c",
 		"iso_checksum_url": "http://mirror1.hs-esslingen.de/pub/Mirrors/centos/8/isos/x86_64/CHECKSUM",
 		"iso_checksum_type": "sha256",
 		"vm_name": "centos-8.x-x86_64",
