@@ -1,7 +1,7 @@
 {
   "cpus": "2",
   "boot_wait": "15s",
-  "disk_size": "5000",
+  "disk_size": "6000",
   "headless": "true",
   "memory": "2048",
   "ssh_timeout": "600m",
