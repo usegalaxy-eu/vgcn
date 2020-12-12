@@ -9,7 +9,7 @@
 - name: Enable PowerTools repository
   ini_file:
     path: "{{ powertools_repofile_path }}"
-    section: PowerTools
+    section: powertools
     option: enabled
     value: "1"
     no_extra_spaces: yes
