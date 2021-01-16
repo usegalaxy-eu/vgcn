@@ -40,6 +40,7 @@
     - perl-Digest-MD5
     - mesa-libGL
     - singularity
+    - tmpwatch
 
 - name: Ensure services are enabled + started
   systemd:
