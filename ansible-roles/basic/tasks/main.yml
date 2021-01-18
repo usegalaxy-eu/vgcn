@@ -41,6 +41,7 @@
     - mesa-libGL
     - singularity
     - tmpwatch
+    - libnsl
 
 - name: Ensure services are enabled + started
   systemd:
