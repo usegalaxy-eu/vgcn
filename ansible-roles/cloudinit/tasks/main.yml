@@ -55,14 +55,14 @@
       block: |
         disk_setup:
           /dev/vdb:
-            table_type: mbr
+            table_type: gpt
             layout: True
             overwrite: True
         fs_setup:
           - label: None
             filesystem: xfs
             device: /dev/vdb
-            partition: auto
+            partition: 1
         runcmd:
           - mkdir /scratch
         mounts:
