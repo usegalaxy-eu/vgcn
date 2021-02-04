@@ -20,7 +20,7 @@
   version: master
 - src: https://github.com/usegalaxy-eu/ansible-htcondor
   name: usegalaxy-eu.htcondor
-  version: master
+  version: 0.0.3
 - src: geerlingguy.repo-epel
   version: 3.0.0
 - src: geerlingguy.java
