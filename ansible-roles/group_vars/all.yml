@@ -49,7 +49,13 @@ java_packages:
 cvmfs_role: client
 galaxy_cvmfs_repos_enabled: config-repo
 
-dynmotd_custom: []
+# dynmotd
+dynmotd_custom:
+  - name: Build
+    command: "echo VGGP build {{ cloud }} {{ build_tag }}"
+  - name: Build date
+    command: "echo  {{ ansible_date_time.iso8601 }}"
+
 
 nodejs_version: "8.x"
 nodejs_install_npm_user: root

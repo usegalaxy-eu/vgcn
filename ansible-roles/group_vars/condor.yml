@@ -1,8 +1,2 @@
 ---
-dynmotd_custom:
-  - name: Build
-    command: "echo VGGP build {{ cloud }} {{ build_tag }}"
-  - name: Build date
-    command: "echo  {{ ansible_date_time.iso8601 }}"
-
 condor_copy_template: false
