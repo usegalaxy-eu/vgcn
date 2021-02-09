@@ -45,7 +45,8 @@
       dest: /etc/cloud/cloud.cfg
       block: |
         runcmd:
-          - sed -i "s|localhost.localdomain|$(hostname -f)|g" /etc/telegraf/telegraf.conf
+          - [ sh, -xc, "sed -i 's|nameserver 10.0.2.3||g' /etc/resolv.conf" ]
+          - [ sh, -xc, "sed -i 's|localhost.localdomain|$(hostname -f)|g' /etc/telegraf/telegraf.conf" ]
           - systemctl restart telegraf
 
   - name: cloud-init config 4
@@ -78,8 +79,6 @@
           - mkdir -p /scratch/galaxy_db/job_working_directory
           - mkdir -p /scratch/galaxy_db/tmp
           - chown -R galaxy.galaxy /scratch/galaxy_db
-          - sed -i "s|localhost.localdomain|$(hostname -f)|g" /etc/telegraf/telegraf.conf
-          - sed -i "s|nameserver 10.0.2.3||g" /etc/resolv.conf        
           - systemctl restart telegraf
           - systemctl restart docker
     when: internal | bool
