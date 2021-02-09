@@ -39,6 +39,7 @@
       line: 'manage_etc_hosts: true'
       insertafter: '^syslog_fix_perms:.*$'
 
+  # run for external only; for internal will be overwrite by section 5
   - name: cloud-init config 3
     blockinfile:
       marker: "# {mark} ANSIBLE MANAGED BLOCK 3"
@@ -64,33 +65,25 @@
             filesystem: xfs
             device: /dev/vdb
             partition: 1
-        runcmd:
-          - mkdir /scratch
+        bootcmd:
+          - mkdir -p /scratch
         mounts:
           - [ /dev/vdb1, /scratch, xfs, "defaults", "0", "2" ]
     when: internal | bool
 
+  # Collect here all runcmd commands; this will be execute at the end of the config phase
   - name: cloud-init config 5
     blockinfile:
       marker: "# {mark} ANSIBLE MANAGED BLOCK 5"
       dest: /etc/cloud/cloud.cfg
       block: |
         runcmd:
-          - mkdir -p /scratch/galaxy_db/job_working_directory
-          - mkdir -p /scratch/galaxy_db/tmp
-          - chown -R galaxy.galaxy /scratch/galaxy_db
-          - systemctl restart telegraf
-          - systemctl restart docker
-    when: internal | bool
-
-  - name: cloud-init config 6
-    blockinfile:
-      marker: "# {mark} ANSIBLE MANAGED BLOCK 6"
-      dest: /etc/cloud/cloud.cfg
-      block: |
-        runcmd:
+          - [ sh, -xc, "sed -i 's|nameserver 10.0.2.3||g' /etc/resolv.conf" ]
+          - [ sh, -xc, "sed -i 's|localhost.localdomain|$(hostname -f)|g' /etc/telegraf/telegraf.conf" ]
           - ssh-keygen -s /tmp/server_ca -I key_for_test1 -h -V +52w /etc/ssh/ssh_host_rsa_key.pub
           - ssh-keygen -s /tmp/server_ca -I key_for_test1 -h -V +52w /etc/ssh/ssh_host_ecdsa_key.pub
           - ssh-keygen -s /tmp/server_ca -I key_for_test1 -h -V +52w /etc/ssh/ssh_host_ed25519_key.pub
           - rm /tmp/server_ca
+          - systemctl restart telegraf
+          - systemctl restart docker
     when: internal | bool
