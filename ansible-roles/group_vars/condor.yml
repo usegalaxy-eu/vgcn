@@ -1,5 +1,8 @@
+---
 dynmotd_custom:
-  - name: Condor
-    command: "test -f /etc/condor/condor_config.local && condor_q | grep jobs | grep 'all users'"
+  - name: Build
+    command: "echo VGGP build {{ cloud }} {{ build_tag }}"
+  - name: Build date
+    command: "echo  {{ ansible_date_time.iso8601 }}"
 
 condor_copy_template: false

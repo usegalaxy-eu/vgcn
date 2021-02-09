@@ -17,7 +17,7 @@
   version: main
 - src: https://github.com/usegalaxy-eu/ansible-dynmotd
   name: usegalaxy-eu.dynmotd
-  version: master
+  version: 0.0.1
 - src: https://github.com/usegalaxy-eu/ansible-htcondor
   name: usegalaxy-eu.htcondor
   version: 0.0.3
