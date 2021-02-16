@@ -81,6 +81,15 @@
       selinux:
         policy: targeted
         state: permissive
+    - name: Copy
+      copy:
+        content: |
+          #!/bin/bash
+          echo '{"alive":1}'
+        dest: /bin/iamalive
+        owner: telegraf
+        group: telegraf
+        mode: 0755
   roles:
     - basic
     ## Dependencies
