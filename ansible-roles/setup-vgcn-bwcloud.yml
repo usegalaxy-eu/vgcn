@@ -81,7 +81,7 @@
       selinux:
         policy: targeted
         state: permissive
-    - name: Copy
+    - name: Deploy a signal emitter for telegraf
       copy:
         content: |
           #!/bin/bash
