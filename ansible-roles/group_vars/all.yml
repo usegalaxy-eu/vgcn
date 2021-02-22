@@ -49,7 +49,7 @@ java_packages:
 
 # CVMFS
 cvmfs_role: client
-galaxy_cvmfs_repos_enabled: config-repo
+galaxy_cvmfs_repos_enabled: true
 galaxy_cvmfs_server_urls:
   - domain: galaxyproject.org
     urls:
