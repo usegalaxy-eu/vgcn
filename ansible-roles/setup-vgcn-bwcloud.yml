@@ -106,7 +106,7 @@
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
     - usegalaxy-eu.limits
-    - usegalaxy-eu.cuda
+    - usegalaxy_eu.cuda
     - usegalaxy-eu.nvidia-container
     # needs to be at the end, otherwise dnsmasq will occupy 999 slot
     - usegalaxy-eu.remap-user
