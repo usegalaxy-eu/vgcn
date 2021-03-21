@@ -1,6 +1,6 @@
 - src: https://github.com/usegalaxy-eu/ansible-cuda.git
   name: usegalaxy-eu.cuda
-  version: 12aa20c5a937e53680cadfc23ab121495b2aea76
+  version: 1.0.0
 - src: https://github.com/usegalaxy-eu/ansible-nvidia-container.git
   name: usegalaxy-eu.nvidia-container
   version: c2c1bbe259012971f70d42e8f5f442f8834505d2
