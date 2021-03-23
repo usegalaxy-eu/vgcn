@@ -108,6 +108,7 @@
     - usegalaxy-eu.limits
     - usegalaxy_eu.cuda
     - usegalaxy-eu.nvidia-container
+    - usegalaxy-eu.cgroups
     # needs to be at the end, otherwise dnsmasq will occupy 999 slot
     - usegalaxy-eu.remap-user
     - usegalaxy-eu.update-grub
