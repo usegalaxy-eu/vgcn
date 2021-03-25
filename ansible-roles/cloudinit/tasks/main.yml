@@ -68,7 +68,7 @@
         bootcmd:
           - mkdir -p /scratch
         mounts:
-          - [ /dev/vdb1, /scratch, xfs, "defaults", "0", "2" ]
+          - [ /dev/vdb1, /scratch, xfs, "defaults,nofail", "0", "2" ]
     when: internal | bool
 
   # Collect here all runcmd commands; this will be execute at the end of the config phase
