@@ -19,7 +19,7 @@
   version: 0.0.1
 - src: https://github.com/usegalaxy-eu/ansible-htcondor
   name: usegalaxy-eu.htcondor
-  version: 0.0.3
+  version: 0.0.4
 - src: geerlingguy.repo-epel
   version: 3.0.0
 - src: geerlingguy.java
