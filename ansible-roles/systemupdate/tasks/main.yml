@@ -1,6 +1,6 @@
 ---
   - name: system update
-    package:
+    yum:
       name: '*'
       state: latest
-
+      exclude: condor*

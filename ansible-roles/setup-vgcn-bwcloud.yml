@@ -95,8 +95,8 @@
     ## Dependencies
     - geerlingguy.repo-epel # Install EPEL
     - usegalaxy-eu.powertools # geerlingguy.repo-epel role doesn't enable (yet) PowerTools repository
-    - usegalaxy-eu.htcondor
     - systemupdate
+    - usegalaxy-eu.htcondor
     - maintenance
     - usegalaxy-eu.dynmotd
     - dj-wasabi.telegraf
