@@ -4,13 +4,13 @@
   name: usegalaxy-eu.nvidia-container
   version: c2c1bbe259012971f70d42e8f5f442f8834505d2
 - src: geerlingguy.docker
-  version: 2.8.1
+  version: 4.1.0
 - src: https://github.com/usegalaxy-eu/ansible-chrony
   name: influxdata.chrony
   version: "0.1"
 - src: https://github.com/galaxyproject/ansible-pulsar.git
   name: galaxyproject.pulsar
-  version: 1.0.6
+  version: 1.0.9
 - src: https://github.com/usegalaxy-eu/ansible-remap-user.git
   name: usegalaxy-eu.remap-user
   version: main
@@ -21,7 +21,7 @@
   name: usegalaxy-eu.htcondor
   version: 0.0.4
 - src: geerlingguy.repo-epel
-  version: 3.0.0
+  version: 3.1.0
 - src: geerlingguy.java
   version: 1.10.0
 - src: galaxyproject.cvmfs
