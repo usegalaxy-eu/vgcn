@@ -17,9 +17,9 @@
 - src: https://github.com/usegalaxy-eu/ansible-dynmotd
   name: usegalaxy-eu.dynmotd
   version: 0.0.1
-- src: https://github.com/usegalaxy-eu/ansible-htcondor
+- src: usegalaxy_eu.htcondor
   name: usegalaxy-eu.htcondor
-  version: 0.0.4
+  version: 0.0.5
 - src: geerlingguy.repo-epel
   version: 3.1.0
 - src: geerlingguy.java
