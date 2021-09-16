@@ -7,28 +7,28 @@
     hour: "{{ 5 | random }}"
     job: "docker system prune -f"
 
-- name: copy filesystem maintenance script
-  copy:
-    src: fs_cleaning.sh.j2
-    dest: /usr/bin/fs_cleaning.sh
-    owner: root
-    group: root
-    mode: 0755
-  when: scratch_maintenance | bool
-
-- name: Add filesystem maintenance to cron - jwd
-  cron:
-    name: "FS clean jwd"
-    minute: "{{ 60 | random }}"
-    hour: "{{ 5 | random }}"
-    job: "/usr/bin/fs_cleaning.sh {{ jwd_path }} {{ mtime }}"
-  when: scratch_maintenance | bool
-
-- name: Add filesystem maintenance to cron - tmp
-  cron:
-    name: "FS clean tmp"
-    minute: "{{ 60 | random }}"
-    hour: "{{ 5 | random }}"
-    job: "/usr/bin/fs_cleaning.sh {{ tmp_path }} {{ mtime }}"
-  when: scratch_maintenance | bool
-
+#- name: copy filesystem maintenance script
+#  copy:
+#    src: fs_cleaning.sh.j2
+#    dest: /usr/bin/fs_cleaning.sh
+#    owner: root
+#    group: root
+#    mode: 0755
+#  when: scratch_maintenance | bool
+#
+#- name: Add filesystem maintenance to cron - jwd
+#  cron:
+#    name: "FS clean jwd"
+#    minute: "{{ 60 | random }}"
+#    hour: "{{ 5 | random }}"
+#    job: "/usr/bin/fs_cleaning.sh {{ jwd_path }} {{ mtime }}"
+#  when: scratch_maintenance | bool
+#
+#- name: Add filesystem maintenance to cron - tmp
+#  cron:
+#    name: "FS clean tmp"
+#    minute: "{{ 60 | random }}"
+#    hour: "{{ 5 | random }}"
+#    job: "/usr/bin/fs_cleaning.sh {{ tmp_path }} {{ mtime }}"
+#  when: scratch_maintenance | bool
+#
