@@ -90,5 +90,6 @@ chrony_conf_file: '/etc/chrony.conf'
 chrony_keyfile: '/etc/chrony.keys'
 
 # Autofs
-autofs_install: True
+autofs_service.install: True
+autofs_service.enable: True
 nfs_kernel_tuning: True
