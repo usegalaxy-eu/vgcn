@@ -29,4 +29,7 @@
 - src: https://github.com/usegalaxy-eu/ansible-cgroups
   name: usegalaxy-eu.cgroups
   version: 0.0.1
+  - name: usegalaxy-eu.autofs
+    src: https://github.com/usegalaxy-eu/ansible-autofs
+    version: 0.0.7
 

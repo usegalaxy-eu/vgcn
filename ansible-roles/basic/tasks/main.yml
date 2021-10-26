@@ -16,7 +16,6 @@
     - atop
     - mosh
     - libcgroup-tools
-    - autofs
     - bind-utils
     - strace
     - nfs-utils
@@ -53,7 +52,6 @@
     state: started
   with_items:
     - atop
-    - autofs
     - atd
     - haveged
 

@@ -96,6 +96,7 @@
     - geerlingguy.repo-epel # Install EPEL
     - usegalaxy-eu.powertools # geerlingguy.repo-epel role doesn't enable (yet) PowerTools repository
     - systemupdate
+    - usegalaxy-eu.autofs
     - usegalaxy-eu.htcondor
     - maintenance
     - usegalaxy-eu.dynmotd
