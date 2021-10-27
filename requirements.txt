@@ -1,2 +1,2 @@
-ansible-core==2.11.3
+ansible==4.7.0
 python-openstackclient==3.14.0
