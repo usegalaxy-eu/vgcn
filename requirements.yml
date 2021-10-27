@@ -31,4 +31,4 @@
   version: 0.0.1
 - src: https://github.com/usegalaxy-eu/ansible-autofs
   name: usegalaxy-eu.autofs
-  version: 0.0.8
+  version: 0.0.9
