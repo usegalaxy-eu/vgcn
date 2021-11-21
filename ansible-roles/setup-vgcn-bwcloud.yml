@@ -2,7 +2,8 @@
 # This setup is valid for RHEL 7.x based systems.
 ---
 - hosts: default
-
+  collections:
+    - usegalaxy_eu.handy
   vars_files:
     - "group_vars/all.yml"
     - "group_vars/pulsar.yml"
@@ -94,7 +95,7 @@
     - basic
     ## Dependencies
     - geerlingguy.repo-epel # Install EPEL
-    - usegalaxy-eu.powertools # geerlingguy.repo-epel role doesn't enable (yet) PowerTools repository
+    - powertools # From usegalaxy_eu.handy collection; geerlingguy.repo-epel role doesn't enable PowerTools repository
     - systemupdate
     - usegalaxy-eu.autofs
     - usegalaxy-eu.htcondor
