@@ -13,7 +13,7 @@ roles:
     version: 4.1.0
   - src: https://github.com/usegalaxy-eu/ansible-chrony
     name: influxdata.chrony
-    version: "0.1"
+    version: 0.1.0
   - src: https://github.com/galaxyproject/ansible-pulsar.git
     name: galaxyproject.pulsar
     version: 1.0.9
