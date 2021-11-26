@@ -2,17 +2,20 @@
 # This setup is valid for RHEL 7.x based systems.
 ---
 - hosts: default
-  collections:
-    - usegalaxy_eu.handy
   vars_files:
     - "group_vars/all.yml"
     - "group_vars/pulsar.yml"
     - "group_vars/condor.yml"
     - "group_vars/cuda.yml"
   pre_tasks:
+    - name: system update
+      ansible.builtin.dnf:
+        name: '*'
+        state: latest
+        exclude: condor*
     - name: Install Pulsar dependencies
       become: yes
-      package:
+      ansible.builtin.dnf:
         state: latest
         name:
         - git
@@ -95,8 +98,7 @@
     - basic
     ## Dependencies
     - geerlingguy.repo-epel # Install EPEL
-    - powertools # From usegalaxy_eu.handy collection; geerlingguy.repo-epel role doesn't enable PowerTools repository
-    - systemupdate
+    - usegalaxy_eu.handy.powertools # geerlingguy.repo-epel role doesn't enable PowerTools repository
     - usegalaxy-eu.autofs
     - usegalaxy-eu.htcondor
     - maintenance
