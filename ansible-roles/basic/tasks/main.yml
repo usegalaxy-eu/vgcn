@@ -16,7 +16,6 @@
     - atop
     - mosh
     - libcgroup-tools
-    - autofs
     - bind-utils
     - strace
     - nfs-utils
@@ -25,6 +24,8 @@
     # Fonts
     - dejavu-fonts-common
     - dejavu-sans-fonts
+    - dejavu-sans-mono-fonts
+    - dejavu-serif-fonts
     - fontconfig
     - fontconfig-devel
     - fontpackages-filesystem
@@ -42,6 +43,7 @@
     - singularity
     - tmpwatch
     - libnsl
+    - haveged
 
 - name: Ensure services are enabled + started
   systemd:
@@ -50,8 +52,8 @@
     state: started
   with_items:
     - atop
-    - autofs
     - atd
+    - haveged
 
 - name: yum-autoupdate removal
   yum: name=yum-autoupdate state=absent

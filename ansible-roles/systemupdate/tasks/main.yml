@@ -1,6 +1,0 @@
----
-  - name: system update
-    package:
-      name: '*'
-      state: latest
-

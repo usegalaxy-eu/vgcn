@@ -1,3 +1,2 @@
 ---
 condor_copy_template: false
-condor_package_label: condor-all-8.8.13

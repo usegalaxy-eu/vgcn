@@ -1,5 +1,5 @@
 pulsar_package_name: pulsar-app
-pulsar_package_version: 0.14.0
+pulsar_package_version: 0.14.11
 
 pulsar_root: /opt/pulsar
 pulsar_persistence_dir: /data/share/persisted_data

@@ -1,5 +1,5 @@
 ---
-vg_build: 40
+vg_build: 50
 # This will be replaced by jenkins.
 build_tag:  vggp-v##-j##-##-branch
 
@@ -88,3 +88,8 @@ chrony_server: 'time.ruf.uni-freiburg.de iburst'
 chrony_acquisitionport: 0
 chrony_conf_file: '/etc/chrony.conf'
 chrony_keyfile: '/etc/chrony.keys'
+
+# Autofs
+autofs_service.install: True
+autofs_service.enable: True
+nfs_kernel_tuning: True

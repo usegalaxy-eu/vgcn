@@ -55,7 +55,7 @@ $(BASETARGETS):
 ##
 #		Provisioning images
 ##
-$(PROVTARGETS): install_roles
+$(PROVTARGETS): deps
 $(foreach flav, $(FLAVORS), %/$(flav)): %/base
 	$(info ** Provisioning '$(@D)' with '$(@F)' **)
 	$(PACKER) build -only=$(BUILDER) \
@@ -130,6 +130,9 @@ clean:
 cloud_cleanup:
 	openstack image list -c ID -c Name -f value | grep vggp | awk '{print $1}' | xargs openstack image delete
 
-install_roles:
+deps:
 	mkdir -p $(ANSIBLE_DIR)
 	ansible-galaxy install -f -p $(ANSIBLE_DIR) -r requirements.yml
+	mkdir -p $(ANSIBLE_DIR)/collections
+	ansible-galaxy collection install -p $(ANSIBLE_DIR)/collections -r requirements.yml
+
