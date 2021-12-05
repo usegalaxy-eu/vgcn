@@ -98,7 +98,10 @@
     - basic
     ## Dependencies
     - geerlingguy.repo-epel # Install EPEL
-    - usegalaxy_eu.handy.powertools # geerlingguy.repo-epel role doesn't enable PowerTools repository
+    - role: usegalaxy_eu.handy.os_setup
+      vars:
+        enable_powertools: true # geerlingguy.repo-epel role doesn't enable PowerTools repository
+        enable_remap_user: false
     - usegalaxy-eu.autofs
     - usegalaxy-eu.htcondor
     - maintenance
@@ -113,7 +116,9 @@
     - usegalaxy_eu.cuda
     - usegalaxy-eu.nvidia-container
     - usegalaxy-eu.cgroups
-    # needs to be at the end, otherwise dnsmasq will occupy 999 slot
-    - usegalaxy-eu.remap-user
     - usegalaxy-eu.update-grub
-
+    # needs to be at the end, otherwise dnsmasq will occupy 999 slot
+    - role: usegalaxy_eu.handy.os_setup
+      vars:
+        enable_powertools: false # geerlingguy.repo-epel role doesn't enable PowerTools repository
+        enable_remap_user: true
