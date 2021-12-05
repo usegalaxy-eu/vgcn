@@ -102,6 +102,7 @@
       vars:
         enable_powertools: true # geerlingguy.repo-epel role doesn't enable PowerTools repository
         enable_remap_user: false
+        enable_kernel_5: true
     - usegalaxy-eu.autofs
     - usegalaxy-eu.htcondor
     - maintenance
@@ -122,3 +123,4 @@
       vars:
         enable_powertools: false # geerlingguy.repo-epel role doesn't enable PowerTools repository
         enable_remap_user: true
+        enable_kernel_5: false
