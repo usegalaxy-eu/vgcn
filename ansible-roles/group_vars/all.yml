@@ -105,4 +105,5 @@ software_groups_to_install:
   - development
   - editors
   - fonts
+  - services
   - utils
