@@ -95,3 +95,14 @@ autofs_service.enable: True
 nfs_kernel_tuning: True
 nfs_kernel_tuning_parameters:
   sunrpc.tcp_max_slot_table_entries: 100
+
+# packages
+software_groups_to_install:
+  - admin
+  - apps
+  - configuration
+  - debug
+  - development
+  - editors
+  - fonts
+  - utils

@@ -1,5 +1,5 @@
 # Setup for Virtual Galaxy Compute Node
-# This setup is valid for RHEL 7.x based systems.
+# This setup is valid for RHEL 8.x based systems.
 ---
 - hosts: default
   vars_files:
@@ -95,14 +95,18 @@
         group: telegraf
         mode: 0755
   roles:
-    - basic
-    ## Dependencies
-    - geerlingguy.repo-epel # Install EPEL
     - role: usegalaxy_eu.handy.os_setup
       vars:
         enable_powertools: true # geerlingguy.repo-epel role doesn't enable PowerTools repository
         enable_remap_user: false
         enable_kernel_5: true
+        enable_pam_limits: true
+        enable_grub: true
+        enable_cgroups: true
+        enable_journald: true
+        enable_install_software: true
+
+    - geerlingguy.repo-epel # Install EPEL
     - usegalaxy-eu.autofs
     - usegalaxy-eu.htcondor
     - maintenance
@@ -113,14 +117,16 @@
     - geerlingguy.docker
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
-    - usegalaxy-eu.limits
     - usegalaxy_eu.cuda
     - usegalaxy-eu.nvidia-container
-    - usegalaxy-eu.cgroups
-    - usegalaxy-eu.update-grub
-    # needs to be at the end, otherwise dnsmasq will occupy 999 slot
+
     - role: usegalaxy_eu.handy.os_setup
       vars:
         enable_powertools: false # geerlingguy.repo-epel role doesn't enable PowerTools repository
-        enable_remap_user: true
+        enable_remap_user: true  # needs to be at the end, otherwise dnsmasq will occupy 999 slot
         enable_kernel_5: false
+        enable_pam_limits: false
+        enable_grub: false
+        enable_cgroups: false
+        enable_journald: false
+        enable_install_software: false
