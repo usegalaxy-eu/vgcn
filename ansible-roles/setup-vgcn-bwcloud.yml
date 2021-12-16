@@ -27,21 +27,21 @@
         - libcurl-devel
         - openssl-devel
     - name: Set default version of Python
-      alternatives:
+      ansible.builtin.alternatives:
         name: python
         path: /usr/bin/python3
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
-      selinux:
+      ansible.posix.selinux:
         policy: targeted
         state: permissive
   post_tasks:
     - name: galaxy account group
-      group:
+      ansible.builtin.group:
         gid: "{{ galaxy_gid }}"
         name: galaxy
         state: present
     - name: galaxy account user
-      user:
+      ansible.builtin.user:
         uid: "{{ galaxy_uid }}"
         name: galaxy
         group: galaxy
@@ -49,15 +49,15 @@
         state: present
         comment: Galaxy Service-Acct
         createhome: no
-    - user:
+    - ansible.builtin.user:
         name: galaxy
         groups: condor,docker
         append: yes
-    - user:
+    - ansible.builtin.user:
         name: centos
         groups: docker
         append: yes
-    - yum:
+    - ansible.builtin.dnf:
         name: "{{ packages }}"
         state: absent
       vars:
@@ -68,25 +68,21 @@
         - openssl-devel
       become: yes
     - name: Copy Docker daemon.json
-      copy:
+      ansible.builtin.copy:
         src: daemon.json
         dest: /etc/docker/daemon.json
         mode: '0644'
     - name: Restart Docker service, in all cases
-      service:
+      ansible.builtin.service:
         name: docker
         state: restarted
     - name: Disable firewalld service
-      systemd:
+      ansible.builtin.systemd:
         name: firewalld
         enabled: no
         state: stopped
-    - name: Put SELinux in permissive mode, logging actions that would be blocked.
-      selinux:
-        policy: targeted
-        state: permissive
     - name: Deploy a signal emitter for telegraf
-      copy:
+      ansible.builtin.copy:
         content: |
           #!/bin/bash
           echo '{"alive":1}'
@@ -105,11 +101,11 @@
         enable_cgroups: true
         enable_journald: true
         enable_install_software: true
+        enable_ansible_root_cron: false
 
     - geerlingguy.repo-epel # Install EPEL
     - usegalaxy-eu.autofs
     - usegalaxy-eu.htcondor
-    - maintenance
     - usegalaxy-eu.dynmotd
     - dj-wasabi.telegraf
     - influxdata.chrony
@@ -130,3 +126,4 @@
         enable_cgroups: false
         enable_journald: false
         enable_install_software: false
+        enable_ansible_root_cron: true

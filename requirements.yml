@@ -1,7 +1,7 @@
 ---
 collections:
   - name: usegalaxy_eu.handy
-    version: 2.6.2
+    version: 2.7.0
     source: https://galaxy.ansible.com
 roles:
   - src: usegalaxy_eu.cuda
@@ -10,7 +10,7 @@ roles:
     name: usegalaxy-eu.nvidia-container
     version: c2c1bbe259012971f70d42e8f5f442f8834505d2
   - src: geerlingguy.docker
-    version: 4.1.0
+    version: 4.1.1
   - src: https://github.com/usegalaxy-eu/ansible-chrony
     name: influxdata.chrony
     version: 0.1.0
