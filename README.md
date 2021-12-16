@@ -24,6 +24,9 @@ Everything you need to run Galaxy jobs. You can structure this in various ways t
 
 ## Changelog
 
+- 50:
+    - MODIFIED: updated Pulsar to version 0.14.11
+    - MODIFIED: moved to kernel 5.x
 - 40:
     - ADDED: Nvidia driver
     - ADDED: Cuda toolkit
@@ -34,7 +37,7 @@ Everything you need to run Galaxy jobs. You can structure this in various ways t
 - 32:
     - MODIFIED: Pulsar toward Py3
 - 31:
-    - ADDED: Puslar
+    - ADDED: Pulsar
     - ADDED: Fonts for some jobs
     - ADDED: `at` daemon
     - MODIFIED: Additional 'internal' and 'external' targets allowing us to include signed SSH host keys.
