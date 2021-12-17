@@ -107,3 +107,6 @@ software_groups_to_install:
   - fonts
   - services
   - utils
+
+# kernel_5
+kernel_5_package: kernel-ml
