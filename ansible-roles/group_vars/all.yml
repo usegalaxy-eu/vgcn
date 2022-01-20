@@ -89,6 +89,7 @@ chrony_acquisitionport: 0
 chrony_conf_file: '/etc/chrony.conf'
 chrony_keyfile: '/etc/chrony.keys'
 
+#usegalaxy_eu.handy.os_setup
 # Autofs
 autofs_service.install: True
 autofs_service.enable: True
@@ -96,7 +97,21 @@ nfs_kernel_tuning: True
 nfs_kernel_tuning_parameters:
   sunrpc.tcp_max_slot_table_entries: 100
 
-# packages
+# usegalaxy_eu.handy.os_setup
+# ansible_root_cron
+ansible_root_cron:
+  - name: "Prune unused Docker objects"
+    weekday: "{{ 7 | random }}"
+    minute: "{{ 60 | random }}"
+    hour: "{{ 5 | random }}"
+    job: "docker system prune -f"
+  - name: "Stop containers running more than 1 months"
+    weekday: "{{ 7 | random }}"
+    minute: "{{ 60 | random }}"
+    hour: "{{ 5 | random }}"
+    job: "docker ps -f status=running --format '{{.ID}}: {{.RunningFor}}' | awk '/months/ && $2 > 1 { print $0 }'|cut -f1 -d':' | xargs docker stop"
+
+## packages
 software_groups_to_install:
   - admin
   - apps
@@ -108,5 +123,5 @@ software_groups_to_install:
   - services
   - utils
 
-# kernel_5
+## kernel_5
 kernel_5_package: kernel-ml
