@@ -71,7 +71,6 @@
         state: absent
       vars:
         packages:
-          - python3-devel
           - gcc
           - libcurl-devel
           - openssl-devel
