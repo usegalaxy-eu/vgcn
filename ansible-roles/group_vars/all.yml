@@ -109,7 +109,7 @@ ansible_root_cron:
     weekday: "{{ 7 | random }}"
     minute: "{{ 60 | random }}"
     hour: "{{ 5 | random }}"
-    job: "docker ps -f status=running --format '{{.ID}}: {{.RunningFor}}' | awk '/months/ && $2 > 1 { print $0 }'|cut -f1 -d':' | xargs docker stop"
+    job: "/usr/bin/docker-stop-1M"
 
 ## packages
 software_groups_to_install:
