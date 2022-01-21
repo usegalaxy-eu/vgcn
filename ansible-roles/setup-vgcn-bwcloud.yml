@@ -18,14 +18,14 @@
       ansible.builtin.dnf:
         state: latest
         name:
-        - git
-        - python36
-        - python3-devel
-        - python3-virtualenv
-        - gcc
-        - curl
-        - libcurl-devel
-        - openssl-devel
+          - git
+          - python36
+          - python3-devel
+          - python3-virtualenv
+          - gcc
+          - curl
+          - libcurl-devel
+          - openssl-devel
     - name: Set default version of Python
       ansible.builtin.alternatives:
         name: python
@@ -38,7 +38,7 @@
       ansible.builtin.copy:
         content: |
             #!/bin/bash
-            docker ps -f status=running --format '{{.ID}}: {{.RunningFor}}' | awk '/months/ && $2 > 1 { print $0 }'|cut -f1 -d':' | xargs docker stop
+            docker ps -f status=running --format '{{ '{{' }}.ID}}: {{ '{{' }}.RunningFor}}' | awk '/months/ && $2 > 1 { print $0 }'|cut -f1 -d':' | xargs docker stop
         dest: /usr/bin/docker-stop-1M
         owner: root
         group: root
@@ -71,10 +71,10 @@
         state: absent
       vars:
         packages:
-        - python3-devel
-        - gcc
-        - libcurl-devel
-        - openssl-devel
+          - python3-devel
+          - gcc
+          - libcurl-devel
+          - openssl-devel
       become: yes
     - name: Copy Docker daemon.json
       ansible.builtin.copy:
