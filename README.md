@@ -22,6 +22,9 @@ Everything you need to run Galaxy jobs. You can structure this in various ways t
 - Like EU's remote clusters: one VM as the condor master + pulsar, another as NFS, and the rest as job runners
 - For BYOC: A single node that does condor master + pulsar + job execution
 
+## Development
+Development happens into the __dev__ branch, images are built from __main__ branch.
+
 ## Changelog
 
 - 50:
