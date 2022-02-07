@@ -67,6 +67,10 @@ dynmotd_custom:
   - name: Build date
     command: "echo  {{ ansible_date_time.iso8601 }}"
 
+# Docker
+docker_users:
+  - centos
+  - condor
 
 nodejs_version: "8.x"
 nodejs_install_npm_user: root

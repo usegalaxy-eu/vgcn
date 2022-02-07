@@ -62,10 +62,6 @@
         name: galaxy
         groups: condor,docker
         append: yes
-    - ansible.builtin.user:
-        name: centos
-        groups: docker
-        append: yes
     - ansible.builtin.dnf:
         name: "{{ packages }}"
         state: absent
@@ -111,14 +107,18 @@
         enable_install_software: true
         enable_ansible_root_cron: false
 
-    - geerlingguy.repo-epel # Install EPEL
     - usegalaxy-eu.autofs
-    - usegalaxy-eu.htcondor
     - usegalaxy-eu.dynmotd
-    - dj-wasabi.telegraf
-    - influxdata.chrony
+
+    - geerlingguy.repo-epel # Install EPEL
     - geerlingguy.java
     - geerlingguy.docker
+
+    - usegalaxy-eu.htcondor
+
+    - dj-wasabi.telegraf
+    - influxdata.chrony
+
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
     - usegalaxy_eu.cuda
