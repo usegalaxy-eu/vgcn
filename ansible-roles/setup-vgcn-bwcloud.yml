@@ -1,5 +1,5 @@
 # Setup for Virtual Galaxy Compute Node
-# This setup is valid for RHEL 7.x based systems.
+# This setup is valid for RHEL 8.x based systems.
 ---
 - hosts: default
   vars_files:
@@ -18,30 +18,39 @@
       ansible.builtin.dnf:
         state: latest
         name:
-        - git
-        - python36
-        - python3-devel
-        - python3-virtualenv
-        - gcc
-        - curl
-        - libcurl-devel
-        - openssl-devel
+          - git
+          - python36
+          - python3-devel
+          - python3-virtualenv
+          - gcc
+          - curl
+          - libcurl-devel
+          - openssl-devel
     - name: Set default version of Python
-      alternatives:
+      ansible.builtin.alternatives:
         name: python
         path: /usr/bin/python3
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
-      selinux:
+      ansible.posix.selinux:
         policy: targeted
         state: permissive
+    - name: "Deploy docker-stop-1M script"
+      ansible.builtin.copy:
+        content: |
+            #!/bin/bash
+            docker ps -f status=running --format '{{ '{{' }}.ID}}: {{ '{{' }}.RunningFor}}' | awk '/months/ && $2 > 1 { print $0 }'|cut -f1 -d':' | xargs docker stop
+        dest: /usr/bin/docker-stop-1M
+        owner: root
+        group: root
+        mode: 0755
   post_tasks:
     - name: galaxy account group
-      group:
+      ansible.builtin.group:
         gid: "{{ galaxy_gid }}"
         name: galaxy
         state: present
     - name: galaxy account user
-      user:
+      ansible.builtin.user:
         uid: "{{ galaxy_uid }}"
         name: galaxy
         group: galaxy
@@ -49,44 +58,35 @@
         state: present
         comment: Galaxy Service-Acct
         createhome: no
-    - user:
+    - ansible.builtin.user:
         name: galaxy
         groups: condor,docker
         append: yes
-    - user:
-        name: centos
-        groups: docker
-        append: yes
-    - yum:
+    - ansible.builtin.dnf:
         name: "{{ packages }}"
         state: absent
       vars:
         packages:
-        - python3-devel
-        - gcc
-        - libcurl-devel
-        - openssl-devel
+          - gcc
+          - libcurl-devel
+          - openssl-devel
       become: yes
     - name: Copy Docker daemon.json
-      copy:
+      ansible.builtin.copy:
         src: daemon.json
         dest: /etc/docker/daemon.json
         mode: '0644'
     - name: Restart Docker service, in all cases
-      service:
+      ansible.builtin.service:
         name: docker
         state: restarted
     - name: Disable firewalld service
-      systemd:
+      ansible.builtin.systemd:
         name: firewalld
         enabled: no
         state: stopped
-    - name: Put SELinux in permissive mode, logging actions that would be blocked.
-      selinux:
-        policy: targeted
-        state: permissive
     - name: Deploy a signal emitter for telegraf
-      copy:
+      ansible.builtin.copy:
         content: |
           #!/bin/bash
           echo '{"alive":1}'
@@ -95,25 +95,43 @@
         group: telegraf
         mode: 0755
   roles:
-    - basic
-    ## Dependencies
-    - geerlingguy.repo-epel # Install EPEL
-    - usegalaxy_eu.handy.powertools # geerlingguy.repo-epel role doesn't enable PowerTools repository
+    - role: usegalaxy_eu.handy.os_setup
+      vars:
+        enable_powertools: true # geerlingguy.repo-epel role doesn't enable PowerTools repository
+        enable_remap_user: false
+        enable_kernel_5: true
+        enable_pam_limits: true
+        enable_grub: true
+        enable_cgroups: true
+        enable_journald: true
+        enable_install_software: true
+        enable_ansible_root_cron: false
+
     - usegalaxy-eu.autofs
-    - usegalaxy-eu.htcondor
-    - maintenance
     - usegalaxy-eu.dynmotd
-    - dj-wasabi.telegraf
-    - influxdata.chrony
+
+    - geerlingguy.repo-epel # Install EPEL
     - geerlingguy.java
     - geerlingguy.docker
+
+    - usegalaxy-eu.htcondor
+
+    - dj-wasabi.telegraf
+    - influxdata.chrony
+
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
-    - usegalaxy-eu.limits
     - usegalaxy_eu.cuda
     - usegalaxy-eu.nvidia-container
-    - usegalaxy-eu.cgroups
-    # needs to be at the end, otherwise dnsmasq will occupy 999 slot
-    - usegalaxy-eu.remap-user
-    - usegalaxy-eu.update-grub
 
+    - role: usegalaxy_eu.handy.os_setup
+      vars:
+        enable_powertools: false # geerlingguy.repo-epel role doesn't enable PowerTools repository
+        enable_remap_user: true  # needs to be at the end, otherwise dnsmasq will occupy 999 slot
+        enable_kernel_5: false
+        enable_pam_limits: false
+        enable_grub: false
+        enable_cgroups: false
+        enable_journald: false
+        enable_install_software: false
+        enable_ansible_root_cron: true

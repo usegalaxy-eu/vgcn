@@ -67,6 +67,10 @@ dynmotd_custom:
   - name: Build date
     command: "echo  {{ ansible_date_time.iso8601 }}"
 
+# Docker
+docker_users:
+  - centos
+  - condor
 
 nodejs_version: "8.x"
 nodejs_install_npm_user: root
@@ -89,7 +93,39 @@ chrony_acquisitionport: 0
 chrony_conf_file: '/etc/chrony.conf'
 chrony_keyfile: '/etc/chrony.keys'
 
+#usegalaxy_eu.handy.os_setup
 # Autofs
 autofs_service.install: True
 autofs_service.enable: True
 nfs_kernel_tuning: True
+nfs_kernel_tuning_parameters:
+  sunrpc.tcp_max_slot_table_entries: 100
+
+# usegalaxy_eu.handy.os_setup
+# ansible_root_cron
+ansible_root_cron:
+  - name: "Prune unused Docker objects"
+    weekday: "{{ 7 | random }}"
+    minute: "{{ 60 | random }}"
+    hour: "{{ 5 | random }}"
+    job: "docker system prune -f"
+  - name: "Stop containers running more than 1 months"
+    weekday: "{{ 7 | random }}"
+    minute: "{{ 60 | random }}"
+    hour: "{{ 5 | random }}"
+    job: "/usr/bin/docker-stop-1M"
+
+## packages
+software_groups_to_install:
+  - admin
+  - apps
+  - configuration
+  - debug
+  - development
+  - editors
+  - fonts
+  - services
+  - utils
+
+## kernel_5
+kernel_5_package: kernel-ml
