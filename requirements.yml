@@ -5,7 +5,7 @@ collections:
     source: https://galaxy.ansible.com
 roles:
   - src: usegalaxy_eu.cuda
-    version: 1.0.2
+    version: 1.0.3
   - src: usegalaxy_eu.nvidia_container
     version: 1.0.2
   - src: geerlingguy.docker
