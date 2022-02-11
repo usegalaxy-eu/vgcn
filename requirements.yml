@@ -5,9 +5,9 @@ collections:
     source: https://galaxy.ansible.com
 roles:
   - src: usegalaxy_eu.cuda
-    version: 1.0.1
+    version: 1.0.2
   - src: usegalaxy_eu.nvidia_container
-    version: 1.0.1
+    version: 1.0.2
   - src: geerlingguy.docker
     version: 4.1.3
   - src: https://github.com/usegalaxy-eu/ansible-chrony
