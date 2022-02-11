@@ -16,14 +16,14 @@
 
   # Centos
   - name: cloud-init config 1
-    when: ansible_distribution == 'CentOS'
+    when: ansible_os_family == 'RedHat'
     blockinfile:
       dest: /etc/cloud/cloud.cfg
       block: |
         system_info:
           default_user:
             name: centos
-            gecos: CentOS Cloud User
+            gecos: RHEL Cloud User
             groups: [wheel, adm, systemd-journal]
             sudo: ["ALL=(ALL) NOPASSWD:ALL"]
             shell: /bin/bash
