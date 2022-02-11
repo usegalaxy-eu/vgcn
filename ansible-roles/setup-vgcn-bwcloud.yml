@@ -114,7 +114,7 @@
     - geerlingguy.java
     - geerlingguy.docker
 
-    - usegalaxy-eu.htcondor
+    - usegalaxy_eu.htcondor
 
     - dj-wasabi.telegraf
     - influxdata.chrony
