@@ -2,22 +2,42 @@
 ---
 - hosts: default
 
-  vars:
-    vg_build: 8
-    cloud: "jenkins"
-
   vars_files:
     - "group_vars/all.yml"
     - "group_vars/java.yml"
 
+  pre_tasks:
+    - name: system update
+      ansible.builtin.dnf:
+        name: '*'
+        state: latest
+    - name: Install some dependencies
+      become: yes
+      ansible.builtin.dnf:
+        state: latest
+        name:
+          - git
+          - python38
+          - python3-devel
+          - python3-virtualenv
+          - gcc
+          - curl
+          - libcurl-devel
+          - openssl-devel
+    - name: Put SELinux in permissive mode, logging actions that would be blocked.
+        ansible.posix.selinux:
+          policy: targeted
+          state: permissive
   roles:
-    - basic
-    - systemupdate
-    - dynmotd
-    - jenkins
-    - dj-wasabi.telegraf
-    - influxdata.chrony
+    - role: usegalaxy_eu.handy.os_setup
+      vars:
+        enable_powertools: true
+        enable_install_software: true
+
+    - geerlingguy.repo-epel # Install EPEL
+    - usegalaxy-eu.dynmotd
     - geerlingguy.java
     - geerlingguy.docker
-    - geerlingguy.nodejs
-    - y-yu.texlive
+    - dj-wasabi.telegraf
+    - influxdata.chrony
+    - jenkins
