@@ -25,9 +25,9 @@
           - libcurl-devel
           - openssl-devel
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
-        ansible.posix.selinux:
-          policy: targeted
-          state: permissive
+      ansible.posix.selinux:
+        policy: targeted
+        state: permissive
   roles:
     - role: usegalaxy_eu.handy.os_setup
       vars:
