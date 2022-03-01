@@ -18,7 +18,7 @@
     - zlib-devel
     - gdbm-devel
     - ncurses-devel
-    - gpg2
+    - gnupg2
 
 - name: Download packer
   shell: wget https://releases.hashicorp.com/packer/1.7.10/packer_1.7.10_linux_amd64.zip -O /tmp/packer.zip
