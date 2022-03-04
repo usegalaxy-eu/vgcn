@@ -24,10 +24,28 @@
           - curl
           - libcurl-devel
           - openssl-devel
+          - qemu-kvm
+          - qemu-img
+          - unzip
+          - seabios
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.posix.selinux:
         policy: targeted
         state: permissive
+
+  post_tasks:
+    - name: Download packer
+      ansible.builtin.shell: wget https://releases.hashicorp.com/packer/1.7.10/packer_1.7.10_linux_amd64.zip -O /tmp/packer.zip
+
+    - name: Extract packer
+      ansible.builtin.shell: unzip /tmp/packer.zip -d /usr/bin
+
+    - name: Adding existing user centos to group kvm
+      ansible.builtin.user:
+        name: centos
+        groups: kvm
+        append: yes
+
   roles:
     - role: usegalaxy_eu.handy.os_setup
       vars:
@@ -40,4 +58,4 @@
     - geerlingguy.docker
     - dj-wasabi.telegraf
     - influxdata.chrony
-    - jenkins
+
