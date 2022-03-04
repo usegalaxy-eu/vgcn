@@ -1,5 +1,5 @@
 ---
-vg_build: 50
+vg_build: 60
 # This will be replaced by jenkins.
 build_tag:  vggp-v##-j##-##-branch
 
