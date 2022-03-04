@@ -2,6 +2,9 @@
 ---
 - hosts: default
 
+  vars:
+    jenkins: true
+
   vars_files:
     - "group_vars/all.yml"
     - "group_vars/java.yml"
@@ -28,6 +31,10 @@
           - qemu-img
           - unzip
           - seabios
+    - name: Set default version of Python
+      ansible.builtin.alternatives:
+        name: python
+        path: /usr/bin/python3.8
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.posix.selinux:
         policy: targeted
