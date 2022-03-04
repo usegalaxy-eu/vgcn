@@ -33,26 +33,6 @@
             templates_dir: /etc/cloud/templates
           ssh_svcname: sshd
 
-  - name: cloud-init config 1 (Jenkins only)
-    when: ansible_os_family == 'RedHat' and jenkins | bool
-    blockinfile:
-      dest: /etc/cloud/cloud.cfg
-      block: |
-        system_info:
-          default_user:
-            name: centos
-            gecos: RHEL Cloud User
-            groups: [wheel, adm, systemd-journal]
-            sudo: ["ALL=(ALL) NOPASSWD:ALL"]
-            shell: /bin/bash
-            ssh_authorized_keys:
-              - {{ jenkins_public_ssh_key }}
-          distro: rhel
-          paths:
-            cloud_dir: /var/lib/cloud
-            templates_dir: /etc/cloud/templates
-          ssh_svcname: sshd
-
   - name: cloud-init config 2
     lineinfile:
       dest: /etc/cloud/cloud.cfg
