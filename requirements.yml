@@ -32,3 +32,6 @@ roles:
   - src: https://github.com/usegalaxy-eu/ansible-autofs
     name: usegalaxy-eu.autofs
     version: 0.0.9
+  - name: usegalaxy-eu.autoupdates
+    src: https://github.com/usegalaxy-eu/ansible-autoupdates
+    version: 0.0.1

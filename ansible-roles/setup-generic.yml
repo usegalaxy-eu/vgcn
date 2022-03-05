@@ -1,15 +1,48 @@
-# Setup for Virtual Galaxy Compute Node
+# Setup for generic node
 # This setup is valid for RHEL 7.x based systems.
 ---
 - hosts: default
 
+  vars:
+    software_groups_to_install:
+      - admin
+      - editors
+      - terminals
+      - utils
+
   vars_files:
     - "group_vars/all.yml"
 
+  pre_tasks:
+    - name: system update
+      ansible.builtin.dnf:
+        name: '*'
+        state: latest
+    - name: Install some dependencies
+      become: yes
+      ansible.builtin.dnf:
+        state: latest
+        name:
+          - python38
+    - name: Set default version of Python
+      ansible.builtin.alternatives:
+        name: python
+        path: /usr/bin/python3.8
+    - name: Put SELinux in permissive mode, logging actions that would be blocked.
+      ansible.posix.selinux:
+        policy: targeted
+        state: permissive
+
   roles:
-    - basic
-    - systemupdate
-    - dynmotd
-    - jenkins
+    - role: usegalaxy_eu.handy.os_setup
+      vars:
+        enable_powertools: true
+        enable_install_software: true
+        enable_grub: true
+        enable_kernel_5: true
+
+    - geerlingguy.repo-epel # Install EPEL
+    - usegalaxy-eu.autoupdates  # keep all of our packages up to date
+    - usegalaxy-eu.dynmotd
     - dj-wasabi.telegraf
     - influxdata.chrony
