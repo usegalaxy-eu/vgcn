@@ -18,20 +18,15 @@
       ansible.builtin.dnf:
         name: '*'
         state: latest
-    - name: Install some dependencies
-      become: yes
-      ansible.builtin.dnf:
-        state: latest
-        name:
-          - python38
-    - name: Set default version of Python
-      ansible.builtin.alternatives:
-        name: python
-        path: /usr/bin/python3.8
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.posix.selinux:
         policy: targeted
         state: permissive
+    - name: Disable firewalld service
+      ansible.builtin.systemd:
+        name: firewalld
+        enabled: no
+        state: stopped
 
   roles:
     - role: usegalaxy_eu.handy.os_setup
