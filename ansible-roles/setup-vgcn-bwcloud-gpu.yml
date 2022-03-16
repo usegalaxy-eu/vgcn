@@ -120,6 +120,8 @@
 
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
+    - usegalaxy_eu.cuda
+    - usegalaxy_eu.nvidia_container
 
     - role: usegalaxy_eu.handy.os_setup
       vars:
