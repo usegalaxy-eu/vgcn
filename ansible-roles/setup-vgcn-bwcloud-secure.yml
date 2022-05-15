@@ -1,11 +1,10 @@
 # Setup for Virtual Galaxy Compute Node
 # This setup is valid for RHEL 8.x based systems.
-# It has SELinux disabled and Meltdown, Spectre patches off
+# It has SELinux enabled and Meltdown, Spectre patches on
 ---
 - hosts: default
   vars_files:
     - "group_vars/all.yml"
-    - "group_vars/grub.yml"
     - "group_vars/pulsar.yml"
     - "group_vars/condor.yml"
   pre_tasks:
@@ -31,9 +30,10 @@
       ansible.builtin.alternatives:
         name: python
         path: /usr/bin/python3
-    - name: Disable SELinux.
+    - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.posix.selinux:
-        state: disabled
+        policy: targeted
+        state: permissive
     - name: "Deploy docker-stop-1M script"
       ansible.builtin.copy:
         content: |
