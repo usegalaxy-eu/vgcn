@@ -119,7 +119,6 @@ ansible_root_cron:
 software_groups_to_install:
   - admin
   - apps
-  - configuration
   - debug
   - development
   - editors
