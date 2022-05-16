@@ -95,6 +95,7 @@
         group: telegraf
         mode: 0755
   roles:
+    - geerlingguy.repo-epel # Install EPEL
     - role: usegalaxy_eu.handy.os_setup
       vars:
         enable_powertools: true # geerlingguy.repo-epel role doesn't enable PowerTools repository
@@ -110,7 +111,6 @@
     - usegalaxy-eu.autofs
     - usegalaxy-eu.dynmotd
 
-    - geerlingguy.repo-epel # Install EPEL
     - geerlingguy.java
     - geerlingguy.docker
 
