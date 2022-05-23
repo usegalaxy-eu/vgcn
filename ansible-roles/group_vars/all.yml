@@ -99,7 +99,7 @@ autofs_service.install: True
 autofs_service.enable: True
 nfs_kernel_tuning: True
 nfs_kernel_tuning_parameters:
-  sunrpc.tcp_max_slot_table_entries: 100
+  sunrpc.tcp_max_slot_table_entries: 70
 
 # usegalaxy_eu.handy.os_setup
 # ansible_root_cron
