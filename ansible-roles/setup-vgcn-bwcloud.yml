@@ -21,6 +21,7 @@
         name:
           - git
           - python36
+          - python38
           - python3-devel
           - python3-virtualenv
           - gcc
