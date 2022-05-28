@@ -30,7 +30,7 @@
     - name: Set default version of Python
       ansible.builtin.alternatives:
         name: python
-        path: /usr/bin/python3
+        path: /usr/bin/python3.6
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.posix.selinux:
         policy: targeted

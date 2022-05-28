@@ -31,7 +31,7 @@
     - name: Set default version of Python
       ansible.builtin.alternatives:
         name: python
-        path: /usr/bin/python3
+        path: /usr/bin/python3.6
     - name: Disable SELinux.
       ansible.posix.selinux:
         state: disabled
