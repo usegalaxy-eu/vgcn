@@ -22,6 +22,8 @@
           - python36
           - python3-devel
           - python3-virtualenv
+          - python38
+          - python38-devel
           - gcc
           - curl
           - libcurl-devel
@@ -71,13 +73,6 @@
           - gcc
           - libcurl-devel
           - openssl-devel
-      become: yes
-    - ansible.builtin.dnf:
-        name: "{{ packages }}"
-        state: present
-      vars:
-        packages:
-          - python38
       become: yes
     - name: Copy Docker daemon.json
       ansible.builtin.copy:
