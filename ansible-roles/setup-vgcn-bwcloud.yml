@@ -21,7 +21,6 @@
         name:
           - git
           - python36
-          - python38
           - python3-devel
           - python3-virtualenv
           - gcc
@@ -31,7 +30,7 @@
     - name: Set default version of Python
       ansible.builtin.alternatives:
         name: python
-        path: /usr/bin/python3.6
+        path: /usr/bin/python3
     - name: Disable SELinux.
       ansible.posix.selinux:
         state: disabled
@@ -71,6 +70,13 @@
           - gcc
           - libcurl-devel
           - openssl-devel
+      become: yes
+    - ansible.builtin.dnf:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+          - python38
       become: yes
     - name: Copy Docker daemon.json
       ansible.builtin.copy:
