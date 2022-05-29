@@ -32,8 +32,10 @@
         name: python
         path: /usr/bin/python3
     - name: Disable SELinux.
-      ansible.posix.selinux:
-        state: disabled
+      ansible.builtin.lineinfile:
+        path: /etc/selinux/config
+        regexp: '^SELINUX='
+        line: SELINUX=disabled
     - name: "Deploy docker-stop-1M script"
       ansible.builtin.copy:
         content: |
