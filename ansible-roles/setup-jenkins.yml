@@ -43,7 +43,7 @@
         path: /usr/bin/python3.8
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.posix.selinux:
-        policy: disabled
+        state: disabled
 
   post_tasks:
     - name: Download packer
