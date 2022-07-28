@@ -41,9 +41,11 @@
       ansible.builtin.alternatives:
         name: python
         path: /usr/bin/python3.8
-    - name: Put SELinux in permissive mode, logging actions that would be blocked.
-      ansible.posix.selinux:
-        state: disabled
+    - name: Ensure SELinux is set to enforcing mode
+      ansible.builtin.lineinfile:
+        path: /etc/selinux/config
+        regexp: '^SELINUX='
+        line: SELINUX=enforcing
 
   post_tasks:
     - name: Download packer
