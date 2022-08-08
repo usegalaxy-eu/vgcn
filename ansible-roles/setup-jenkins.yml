@@ -51,6 +51,7 @@
     - name: Set default version of Python
       ansible.builtin.alternatives:
         name: java
+        link: /usr/bin/java
         path: /usr/lib/jvm/java-11-openjdk/bin/java
 
     - name: Download packer
