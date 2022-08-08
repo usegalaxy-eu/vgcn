@@ -48,6 +48,11 @@
         line: SELINUX=enforcing
 
   post_tasks:
+    - name: Set default version of Python
+      ansible.builtin.alternatives:
+        name: java
+        path: /usr/lib/jvm/java-11-openjdk/bin/java
+
     - name: Download packer
       ansible.builtin.shell: wget https://releases.hashicorp.com/packer/1.7.10/packer_1.7.10_linux_amd64.zip -O /tmp/packer.zip
 

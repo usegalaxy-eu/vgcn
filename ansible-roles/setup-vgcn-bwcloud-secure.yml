@@ -20,9 +20,10 @@
         name:
           - git
           - python36
-          - python38
           - python3-devel
           - python3-virtualenv
+          - python38
+          - python38-devel
           - gcc
           - curl
           - libcurl-devel
@@ -32,9 +33,10 @@
         name: python
         path: /usr/bin/python3
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
-      ansible.posix.selinux:
-        policy: targeted
-        state: permissive
+      ansible.builtin.lineinfile:
+        path: /etc/selinux/config
+        regexp: '^SELINUX='
+        line: SELINUX=permissive
     - name: "Deploy docker-stop-1M script"
       ansible.builtin.copy:
         content: |
