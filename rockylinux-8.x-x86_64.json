@@ -36,14 +36,8 @@
 		"ssh_password": "{{ user `ssh_password` }}",
 		"shutdown_command": "{{ user `shutdown_command` }}",
 		"qemuargs": [
-			[
-				"-m",
-				"{{ user `memory` }}"
-			],
-			[
-				"-smp",
-				"{{ user `cpus` }}"
-			]
+			["-m", "{{ user `memory` }}"],
+			["-smp", "{{ user `cpus` }}"]
 		]
 	}],
 	"post-processors": [{
