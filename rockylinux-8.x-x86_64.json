@@ -1,4 +1,15 @@
 {
+  "variables": {
+    "http_dir": "http",
+    "iso_checksum": "fe77cc293a2f2fe6ddbf5d4bc2b5c820024869bc7ea274c9e55416d215db0cc5",
+    "iso_checksum_type": "sha256",
+    "iso_checksum_url": "https://dl.rockylinux.org/vault/rocky/8.6/isos/x86_64/CHECKSUM",
+    "iso_url": "https://dl.rockylinux.org/vault/rocky/8.6/isos/x86_64/Rocky-8.6-x86_64-boot.iso",
+    "kickstart_path": "rockylinux-8.x/anaconda-ks.cfg",
+    "shutdown_command": "systemctl poweroff",
+    "ssh_password": "password",
+    "vm_name": "rockylinux-8.x-x86_64"
+  },
   "builders": [
     {
       "accelerator": "kvm",
@@ -42,17 +53,6 @@
       "output": "output-{{ user `vm_name` }}-{{ build_type }}/manifest.json",
       "type": "manifest"
     }
-  ],
-  "variables": {
-    "http_dir": "http",
-    "iso_checksum": "fe77cc293a2f2fe6ddbf5d4bc2b5c820024869bc7ea274c9e55416d215db0cc5",
-    "iso_checksum_type": "sha256",
-    "iso_checksum_url": "https://dl.rockylinux.org/vault/rocky/8.6/isos/x86_64/CHECKSUM",
-    "iso_url": "https://dl.rockylinux.org/vault/rocky/8.6/isos/x86_64/Rocky-8.6-x86_64-boot.iso",
-    "kickstart_path": "rockylinux-8.x/anaconda-ks.cfg",
-    "shutdown_command": "systemctl poweroff",
-    "ssh_password": "password",
-    "vm_name": "rockylinux-8.x-x86_64"
-  }
+  ]
 }
 
