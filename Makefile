@@ -4,10 +4,16 @@
 # 	* support building with non-qemu builders and convert to qemu afterwards
 # 	* testing target
 # 	* auto-detect flavors
-PACKER := $(shell which packer)
-ifndef PACKER
-$(error packer not found, please install it)
+
+ifndef ${PACKER_PATH}
+        PACKER := ${PACKER_PATH}
+else
+        PACKER := $(shell which packer)
 endif
+ifndef PACKER
+	$(error packer not found, please install it)
+endif
+
 
 ANSIBLE_DIR=ansible-roles
 # the "provisioning" flavor, expects a 'setup-<flavor>.yml' playbook
