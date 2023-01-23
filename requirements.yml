@@ -39,3 +39,6 @@ roles:
   - name: usegalaxy-eu.autoupdates
     src: https://github.com/usegalaxy-eu/ansible-autoupdates
     version: 0.0.1
+  - name: usegalaxy-eu.fslimit
+    src: https://github.com/usegalaxy-eu/ansible-fslimit
+    version: main
