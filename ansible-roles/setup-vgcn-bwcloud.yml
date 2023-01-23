@@ -140,6 +140,7 @@
 
     # Applies a 250GB soft and 1TB hard limit on the file size for the condor systemd unit
     - role: usegalaxy-eu.fslimit
+      become: yes
       vars:
         ulimit_fsize_unit: "condor.service"
         ulimit_fsize_soft: 268435456000
