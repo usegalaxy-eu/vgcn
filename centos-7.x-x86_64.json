@@ -1,9 +1,8 @@
 {
 	"variables": {
 		"iso_url": "http://mirror1.hs-esslingen.de/pub/Mirrors/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-2003.iso",
-		"iso_checksum": "101bc813d2af9ccf534d112cbe8670e6d900425b297d1a4d2529c5ad5f226372",
+		"iso_checksum": "sha256:101bc813d2af9ccf534d112cbe8670e6d900425b297d1a4d2529c5ad5f226372",
 		"iso_checksum_url": "http://mirror1.hs-esslingen.de/pub/Mirrors/centos/7/isos/x86_64/sha256sum.txt", 
-		"iso_checksum_type": "sha256",
 		"vm_name": "centos-7.x-x86_64",
 		"http_dir": "http",
 		"kickstart_path": "centos-7.x/anaconda-ks.cfg",
@@ -15,7 +14,6 @@
 		"accelerator": "kvm",
 		"iso_url": "{{ user `iso_url` }}",
 		"iso_checksum": "{{ user `iso_checksum` }}",
-		"iso_checksum_type": "{{ user `iso_checksum_type` }}",
 		"output_directory": "output-{{ user `vm_name` }}-{{ build_type }}",
 		"vm_name": "{{ user `vm_name` }}",
 		"format": "qcow2",
