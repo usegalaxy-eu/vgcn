@@ -1,9 +1,8 @@
 {
 	"variables": {
 		"iso_url": "https://dl.rockylinux.org/vault/rocky/8.6/isos/x86_64/Rocky-8.6-x86_64-boot.iso",
-		"iso_checksum": "fe77cc293a2f2fe6ddbf5d4bc2b5c820024869bc7ea274c9e55416d215db0cc5",
+		"iso_checksum": "sha256:fe77cc293a2f2fe6ddbf5d4bc2b5c820024869bc7ea274c9e55416d215db0cc5",
 		"iso_checksum_url": "https://dl.rockylinux.org/vault/rocky/8.6/isos/x86_64/CHECKSUM",
-		"iso_checksum_type": "sha256",
 		"vm_name": "rockylinux-8.x-x86_64",
 		"http_dir": "http",
 		"kickstart_path": "rockylinux-8.x/anaconda-ks.cfg",
@@ -14,7 +13,7 @@
 		"type": "qemu",
 		"accelerator": "kvm",
 		"iso_url": "{{ user `iso_url` }}",
-		"iso_checksum": "{{ user `iso_checksum_type` }}:{{ user `iso_checksum` }}",
+		"iso_checksum": "{{ user `iso_checksum` }}",
 		"output_directory": "output-{{ user `vm_name` }}-{{ build_type }}",
 		"vm_name": "{{ user `vm_name` }}",
 		"format": "qcow2",
