@@ -6,7 +6,6 @@
 	"builders": [{
 		"type": "qemu",
 		"iso_url": "{{ user `image_dir` }}/{{ user `image_name` }}",
-		"iso_checksum_type": "none",
 		"output_directory": "output-{{ user `image_dir` }}",
 		"vm_name": "{{ user `vm_name` }}",
 		"disk_image": "true",
