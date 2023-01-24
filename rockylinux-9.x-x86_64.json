@@ -1,0 +1,46 @@
+{
+	"variables": {
+		"iso_url": "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.1-x86_64-boot.iso",
+		"iso_checksum": "sha256:a36753d0efbea2f54a3dc7bfaa4dba95efe9aa3d6af331d5c5b147ea91240c21",
+		"iso_checksum_url": "https://dl.rockylinux.org/vault/rocky/8.6/isos/x86_64/CHECKSUM",
+		"vm_name": "rockylinux-9.x-x86_64",
+		"http_dir": "http",
+		"kickstart_path": "rockylinux-9.x/anaconda-ks.cfg",
+		"shutdown_command": "systemctl poweroff",
+		"ssh_password": "password"
+	},
+	"builders": [{
+		"type": "qemu",
+		"accelerator": "kvm",
+		"iso_url": "{{ user `iso_url` }}",
+		"iso_checksum": "{{ user `iso_checksum` }}",
+		"output_directory": "output-{{ user `vm_name` }}-{{ build_type }}",
+		"vm_name": "{{ user `vm_name` }}",
+		"format": "qcow2",
+		"disk_size": "{{ user `disk_size` }}",
+		"net_device": "virtio-net",
+		"disk_interface": "virtio",
+		"headless": "{{ user `headless` }}",
+		"http_directory": "{{ user `http_dir` }}",
+		"boot_command": [
+			"<esc><wait>",
+			"linux inst.mbr biosdevname=0 net.ifnames=0 ",
+			"rootpw={{ user `ssh_password` }} ",
+			"inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{ user `kickstart_path` }}",
+			"<enter>"
+		],
+		"boot_wait": "{{ user `boot_wait` }}",
+		"ssh_timeout": "{{ user `ssh_timeout` }}",
+		"ssh_username": "{{ user `ssh_username` }}",
+		"ssh_password": "{{ user `ssh_password` }}",
+		"shutdown_command": "{{ user `shutdown_command` }}",
+		"qemuargs": [
+			["-m", "{{ user `memory` }}"],
+			["-smp", "{{ user `cpus` }}"]
+		]
+	}],
+	"post-processors": [{
+		"type": "manifest",
+		"output": "output-{{ user `vm_name` }}-{{ build_type }}/manifest.json"
+	}]
+}
