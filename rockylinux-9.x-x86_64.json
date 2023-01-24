@@ -42,10 +42,5 @@
 	"post-processors": [{
 		"type": "manifest",
 		"output": "output-{{ user `vm_name` }}-{{ build_type }}/manifest.json"
-	},
-	{
-		"type": "checksum",
-		"checksum_types": ["sha256"],
-		"output": "output-{{ user `vm_name` }}-{{ build_type }}/base.checksum"
 	}]
 }
