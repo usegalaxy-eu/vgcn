@@ -2,7 +2,7 @@
 	"variables": {
 		"iso_url": "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.1-x86_64-boot.iso",
 		"iso_checksum": "sha256:a36753d0efbea2f54a3dc7bfaa4dba95efe9aa3d6af331d5c5b147ea91240c21",
-		"iso_checksum_url": "https://dl.rockylinux.org/vault/rocky/8.6/isos/x86_64/CHECKSUM",
+		"iso_checksum_url": "http://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.1-x86_64-boot.iso.CHECKSUM",
 		"vm_name": "rockylinux-9.x-x86_64",
 		"http_dir": "http",
 		"kickstart_path": "rockylinux-9.x/anaconda-ks.cfg",
