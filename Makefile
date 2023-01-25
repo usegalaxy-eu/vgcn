@@ -5,10 +5,9 @@
 # 	* testing target
 # 	* auto-detect flavors
 
-ifndef ${PACKER_PATH}
-        PACKER := ${PACKER_PATH}
-else
-        PACKER := $(shell which packer)
+PACKER := $(shell which packer)
+ifdef ${PACKER_PATH}
+	PACKER = ${PACKER_PATH}
 endif
 ifndef PACKER
 	$(error packer not found, please install it)
