@@ -18,7 +18,8 @@
 		"shutdown_command": "shutdown -P now",
 		"qemuargs": [
 			["-m", "{{ user `memory` }}"],
-			["-smp", "{{ user `cpus` }}"]
+			["-smp", "{{ user `cpus` }}"],
+			["-cpu", "host"]
 		]
 	}],
 	"provisioners": [{
