@@ -21,7 +21,7 @@ roles:
     name: influxdata.chrony
     version: 0.1.0
   - src: galaxyproject.pulsar
-    version: 1.0.9
+    version: 1.0.10
   - src: https://github.com/usegalaxy-eu/ansible-dynmotd
     name: usegalaxy-eu.dynmotd
     version: 0.0.1
@@ -30,9 +30,9 @@ roles:
   - src: geerlingguy.repo-epel
     version: 3.1.0
   - src: geerlingguy.java
-    version: 2.0.1
+    version: 2.2.0
   - src: galaxyproject.cvmfs
-    version: 0.2.13
+    version: 0.2.20
   - src: https://github.com/usegalaxy-eu/ansible-autofs
     name: usegalaxy-eu.autofs
     version: 1.0.0
@@ -42,3 +42,5 @@ roles:
   - name: usegalaxy-eu.fslimit
     src: https://github.com/usegalaxy-eu/ansible-fslimit
     version: main
+  - name: dj-wasabi.telegraf
+    version: 0.14.0
