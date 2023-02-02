@@ -8,30 +8,43 @@
     - "group_vars/pulsar.yml"
     - "group_vars/condor.yml"
   pre_tasks:
-    - name: system update
+    - name: System update
       ansible.builtin.dnf:
-        name: '*'
+        name: "*"
         state: latest
         exclude: condor*
+
     - name: Install Pulsar dependencies
-      become: yes
-      ansible.builtin.dnf:
-        state: latest
+      package:
         name:
           - git
-          - python36
-          - python3-devel
-          - python3-virtualenv
-          - python38
-          - python38-devel
-          - gcc
-          - curl
+          - virtualenv
+          - python3
+      become: true
+      when: ansible_os_family == 'Debian'
+    - name: Install Pulsar dependencies
+      package:
+        name:
+          - git
+          - python36-virtualenv
+          - python3
+        state: present
+      become: true
+      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 8
+    - name: Install Pulsar dependencies
+      package:
+        name:
+          - git
           - libcurl-devel
-          - openssl-devel
+          - python-devel
+        state: present
+      become: true
+      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 9
     - name: Set default version of Python
       ansible.builtin.alternatives:
         name: python
         path: /usr/bin/python3
+        link: /usr/bin/python
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.builtin.lineinfile:
         path: /etc/selinux/config
@@ -119,8 +132,8 @@
 
     - usegalaxy_eu.htcondor
 
-    - dj-wasabi.telegraf
     - influxdata.chrony
+    - dj-wasabi.telegraf
 
     - galaxyproject.cvmfs
     - galaxyproject.pulsar

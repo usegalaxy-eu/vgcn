@@ -39,5 +39,5 @@
     - geerlingguy.repo-epel # Install EPEL
     - usegalaxy-eu.autoupdates  # keep all of our packages up to date
     - usegalaxy-eu.dynmotd
-    - dj-wasabi.telegraf
     - influxdata.chrony
+    - dj-wasabi.telegraf

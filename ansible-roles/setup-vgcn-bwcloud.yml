@@ -8,60 +8,59 @@
     - "group_vars/grub.yml"
     - "group_vars/pulsar.yml"
     - "group_vars/condor.yml"
+    - "secret_group_vars/all.yml"
   pre_tasks:
     - name: system update
       ansible.builtin.dnf:
-        name: '*'
+        name: "*"
         state: latest
         exclude: condor*
     - name: Install Pulsar dependencies
-      become: yes
-      ansible.builtin.dnf:
-        state: latest
+      package:
         name:
           - git
-          - python36
-          - python3-devel
-          - python3-virtualenv
-          - python38
-          - python38-devel
-          - gcc
-          - curl
+          - virtualenv
+          - python3
+      become: true
+      when: ansible_os_family == 'Debian'
+    - name: Install Pulsar dependencies
+      package:
+        name:
+          - git
+          - python36-virtualenv
+          - python3
+        state: present
+      become: true
+      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 8
+    - name: Install Pulsar dependencies
+      package:
+        name:
+          - git
           - libcurl-devel
-          - openssl-devel
+          - python-devel
+        state: present
+      become: true
+      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 9
     - name: Set default version of Python
       ansible.builtin.alternatives:
         name: python
         path: /usr/bin/python3
+        link: /usr/bin/python
     - name: Disable SELinux.
       ansible.builtin.lineinfile:
         path: /etc/selinux/config
-        regexp: '^SELINUX='
+        regexp: "^SELINUX="
         line: SELINUX=disabled
     - name: "Deploy docker-stop-1M script"
       ansible.builtin.copy:
         content: |
-            #!/bin/bash
-            docker ps -f status=running --format '{{ '{{' }}.ID}}: {{ '{{' }}.RunningFor}}' | awk '/months/ && $2 > 1 { print $0 }'|cut -f1 -d':' | xargs docker stop
+          #!/bin/bash
+          docker ps -f status=running --format '{{ '{{' }}.ID}}: {{ '{{' }}.RunningFor}}' | awk '/months/ && $2 > 1 { print $0 }'|cut -f1 -d':' | xargs docker stop
         dest: /usr/bin/docker-stop-1M
         owner: root
         group: root
         mode: 0755
   post_tasks:
-    - name: galaxy account group
-      ansible.builtin.group:
-        gid: "{{ galaxy_gid }}"
-        name: galaxy
-        state: present
-    - name: galaxy account user
-      ansible.builtin.user:
-        uid: "{{ galaxy_uid }}"
-        name: galaxy
-        group: galaxy
-        home: /opt/galaxy
-        state: present
-        comment: Galaxy Service-Acct
-        createhome: no
     - ansible.builtin.user:
         name: galaxy
         groups: condor,docker
@@ -79,12 +78,12 @@
       ansible.builtin.copy:
         src: daemon.json
         dest: /etc/docker/daemon.json
-        mode: '0644'
+        mode: "0644"
     - name: Restart Docker service, in all cases
       ansible.builtin.service:
         name: docker
         state: restarted
-    - name: Disable firewalld service
+    - name: Disable firewalld service # activate if its running (!)
       ansible.builtin.systemd:
         name: firewalld
         enabled: no
@@ -103,14 +102,15 @@
     - role: usegalaxy_eu.handy.os_setup
       vars:
         enable_powertools: true # geerlingguy.repo-epel role doesn't enable PowerTools repository
-        enable_remap_user: false
+        enable_remap_user: true
         enable_kernel_5: true
         enable_pam_limits: true
         enable_grub: true
-        enable_cgroups: true
+        enable_cgroups: "{{ false if ansible_facts['distribution_major_version'] == '9' else true }}"
         enable_journald: true
         enable_install_software: true
         enable_ansible_root_cron: false
+        enable_create_user: true
 
     - usegalaxy-eu.autofs
     - usegalaxy-eu.dynmotd
@@ -120,8 +120,10 @@
 
     - usegalaxy_eu.htcondor
 
-    - dj-wasabi.telegraf
     - influxdata.chrony
+    - name: dj-wasabi.telegraf
+      vars:
+        telegraf_yum_gpgkey: "https://repos.influxdata.com/influxdata-archive_compat.key"
 
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
@@ -129,7 +131,7 @@
     - role: usegalaxy_eu.handy.os_setup
       vars:
         enable_powertools: false # geerlingguy.repo-epel role doesn't enable PowerTools repository
-        enable_remap_user: true  # needs to be at the end, otherwise dnsmasq will occupy 999 slot
+        enable_remap_user: true # needs to be at the end, otherwise dnsmasq will occupy 999 slot
         enable_kernel_5: false
         enable_pam_limits: false
         enable_grub: false
