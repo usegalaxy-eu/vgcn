@@ -74,6 +74,11 @@
           - libcurl-devel
           - openssl-devel
       become: yes
+    - name: Ensure Docker directory extists
+      file:
+        state: directory
+        path: /etc/docker
+        mode: 0755
     - name: Copy Docker daemon.json
       ansible.builtin.copy:
         src: daemon.json
