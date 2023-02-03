@@ -79,15 +79,11 @@
         state: directory
         path: /etc/docker
         mode: '0755'
-        user: root
-        group: root
     - name: Copy Docker daemon.json
       ansible.builtin.copy:
         src: daemon.json
         dest: /etc/docker/daemon.json
         mode: '0644'
-        user: root
-        group: root
     - name: Restart Docker service, in all cases
       ansible.builtin.service:
         name: docker
