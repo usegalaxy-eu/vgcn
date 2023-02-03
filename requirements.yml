@@ -26,14 +26,15 @@ roles:
     name: usegalaxy-eu.dynmotd
     version:
       0.0.1
-  - src: usegalaxy_eu.htcondor
-    version: 2.0.1
+  - name: usegalaxy_eu.htcondor
+    src: https://github.com/usegalaxy-eu/ansible-htcondor
+    version: main
   - src: geerlingguy.repo-epel
     version: 3.1.0
   - src: geerlingguy.java
     version: 2.2.0
   - src: galaxyproject.cvmfs
-    version: 0.2.20
+    version: 0.2.21
   - src: https://github.com/usegalaxy-eu/ansible-autofs
     name: usegalaxy-eu.autofs
     version: 1.0.0
