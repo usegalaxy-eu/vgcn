@@ -135,9 +135,5 @@ software_groups_to_install:
 ## kernel_5
 kernel_5_package: kernel-ml
 
-#docker_daemon_options:  
-#  graph: "/scratch/docker"
-#  dns:
-#    - "8.8.8.8"
-#    - "8.8.4.4"
+docker_daemon_options: {}
 
