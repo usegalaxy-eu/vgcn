@@ -26,8 +26,8 @@ roles:
     name: usegalaxy-eu.dynmotd
     version:
       0.0.1
-      #- src: usegalaxy_eu.htcondor
-      #version: 1.0.1
+  - src: usegalaxy_eu.htcondor
+    version: 2.0.0
   - src: geerlingguy.repo-epel
     version: 3.1.0
   - src: geerlingguy.java
