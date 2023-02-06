@@ -137,7 +137,7 @@ cloud_cleanup:
 
 deps:
 	mkdir -p $(ANSIBLE_DIR)
-	ansible-galaxy install -p $(ANSIBLE_DIR) -r --force requirements.yml
+	ansible-galaxy install -p $(ANSIBLE_DIR) --force -r requirements.yml
 	mkdir -p $(ANSIBLE_DIR)/collections
 	ansible-galaxy collection install -p $(ANSIBLE_DIR)/collections -r requirements.yml
 
