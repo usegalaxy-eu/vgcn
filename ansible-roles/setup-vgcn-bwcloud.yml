@@ -8,7 +8,6 @@
     - "group_vars/grub.yml"
     - "group_vars/pulsar.yml"
     - "group_vars/condor.yml"
-    - "secret_group_vars/all.yml"
   pre_tasks:
     - name: system update
       ansible.builtin.dnf:
