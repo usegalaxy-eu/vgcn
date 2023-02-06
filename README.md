@@ -88,6 +88,8 @@ We have listed the versions we use, but other versions may work.
 | qemu                                           | 2.5.0      |
 
 ## Building This Yourself
+Create a python virtual environment using python 3.9 and install the requirements.txt
+This ensures you get the correct ansible version, because some commands might fail otherwise.
 
 All of the images are designed to be as generic as possible so you can use them
 as-is. We will provide built images, but if you wish to build them yourself,
