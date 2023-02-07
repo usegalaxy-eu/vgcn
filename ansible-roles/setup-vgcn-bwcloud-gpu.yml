@@ -139,6 +139,7 @@
     - usegalaxy_eu.cuda
     - usegalaxy_eu.nvidia_container
 
+    - usegalaxy-eu.logrotate
     - role: usegalaxy_eu.handy.os_setup
       vars:
         enable_powertools: false # geerlingguy.repo-epel role doesn't enable PowerTools repository
