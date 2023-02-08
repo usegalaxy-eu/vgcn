@@ -122,8 +122,6 @@
     - geerlingguy.java
     - geerlingguy.docker
 
-    - usegalaxy_eu.htcondor
-
     - influxdata.chrony
     - name: dj-wasabi.telegraf
       vars:
