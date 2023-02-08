@@ -4,6 +4,7 @@
     internal: true
   vars_files:
     - "group_vars/all.yml"
+    - "secret_group_vars/internal.yml"
   pre_tasks:
     - name: Copy server key into VM temporarily
       copy:
