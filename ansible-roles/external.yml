@@ -7,5 +7,6 @@
       vars:
         condor_role: ""
         condor_enforce_role: false
+        condor_copy_template: false
     - lock-root
     - cloudinit
