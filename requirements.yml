@@ -27,8 +27,7 @@ roles:
     version:
       0.0.1
   - name: usegalaxy_eu.htcondor
-    src: https://github.com/mira-miracoli/ansible-htcondor
-    version: main
+    version: 2.1.0
   - src: geerlingguy.repo-epel
     version: 3.1.0
   - src: geerlingguy.java
