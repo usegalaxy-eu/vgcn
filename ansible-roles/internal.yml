@@ -22,5 +22,6 @@
         - ecdsa
         - ed25519
   roles:
+    - usegalaxy_eu.htcondor
     - lock-root
     - cloudinit
