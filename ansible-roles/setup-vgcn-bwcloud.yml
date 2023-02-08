@@ -87,11 +87,11 @@
       ansible.builtin.service:
         name: docker
         state: restarted
-    - name: Disable firewalld service # activate if its running (!)
-      ansible.builtin.systemd:
-        name: firewalld
-        enabled: no
-        state: stopped
+    #- name: Disable firewalld service # activate if its running (!)
+    #  ansible.builtin.systemd:
+    #    name: firewalld
+    #    enabled: no
+    #    state: stopped
     - name: Deploy a signal emitter for telegraf
       ansible.builtin.copy:
         content: |
