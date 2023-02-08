@@ -3,5 +3,9 @@
   vars_files:
     - "group_vars/all.yml"
   roles:
+    - role: usegalaxy_eu.htcondor
+      vars:
+        condor_role: ""
+        condor_enforce_role: false
     - lock-root
     - cloudinit
