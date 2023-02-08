@@ -96,11 +96,6 @@
       ansible.builtin.service:
         name: docker
         state: restarted
-    - name: Disable firewalld service
-      ansible.builtin.systemd:
-        name: firewalld
-        enabled: no
-        state: stopped
     - name: Deploy a signal emitter for telegraf
       ansible.builtin.copy:
         content: |
@@ -128,8 +123,6 @@
 
     - geerlingguy.java
     - geerlingguy.docker
-
-    - usegalaxy_eu.htcondor
 
     - influxdata.chrony
     - dj-wasabi.telegraf

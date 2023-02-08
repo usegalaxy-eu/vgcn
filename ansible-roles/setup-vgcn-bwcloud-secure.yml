@@ -130,8 +130,6 @@
     - geerlingguy.java
     - geerlingguy.docker
 
-    - usegalaxy_eu.htcondor
-
     - influxdata.chrony
     - dj-wasabi.telegraf
 
