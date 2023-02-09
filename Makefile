@@ -17,7 +17,7 @@ endif
 ANSIBLE_DIR=ansible-roles
 # the "provisioning" flavor, expects a 'setup-<flavor>.yml' playbook
 # in the 'ansible-roles' submodule! This will likely change...
-FLAVORS = vgcn-bwcloud vgcn-bwcloud-gpu vgcn-bwcloud-secure jenkins generic
+FLAVORS = vgcn-bwcloud vgcn-bwcloud-gpu jenkins generic
 SUPPORTED_BUILDERS = qemu
 # check which hypervisors are available
 ifeq ($(shell which qemu-system-$(shell uname -m | sed 's/i686/i386/') 2>&1 > /dev/null && echo $$?), 0)
