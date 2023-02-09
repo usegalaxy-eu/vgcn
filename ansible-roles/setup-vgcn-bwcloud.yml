@@ -45,11 +45,11 @@
         name: python
         path: /usr/bin/python3
         link: /usr/bin/python
-    - name: Disable SELinux.
+    - name: Set SELINUX to permissive
       ansible.builtin.lineinfile:
         path: /etc/selinux/config
         regexp: "^SELINUX="
-        line: SELINUX=disabled
+        line: SELINUX=permissive
     - name: "Deploy docker-stop-1M script"
       ansible.builtin.copy:
         content: |
@@ -118,9 +118,7 @@
     - geerlingguy.docker
 
     - influxdata.chrony
-    - name: dj-wasabi.telegraf
-      vars:
-        telegraf_yum_gpgkey: "https://repos.influxdata.com/influxdata-archive_compat.key"
+    - dj-wasabi.telegraf
 
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
