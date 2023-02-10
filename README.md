@@ -37,6 +37,7 @@ Development happens into the __dev__ branch, images are built from __main__ bran
     - ADDED: FS limit for condor.service (250GB soft, 1 TB hard)
     - ADDED: UID and GID 999 will be remapped to make it available for galaxy (updated handy_os role)
     - REMOVED: HTCondor removed from public images (see for reason above)
+    - REMOVED: CentOS 7 support
     - MODIFIED: moved to Rocky Linux 9
     - MODIFIED: SELinux on permissive by default; the secure target bacame obsolete
     - MODIFIED: updated Telegraf to version 1.18.2
@@ -68,6 +69,7 @@ Development happens into the __dev__ branch, images are built from __main__ bran
 ## Makefile
 
 We include a makefile that should build the images, running `make` will inform you of the available targets:
+Please make sure to build the rockylinux-9.x-86_64/vgcn-bwcloud(-gpu)-**external** as last step.
 
 ```console
 $ make
@@ -77,18 +79,21 @@ Detected builders:
 Base images:
         centos-8.x-x86_64/base
         rockylinux-8.x-x86_64/base
-        centos-7.x-x86_64/base
+        rockylinux-9.x-x86_64/base
 
 Provisioning:
         centos-8.x-x86_64/vgcn-bwcloud
+        centos-8.x-x86_64/vgcn-bwcloud-gpu
         centos-8.x-x86_64/jenkins
         centos-8.x-x86_64/generic
         rockylinux-8.x-x86_64/vgcn-bwcloud
+        rockylinux-8.x-x86_64/vgcn-bwcloud-gpu
         rockylinux-8.x-x86_64/jenkins
         rockylinux-8.x-x86_64/generic
-        centos-7.x-x86_64/vgcn-bwcloud
-        centos-7.x-x86_64/jenkins
-        centos-7.x-x86_64/generic
+        rockylinux-9.x-x86_64/vgcn-bwcloud
+        rockylinux-9.x-x86_64/vgcn-bwcloud-gpu
+        rockylinux-9.x-x86_64/jenkins
+        rockylinux-9.x-x86_64/generic
 ```
 
 ## Dependencies
@@ -97,13 +102,13 @@ We have listed the versions we use, but other versions may work.
 
 | Component                                      | Version    |
 |------------------------------------------------|------------|
-| [Packer](https://www.packer.io/downloads.html) | 1.0.4      |
-| Ansible                                        | >= 2.4.3.0 |
-| qemu                                           | 2.5.0      |
+| [Packer](https://www.packer.io/downloads.html) | 1.8.5      |
+| Ansible (Community version number)             | >= 6.7.0   |
+| qemu                                           | 7.0.0      |
 
 ## Building This Yourself
-Create a python virtual environment using python 3.9 and install the requirements.txt
-This ensures you get the correct ansible version, because some commands might fail otherwise.
+Create a python virtual environment using python >= 3.9 and install the requirements.txt
+This ensures you get the correct ansible and packer version, because some commands might fail otherwise.
 
 All of the images are designed to be as generic as possible so you can use them
 as-is. We will provide built images, but if you wish to build them yourself,
