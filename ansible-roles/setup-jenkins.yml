@@ -20,27 +20,37 @@
       ansible.builtin.dnf:
         name: '*'
         state: latest
-    - name: Install some dependencies
-      become: yes
-      ansible.builtin.dnf:
-        state: latest
+    - name: Install dependencies
+      package:
         name:
           - git
-          - python38
-          - python3-devel
-          - python3-virtualenv
-          - gcc
-          - curl
+          - virtualenv
+          - python3
+      become: true
+      when: ansible_os_family == 'Debian'
+    - name: Install dependencies
+      package:
+        name:
+          - git
+          - python36-virtualenv
+          - python3
+        state: present
+      become: true
+      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 8
+    - name: Install dependencies
+      package:
+        name:
+          - git
           - libcurl-devel
-          - openssl-devel
-          - qemu-kvm
-          - qemu-img
-          - unzip
-          - seabios
+          - python-devel
+        state: present
+      become: true
+      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 9
     - name: Set default version of Python
       ansible.builtin.alternatives:
         name: python
-        path: /usr/bin/python3.8
+        path: /usr/bin/python3
+        link: /usr/bin/python
     - name: Ensure SELinux is set to enforcing mode
       ansible.builtin.lineinfile:
         path: /etc/selinux/config
@@ -48,17 +58,18 @@
         line: SELINUX=enforcing
 
   post_tasks:
-    - name: Set default version of Python
+    - name: Set default version of Java
       ansible.builtin.alternatives:
         name: java
         link: /usr/bin/java
         path: /usr/lib/jvm/java-11-openjdk/bin/java
 
     - name: Download packer
-      ansible.builtin.shell: wget https://releases.hashicorp.com/packer/1.7.10/packer_1.7.10_linux_amd64.zip -O /tmp/packer.zip
+      ansible.builtin.command: yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
 
     - name: Extract packer
-      ansible.builtin.shell: unzip /tmp/packer.zip -d /usr/bin
+      ansible.builtin.yum:
+        name: packer
 
     - name: Adding existing user centos to group kvm
       ansible.builtin.user:
@@ -85,6 +96,6 @@
     - usegalaxy-eu.dynmotd
     - geerlingguy.java
     - geerlingguy.docker
-    - dj-wasabi.telegraf
     - influxdata.chrony
+    - dj-wasabi.telegraf
 

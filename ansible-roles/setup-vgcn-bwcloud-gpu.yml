@@ -28,10 +28,23 @@
           - curl
           - libcurl-devel
           - openssl-devel
+      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 8
+    - name: Install Pulsar dependencies
+      package:
+        name:
+          - gcc
+          - curl
+          - git
+          - libcurl-devel
+          - python-devel
+        state: present
+      become: true
+      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 9
     - name: Set default version of Python
       ansible.builtin.alternatives:
         name: python
         path: /usr/bin/python3
+        link: /usr/bin/python
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.builtin.lineinfile:
         path: /etc/selinux/config
@@ -74,6 +87,11 @@
           - libcurl-devel
           - openssl-devel
       become: yes
+    - name: Ensure Docker directory extists
+      file:
+        state: directory
+        path: /etc/docker
+        mode: '0755'
     - name: Copy Docker daemon.json
       ansible.builtin.copy:
         src: daemon.json
@@ -83,11 +101,6 @@
       ansible.builtin.service:
         name: docker
         state: restarted
-    - name: Disable firewalld service
-      ansible.builtin.systemd:
-        name: firewalld
-        enabled: no
-        state: stopped
     - name: Deploy a signal emitter for telegraf
       ansible.builtin.copy:
         content: |
@@ -102,10 +115,10 @@
     - role: usegalaxy_eu.handy.os_setup
       vars:
         enable_powertools: true # geerlingguy.repo-epel role doesn't enable PowerTools repository
-        enable_remap_user: false
+        enable_remap_user: true
         enable_pam_limits: true
         enable_grub: true
-        enable_cgroups: true
+        enable_cgroups: false
         enable_journald: true
         enable_install_software: true
         enable_ansible_root_cron: false
@@ -116,16 +129,15 @@
     - geerlingguy.java
     - geerlingguy.docker
 
-    - usegalaxy_eu.htcondor
-
-    - dj-wasabi.telegraf
     - influxdata.chrony
+    - dj-wasabi.telegraf
 
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
     - usegalaxy_eu.cuda
     - usegalaxy_eu.nvidia_container
 
+    - usegalaxy-eu.logrotate
     - role: usegalaxy_eu.handy.os_setup
       vars:
         enable_powertools: false # geerlingguy.repo-epel role doesn't enable PowerTools repository

@@ -1,4 +1,4 @@
 { 
-    "graph": "/scratch/docker",
+    "data-root": "/scratch/docker",
     "dns": ["8.8.8.8", "8.8.4.4"]
 }

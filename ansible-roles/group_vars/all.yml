@@ -10,8 +10,7 @@ galaxy_gid: 999
 
 replace_non_galaxy_999: true
 
-telegraf_agent_version: 1.17.2
-telegraf_agent_output: {}
+telegraf_agent_package_state: latest
 telegraf_agent_tags:
   - tag_name: datacenter
     tag_value: rz
@@ -128,3 +127,6 @@ software_groups_to_install:
 
 ## kernel_5
 kernel_5_package: kernel-ml
+
+docker_daemon_options: {}
+

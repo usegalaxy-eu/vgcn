@@ -1,6 +1,7 @@
 pulsar_package_name: pulsar-app
 pulsar_package_version: 0.14.13
 
+pulsar_virtualenv_command: "python -m venv"
 pulsar_root: /opt/pulsar
 pulsar_persistence_dir: /data/share/persisted_data
 pulsar_staging_dir: /data/share/staging
@@ -15,7 +16,6 @@ pulsar_systemd: true
 pulsar_systemd_enabled: false
 pulsar_systemd_runner: webless
 
-pulsar_virtualenv_command: virtualenv-3
 
 pulsar_separate_privileges: false
 pulsar_create_user: true
