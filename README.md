@@ -69,7 +69,6 @@ Development happens into the __dev__ branch, images are built from __main__ bran
 ## Makefile
 
 We include a makefile that should build the images, running `make` will inform you of the available targets:
-Please make sure to build the rockylinux-9.x-86_64/vgcn-bwcloud(-gpu)-**external** as last step.
 
 ```console
 $ make
@@ -95,7 +94,15 @@ Provisioning:
         rockylinux-9.x-x86_64/jenkins
         rockylinux-9.x-x86_64/generic
 ```
-
+To build the VGCN-bwcloud Image with Rocky 9, execute the following steps:
+```bash
+make rockylinux-9.x-x86_64/base
+make rockylinux-9.x-x86_64/vgcn-bwcloud
+make rockylinux-9.x-x86_64/vgcn-bwcloud-external
+```
+```diff
+! Please make sure to build the rockylinux-9.x-86_64/vgcn-bwcloud(-gpu)-external as last step. The image does not work as expected otherwise.
+```
 ## Dependencies
 
 We have listed the versions we use, but other versions may work.
