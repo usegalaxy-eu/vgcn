@@ -46,6 +46,8 @@
       dest: /etc/cloud/cloud.cfg
       block: |
         runcmd:
+          - [ firewall-cmd, --permanent, --add-port=2049/tcp ]
+          - [ firewall-cmd, --reload ]
           - [ sh, -xc, "sed -i 's|nameserver 10.0.2.3||g' /etc/resolv.conf" ]
           - [ sh, -xc, "sed -i 's|localhost.localdomain|$(hostname -f)|g' /etc/telegraf/telegraf.conf" ]
           - systemctl restart telegraf
