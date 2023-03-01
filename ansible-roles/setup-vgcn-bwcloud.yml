@@ -70,6 +70,10 @@
         - nfs
         - rpc-bind
         - mountd
+    - name: Restart Autofs
+      ansible.builtin.service:
+        name: autofs
+        state: restarted
     - ansible.builtin.user:
         name: galaxy
         groups: condor,docker
