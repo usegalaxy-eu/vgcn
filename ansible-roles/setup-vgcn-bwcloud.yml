@@ -1,6 +1,6 @@
 # Setup for Virtual Galaxy Compute Node
-# This setup is valid for RHEL 8.x based systems.
-# It has SELinux disabled and Meltdown, Spectre patches off
+# This setup is valid for RHEL 9.x based systems.
+# It has SELinux permissive and firewalld enabled
 ---
 - hosts: default
   vars_files:
@@ -60,6 +60,20 @@
         group: root
         mode: 0755
   post_tasks:
+    - name: Add firewall rules for NFS
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        state: enabled
+        permanent: true
+        immediate: true
+      with_items:
+        - nfs
+        - rpc-bind
+        - mountd
+    - name: Restart Autofs
+      ansible.builtin.service:
+        name: autofs
+        state: restarted
     - ansible.builtin.user:
         name: galaxy
         groups: condor,docker

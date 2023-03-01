@@ -60,6 +60,20 @@
         group: root
         mode: 0755
   post_tasks:
+    - name: Add firewall rules for NFS
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        state: enabled
+        permanent: true
+        immediate: true
+      with_items:
+        - nfs
+        - rpc-bind
+        - mountd
+    - name: Restart Autofs
+      ansible.builtin.service:
+        name: autofs
+        state: restarted
     - name: galaxy account group
       ansible.builtin.group:
         gid: "{{ galaxy_gid }}"
