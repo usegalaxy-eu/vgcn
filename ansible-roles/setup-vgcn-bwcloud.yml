@@ -1,6 +1,6 @@
 # Setup for Virtual Galaxy Compute Node
-# This setup is valid for RHEL 8.x based systems.
-# It has SELinux disabled and Meltdown, Spectre patches off
+# This setup is valid for RHEL 9.x based systems.
+# It has SELinux permissive and firewalld enabled
 ---
 - hosts: default
   vars_files:
