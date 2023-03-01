@@ -60,6 +60,16 @@
         group: root
         mode: 0755
   post_tasks:
+    - name: Add firewall rules for NFS
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        state: enabled
+        permanent: true
+        immediate: true
+      with_items:
+        - nfs
+        - rpc-bind
+        - mountd
     - ansible.builtin.user:
         name: galaxy
         groups: condor,docker
