@@ -22,11 +22,11 @@
       ansible.posix.selinux:
         policy: targeted
         state: permissive
-    - name: Disable firewalld service
+    - name: Enable firewalld service
       ansible.builtin.systemd:
         name: firewalld
-        enabled: no
-        state: stopped
+        enabled: true
+        state: started
 
   roles:
     - role: usegalaxy_eu.handy.os_setup
