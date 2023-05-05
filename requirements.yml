@@ -1,7 +1,7 @@
 ---
 collections:
   - name: usegalaxy_eu.handy
-    version: 2.11.1
+    version: 2.2.0
     source: https://galaxy.ansible.com
   - name: ansible.posix
     version: 1.5.1

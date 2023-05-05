@@ -113,6 +113,10 @@ ansible_root_cron:
     minute: "{{ 60 | random }}"
     hour: "{{ 5 | random }}"
     job: "/usr/bin/docker-stop-1M"
+  - name: "Vacuum logs older than 7 days"
+    minute: "{{ 15 | random }}"
+    hour: "{{ 2 | random }}"
+    job: '/usr/bin/journalctl --vacuum-time="7 days"'
 
 ## packages
 software_groups_to_install:
