@@ -2,37 +2,49 @@
 # This setup is valid for RHEL 9.x based systems.
 # It has SELinux permissive and firewalld enabled
 ---
-- hosts: default
+- name: Setup VGCN compute node
+  hosts: default
   vars_files:
     - "group_vars/all.yml"
     - "group_vars/grub.yml"
     - "group_vars/pulsar.yml"
     - "group_vars/condor.yml"
   pre_tasks:
-    - name: system update
+    - name: System update
       ansible.builtin.dnf:
         name: "*"
         state: latest
         exclude: condor*
     - name: Install Pulsar dependencies
-      package:
+      ansible.builtin.package:
         name:
           - git
           - virtualenv
           - python3
+          - python3-pycurl
+          - yum
+          - openssl
+          - openssl-devel
+        state: present
       become: true
       when: ansible_os_family == 'Debian'
     - name: Install Pulsar dependencies
-      package:
+      ansible.builtin.package:
         name:
           - git
-          - python36-virtualenv
+          - python3-virtualenv
           - python3
+          - python3-pycurl
+          - yum
+          - libcurl-devel
+          - python3-libs
+          - openssl
+          - openssl-devel
         state: present
       become: true
       when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 8
     - name: Install Pulsar dependencies
-      package:
+      ansible.builtin.package:
         name:
           - git
           - libcurl-devel
@@ -41,7 +53,7 @@
       become: true
       when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 9
     - name: Set default version of Python
-      ansible.builtin.alternatives:
+      community.general.alternatives:
         name: python
         path: /usr/bin/python3
         link: /usr/bin/python
@@ -58,7 +70,7 @@
         dest: /usr/bin/docker-stop-1M
         owner: root
         group: root
-        mode: 0755
+        mode: '0755'
   post_tasks:
     - name: Add firewall rules for NFS
       ansible.posix.firewalld:
@@ -74,11 +86,13 @@
       ansible.builtin.service:
         name: autofs
         state: restarted
-    - ansible.builtin.user:
+    - name: Add groups to Galaxy user
+      ansible.builtin.user:
         name: galaxy
         groups: condor,docker
-        append: yes
-    - ansible.builtin.dnf:
+        append: true
+    - name: Remove packages
+      ansible.builtin.dnf:
         name: "{{ packages }}"
         state: absent
       vars:
@@ -86,9 +100,9 @@
           - gcc
           - libcurl-devel
           - openssl-devel
-      become: yes
+      become: true
     - name: Ensure Docker directory extists
-      file:
+      ansible.builtin.file:
         state: directory
         path: /etc/docker
         mode: '0755'
@@ -109,7 +123,7 @@
         dest: /bin/iamalive
         owner: telegraf
         group: telegraf
-        mode: 0755
+        mode: '0755'
   roles:
     - geerlingguy.repo-epel # Install EPEL
     - role: usegalaxy_eu.handy.os_setup
@@ -127,13 +141,10 @@
 
     - usegalaxy-eu.autofs
     - usegalaxy-eu.dynmotd
-
     - geerlingguy.java
     - geerlingguy.docker
-
     - influxdata.chrony
     - dj-wasabi.telegraf
-
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
     - usegalaxy-eu.logrotate
@@ -151,7 +162,7 @@
 
     # Applies a 250GB soft and 1TB hard limit on the file size for the condor systemd unit
     - role: usegalaxy-eu.fslimit
-      become: yes
+      become: true
       vars:
         ulimit_fsize_unit: "condor.service"
         ulimit_fsize_soft: 268435456000
