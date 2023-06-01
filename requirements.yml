@@ -14,7 +14,7 @@ roles:
   - src: usegalaxy_eu.cuda
     version: 1.1.0
   - src: usegalaxy_eu.nvidia_container
-    version: 1.1.0
+    version: 1.2.0
   - src: geerlingguy.docker
     version: 6.1.0
   - src: https://github.com/usegalaxy-eu/ansible-chrony
@@ -27,7 +27,7 @@ roles:
     version:
       0.0.1
   - name: usegalaxy_eu.htcondor
-    version: 2.1.0
+    version: 2.2.0
   - src: geerlingguy.repo-epel
     version: 3.1.0
   - src: geerlingguy.java
@@ -43,5 +43,5 @@ roles:
   - name: usegalaxy-eu.fslimit
     src: https://github.com/usegalaxy-eu/ansible-fslimit
     version: main
-  - name: dj-wasabi.telegraf
-    version: 0.14.0
+  - name: usegalaxy-eu.telegraf
+    version: 0.14.1
