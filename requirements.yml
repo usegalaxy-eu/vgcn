@@ -44,4 +44,6 @@ roles:
     src: https://github.com/usegalaxy-eu/ansible-fslimit
     version: main
   - name: usegalaxy-eu.telegraf
+    src: https://github.com/usegalaxy-eu/ansible-telegraf
     version: 0.14.1
+
