@@ -82,6 +82,13 @@
         - nfs
         - rpc-bind
         - mountd
+        - name: Add firewall rules for NFS
+    - name: Open Port for HTCondor
+      ansible.posix.firewalld:
+        port: 9618/tcp
+        state: enabled
+        permanent: true
+        immediate: true
     - name: Restart Autofs
       ansible.builtin.service:
         name: autofs
