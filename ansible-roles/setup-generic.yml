@@ -40,4 +40,4 @@
     - usegalaxy-eu.autoupdates  # keep all of our packages up to date
     - usegalaxy-eu.dynmotd
     - influxdata.chrony
-    - dj-wasabi.telegraf
+    - usegalaxy-eu.telegraf

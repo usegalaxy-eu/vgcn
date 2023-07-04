@@ -144,7 +144,7 @@
     - geerlingguy.docker
 
     - influxdata.chrony
-    - dj-wasabi.telegraf
+    - usegalaxy-eu.telegraf
 
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
