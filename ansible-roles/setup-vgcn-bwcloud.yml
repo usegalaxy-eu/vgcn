@@ -82,7 +82,6 @@
         - nfs
         - rpc-bind
         - mountd
-        - name: Add firewall rules for NFS
     - name: Open Port for HTCondor
       ansible.posix.firewalld:
         port: 9618/tcp
