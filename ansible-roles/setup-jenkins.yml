@@ -97,5 +97,4 @@
     - geerlingguy.java
     - geerlingguy.docker
     - influxdata.chrony
-    - dj-wasabi.telegraf
-
+    - usegalaxy-eu.telegraf
