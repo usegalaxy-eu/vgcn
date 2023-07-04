@@ -4,6 +4,7 @@
     internal: true
   vars_files:
     - "group_vars/all.yml"
+    - "group_vars/condor.yml"
     - "secret_group_vars/internal.yml"
   pre_tasks:
     - name: Copy server key into VM temporarily
@@ -22,6 +23,12 @@
         - rsa
         - ecdsa
         - ed25519
+    - name: Add core limit
+      community.general.pam_limits:
+        domain: galaxy
+        limit_type: hard
+        limit_item: core
+        value: 0
   roles:
     - usegalaxy_eu.htcondor
     - lock-root
