@@ -24,7 +24,6 @@
           - python3-pycurl
           - python3-devel
           - yum
-          - gcc
           - curl
           - libcurl-devel
           - python3-libs
