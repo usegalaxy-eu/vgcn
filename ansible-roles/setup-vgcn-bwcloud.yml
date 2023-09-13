@@ -146,17 +146,6 @@
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
     - usegalaxy-eu.logrotate
-    - role: usegalaxy_eu.handy.os_setup
-      vars:
-        enable_powertools: false # geerlingguy.repo-epel role doesn't enable PowerTools repository
-        enable_remap_user: true # needs to be at the end, otherwise dnsmasq will occupy 999 slot
-        enable_kernel_5: false
-        enable_pam_limits: false
-        enable_grub: false
-        enable_cgroups: false
-        enable_journald: false
-        enable_install_software: false
-        enable_ansible_root_cron: true
 
     # Applies a 250GB soft and 1TB hard limit on the file size for the condor systemd unit
     - role: usegalaxy-eu.fslimit
