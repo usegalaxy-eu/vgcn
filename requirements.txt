@@ -1,3 +1,2 @@
 ansible~=8.4
 ansible-core==2.15.4
-python-openstackclient~=6.2
