@@ -1,9 +1,5 @@
-# Setup for Virtual Galaxy Compute Node
-# This setup is valid for RHEL 9.x based systems.
-# It has SELinux permissive and firewalld enabled
 ---
-- name: Setup VGCN compute node
-  hosts: default
+- hosts: workers
   vars_files:
     - "group_vars/all.yml"
     - "group_vars/grub.yml"

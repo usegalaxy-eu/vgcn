@@ -12,8 +12,10 @@ packer_cache/
 *.box
 
 # End of https://www.gitignore.io/api/packer
-centos-7.3-x86_64
+
 .vault_pass
+.vault_password
 *.retry
 .venv
-centos-7.x-x86_64/
+
+.idea

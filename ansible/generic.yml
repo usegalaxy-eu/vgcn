@@ -1,8 +1,5 @@
-# Setup for generic node
-# This setup is valid for RHEL 7.x based systems.
 ---
-- hosts: default
-
+- hosts: generic
   vars:
     software_groups_to_install:
       - admin

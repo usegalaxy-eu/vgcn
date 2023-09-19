@@ -1,0 +1,20 @@
+# Meta-playbook that just imports all other playbooks.
+#
+# It defines the order in which playbooks should be run during the provisioning
+# step. Each playbook contains plays that only apply to hosts belonging to a
+# group with the same name. Therefore, individual playbooks can be turned on
+# and off via the "groups" variable defined in "templates/variables.pkr.hcl",
+# which can also be overriden form the command line each time packer is
+# launched.
+---
+- ansible.builtin.import_playbook: generic.yml
+
+- ansible.builtin.import_playbook: workers.yml
+
+- ansible.builtin.import_playbook: workers-gpu.yml
+
+- ansible.builtin.import_playbook: jenkins.yml
+
+- ansible.builtin.import_playbook: internal.yml
+
+- ansible.builtin.import_playbook: external.yml

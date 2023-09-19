@@ -1,5 +1,5 @@
 ---
-- hosts: default
+- hosts: internal
   vars:
     internal: true
   vars_files:

@@ -1,9 +1,0 @@
-{
-  "cpus": "2",
-  "boot_wait": "10s",
-  "disk_size": "10G",
-  "headless": "true",
-  "memory": "2048",
-  "ssh_timeout": "600m",
-  "ssh_username": "root"
-}
