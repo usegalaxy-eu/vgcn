@@ -5,6 +5,14 @@
     - "group_vars/grub.yml"
     - "group_vars/pulsar.yml"
     - "group_vars/condor.yml"
+  handlers:
+    - name: Reload HTCondor
+      when: "'condor_service' in service_facts.ansible_facts.services and \
+        service_facts.ansible_facts.services['condor.service'].state == 'running'"
+      become: true
+      ansible.builtin.service:
+        name: condor
+        state: reloaded
   pre_tasks:
     - name: System update
       ansible.builtin.dnf:
@@ -59,6 +67,23 @@
         owner: root
         group: root
         mode: '0755'
+    - name: Ensure the HTCondor configuration directory exists.
+      become: true
+      ansible.builtin.file:
+        path: /etc/condor
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+    - name: Condor walltime script
+      ansible.builtin.copy:
+        dest: /etc/condor/meta_walltime.py
+        src: meta_walltime.py
+        mode: "0755"
+      notify: Reload HTCondor
+    - name: Check if HTCondor is running.
+      ansible.builtin.service_facts:
+      register: service_facts
   post_tasks:
     - name: Add firewall rules for NFS
       ansible.posix.firewalld:
@@ -72,7 +97,7 @@
         - mountd
     - name: Open Port for HTCondor
       ansible.posix.firewalld:
-        port: 9618/tcp
+        port: "{{ htcondor_port }}/tcp"
         state: enabled
         permanent: true
         immediate: true
