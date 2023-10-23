@@ -1,130 +1,92 @@
-# Virtual Galaxy Compute Nodes (VGCN)
+# Virtual Galaxy Compute Nodes
 
-This repo contains all of the components required to build the "Virtual Galaxy
-Compute Nodes" (VGCN) that make up the HTCondor cloud used in UseGalaxy.eu
+[Galaxy Europe](https://usegalaxy.eu/) runs jobs on compute nodes belonging
+to the
+[bwCloud](https://www.bw-cloud.org/)/[de.NBI-cloud](https://www.denbi.de/).
+These compute nodes are known as "Virtual Galaxy Compute Nodes" (VGCN).
 
-Pre-built images are available here: [https://usegalaxy.eu/static/vgcn/](https://usegalaxy.eu/static/vgcn/)
+Virtual Galaxy Compute Nodes boot from VGCN images, which are built off this
+repository and made available as
+[GitHub releases](https://github.com/usegalaxy-eu/vgcn/releases) and on
+[this static site](https://usegalaxy.eu/static/vgcn/).
 
-## Features
+## Virtual Galaxy Compute Node images
 
-All in one image, a single image gets you:
+Virtual Galaxy Compute Node images contain everything needed to run
+Galaxy jobs.
 
-- Pulsar
-- NFS
-- CVMFS
-- Apptainer (former Singularity)
-- Docker
-- Telegraf
+- [Apptainer](https://apptainer.org/)
+- [CVMFS](https://cernvm.cern.ch/fs/)
+- [Docker](https://www.docker.com/)
+- [NFS](https://nfs.sourceforge.net/)
+- [Pulsar](https://github.com/galaxyproject/pulsar)
+- [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/)
 
-Everything you need to run Galaxy jobs. You can structure this in various ways that meet your needs:
+Each service can be further configured via
+[cloud-init](https://cloudinit.readthedocs.io/en/23.2.2/) scripts to meet 
+specific needs. A few setup ideas:
 
-- Like useGalaxy.eu: one VM as the condor master, another N as job runners
-- Like EU's remote clusters: one VM as the condor master + pulsar, another as NFS, and the rest as job runners
-- For BYOC: A single node that does condor master + pulsar + job execution
+- Like on usegalaxy.eu: one machine as the HTCondor master, the rest as job 
+  runners.
+- Like usegalaxy.eu's remote clusters: one machine as the HTCondor master and
+  pulsar server, another as NFS file server, the rest as job runners.
+- For "Bring Your own Compute" (BYOC) use cases: A single node that acts as
+  HTCondor master, Pulsar server, and job runner.
 
-**Important:** HTCondor has a new authentication mechanism, which uses passwords and tokens, generated automatically during startup. The easiest and least error-prone way to set this up is during [installation](https://htcondor.readthedocs.io/en/latest/getting-htcondor/admin-quick-start.html#administrative-quick-start-guide).  
+**Important:** HTCondor has a new authentication mechanism, which uses
+passwords and tokens, generated automatically during startup. The easiest and
+least error-prone way to set this up is during
+[installation](https://htcondor.readthedocs.io/en/latest/getting-htcondor/admin-quick-start.html#administrative-quick-start-guide).
+
 ```diff
 ! This is why we removed HTCondor from public images.
 ```
-You can easily install it and set up your password by adding the `execute` installation line from the link above to your cloud-init script. There you can set your own password and host. Both should be identical on all machines you use, the host is the hostname or IP address of your central manager - usually the node that accepts Pulsar requests. An implementation in [Pulsar-Infrastructure-Playbook](https://github.com/usegalaxy-eu/pulsar-infrastructure-playbook) is in progress.
-## Development
 
-Development happens into the __dev__ branch, images are built from __main__ branch.
+You can easily install it and set up your password by adding the `execute`
+installation line from the link above to your cloud-init script. There you can
+set your own password and host. Both should be identical on all machines you
+use, the host is the hostname or IP address of your central manager - usually
+the node that accepts Pulsar requests. An implementation in
+[Pulsar-Infrastructure-Playbook](https://github.com/usegalaxy-eu/pulsar-infrastructure-playbook)
+is in progress.
 
-## Changelog
+## Build instructions
 
-- 70:
-    - ADDED: FS limit for condor.service (250GB soft, 1 TB hard)
-    - ADDED: UID and GID 999 will be remapped to make it available for galaxy (updated handy_os role)
-    - REMOVED: HTCondor removed from public images (see for reason above)
-    - REMOVED: CentOS 7 support
-    - MODIFIED: moved to Rocky Linux 9
-    - MODIFIED: SELinux on permissive by default; the secure target bacame obsolete
-    - MODIFIED: updated Telegraf to version 1.18.2
-    - MODIFIED: Singularity is now Apptainer
-    - MODIFIED: Bumped Ansible to version 6.7.0
-- 60:
-    - MODIFIED: moved to Rocky Linux 8
-- 50:
-    - MODIFIED: updated Pulsar to version 0.14.11
-    - MODIFIED: moved to kernel 5.x
-- 40:
-    - ADDED: Nvidia driver
-    - ADDED: Cuda toolkit
-    - ADDED: GPU accelerated Docker containers support
-    - MODIFIED: moved to CENTOS8
-    - MODIFIED: updated Pulsar to version 0.14.0
-    - MODIFIED: updated HTCondor to version 8.8
-- 32:
-    - MODIFIED: Pulsar toward Py3
-- 31:
-    - ADDED: Pulsar
-    - ADDED: Fonts for some jobs
-    - ADDED: `at` daemon
-    - MODIFIED: Additional 'internal' and 'external' targets allowing us to include signed SSH host keys.
-    - REMOVED: vault
-    - REMOVED: roced
-- 21: Initial Release
+Make sure the following packages are installed on your system.
 
-## Makefile
+- [Packer](https://www.packer.io/downloads.html) >= 1.9.1, < 2
+- [QEMU](https://www.packer.io/downloads.html) >= 6.2, < 9
+- [Ansible](https://www.ansible.com/), see [requirements.txt](./requirements.txt)
 
-We include a makefile that should build the images, running `make` will inform you of the available targets:
+Run Packer to build the images.
 
-```console
-$ make
-General syntax: <template>/<flavor>[/boot]
-Detected builders:
-        qemu
-Base images:
-        centos-8.x-x86_64/base
-        rockylinux-8.x-x86_64/base
-        rockylinux-9.x-x86_64/base
-
-Provisioning:
-        centos-8.x-x86_64/vgcn-bwcloud
-        centos-8.x-x86_64/vgcn-bwcloud-gpu
-        centos-8.x-x86_64/jenkins
-        centos-8.x-x86_64/generic
-        rockylinux-8.x-x86_64/vgcn-bwcloud
-        rockylinux-8.x-x86_64/vgcn-bwcloud-gpu
-        rockylinux-8.x-x86_64/jenkins
-        rockylinux-8.x-x86_64/generic
-        rockylinux-9.x-x86_64/vgcn-bwcloud
-        rockylinux-9.x-x86_64/vgcn-bwcloud-gpu
-        rockylinux-9.x-x86_64/jenkins
-        rockylinux-9.x-x86_64/generic
-```
-To build the VGCN-bwcloud Image with Rocky 9, execute the following steps:
-```bash
-make rockylinux-9.x-x86_64/base
-make rockylinux-9.x-x86_64/vgcn-bwcloud
-make rockylinux-9.x-x86_64/vgcn-bwcloud-external
-```
-```diff
-! Please make sure to build the rockylinux-9.x-86_64/vgcn-bwcloud(-gpu)-external as last step. The image does not work as expected otherwise.
-```
-## Dependencies
-
-We have listed the versions we use, but other versions may work.
-
-| Component                                      | Version    |
-|------------------------------------------------|------------|
-| [Packer](https://www.packer.io/downloads.html) | 1.8.5      |
-| Ansible (Community version number)             | >= 6.7.0   |
-| qemu                                           | 7.0.0      |
-
-## Building This Yourself
-Create a python virtual environment using python >= 3.9 and install the requirements.txt
-This ensures you get the correct ansible and packer version, because some commands might fail otherwise.
-
-All of the images are designed to be as generic as possible so you can use them
-as-is. We will provide built images, but if you wish to build them yourself,
-you'll simply want to do:
-
-```
-make rockylinux-8.x-x86_64/vgcn-bwcloud
+```shell
+packer build \
+    -only=qemu.rockylinux-8.6-x86_64,qemu.rockylinux-9.2-x86_64 \
+    -var="headless=true" \
+    -var='groups=["generic", "workers", "external"]' \
+    templates
 ```
 
-## Running It
+- `-only=qemu.rockylinux-8.6-x86_64,qemu.rockylinux-9.2-x86_64`: selects the
+  underlying operating system on which the images will be based. One image will
+  be produced for each item. The argument can be omitted to produce images for
+  all supported operating systems. All builds use the
+  [QEMU builder](https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu),
+  hence the prefix. Supported operating systems are listed in
+  [build.pkr.hcl](templates/build.pkr.hcl).
+- `-var="headless=true"`: display the screen of the QEMU virtual machines used to build the images by
+  setting this variable to false.
+- `-var='groups=["generic", "workers", "external"]'`: Playbooks that the Packer
+  Ansible provisioner will run. VGCN standard images are built with the setting
+  `groups=["generic", "workers", "external"]`. Add `workers-gpu` to the list
+  to get the GPU images. Read the comments in 
+  [variables.pkr.hcl](templates/variables.pkr.hcl) for more details.
+- `templates`: the directory containing the Packer templates.
 
-Please see https://github.com/usegalaxy-eu/terraform/ for examples of how to launch and configure this.
+Once the images are built, they will be available in a new directory called
+"images".
+
+## Running VGCN images
+
+Please see [https://github.com/usegalaxy-eu/terraform/](https://github.com/usegalaxy-eu/terraform/) for examples of how to launch and configure this.

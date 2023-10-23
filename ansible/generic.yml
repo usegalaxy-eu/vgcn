@@ -1,0 +1,40 @@
+---
+- hosts: generic
+  vars:
+    software_groups_to_install:
+      - admin
+      - editors
+      - terminals
+      - utils
+
+  vars_files:
+    - "group_vars/all.yml"
+
+  pre_tasks:
+    - name: system update
+      ansible.builtin.dnf:
+        name: '*'
+        state: latest
+    - name: Put SELinux in permissive mode, logging actions that would be blocked.
+      ansible.posix.selinux:
+        policy: targeted
+        state: permissive
+    - name: Enable firewalld service
+      ansible.builtin.systemd:
+        name: firewalld
+        enabled: true
+        state: started
+
+  roles:
+    - role: usegalaxy_eu.handy.os_setup
+      vars:
+        enable_powertools: true
+        enable_install_software: true
+        enable_grub: true
+        enable_kernel_5: true
+
+    - geerlingguy.repo-epel # Install EPEL
+    - usegalaxy-eu.autoupdates  # keep all of our packages up to date
+    - usegalaxy-eu.dynmotd
+    - influxdata.chrony
+    - usegalaxy-eu.telegraf

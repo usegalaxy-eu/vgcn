@@ -1,0 +1,35 @@
+---
+- hosts: internal
+  vars:
+    internal: true
+  vars_files:
+    - "group_vars/all.yml"
+    - "group_vars/condor.yml"
+    - "secret_group_vars/internal.yml"
+  pre_tasks:
+    - name: Copy server key into VM temporarily
+      copy:
+        src: server_ca
+        dest: /tmp/server_ca
+        owner: root
+        group: root
+        mode: 0600
+    - name: Add HostCertificate options
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^HostKey /etc/ssh/ssh_host_{{ item }}_key"
+        line: "HostKey /etc/ssh/ssh_host_{{ item }}_key\nHostCertificate /etc/ssh/ssh_host_{{ item }}_key-cert.pub"
+      with_items:
+        - rsa
+        - ecdsa
+        - ed25519
+    - name: Add core limit
+      community.general.pam_limits:
+        domain: galaxy
+        limit_type: hard
+        limit_item: core
+        value: 0
+  roles:
+    - usegalaxy_eu.htcondor
+    - lock-root
+    - cloudinit
