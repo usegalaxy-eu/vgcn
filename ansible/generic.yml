@@ -31,7 +31,7 @@
         enable_powertools: true
         enable_install_software: true
         enable_grub: true
-        enable_kernel_5: false
+        enable_kernel_5: true
 
     - geerlingguy.repo-epel # Install EPEL
     - usegalaxy-eu.autoupdates  # keep all of our packages up to date
