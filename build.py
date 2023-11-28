@@ -11,56 +11,65 @@ import argparse
 import os
 import pathlib
 import subprocess
-import sys
 import time
 import datetime
-import yaml
 from conda.cli.python_api import Commands, run_command
 
 
 class Build:
-    def __init__(self, openstack: bool, template: str, conda_env: pathlib.Path(), packer_path: pathlib.Path(), provisioning: list[str]):
+    def __init__(self, openstack: bool, template: str, conda_env: pathlib.Path(), packer_path: pathlib.Path(), provisioning: [str], comment: str, publish: bool):
         self.OPENSTACK = openstack
         self.TEMPLATE = template
         self.OS = "-".join(template.split("-", 2)[:2])
+        self.comment = comment
+        self.PUBLISH = publish
         self.CONDA_ENV = conda_env
         self.provisioning = provisioning
-        self.PACKER_PATH = conda_env + \
+        self.PACKER_PATH = str(conda_env) + \
             "/bin/packer" if conda_env != None else str(packer_path)
 
     def dry_run(self):
-        print(self.assemble_packer_command)
+        print(self.assemble_packer_command())
+        print(self.assemble_name())
 
     def assemble_packer_command(self):
-        prov_str = ','.join(f'"{x}"' for x in provisioning)
-        cmd = self.CONDA_ENV
-        cmd = cmd + "/bin/packer"
-        cmd = "packer build " +\
-            "-only=" + self.TEMPLATE +\
-            '-var="headless=true"' +\
-            "-var='groups=[" + prov_str + "]'" +\
-            "templates"
-        return cmd
+        prov_str = ','.join(['"' + x + '"' for x in self.provisioning])
+        cmd = [str(self.PACKER_PATH)]
+        cmd += ["build"]
+        cmd += ["-var='conda_env="
+                + str(self.CONDA_ENV)
+                + "'"]
+        cmd += ["-only="
+                + self.TEMPLATE]
+        cmd += ['-var="headless=true"' +
+                "-var='groups=[" + prov_str + "]'"]
+        cmd += ["templates"]
+        return " ".join(cmd)
 
     def assemble_name(self):
-        name = "vgcn~"
-        pv = self.provisioning
+        name = ["vgcn"]
         if "generic" in self.provisioning:
-            name = name + "+".join(self.provisioning.remove("generic"))
+            prv = self.provisioning
+            prv.remove("generic")
+            name += ["+" + x for x in prv]
         else:
-            name = name + "!generic" + "+".join(self.provisioning)
-        name = name + self.OS
-        name = name + self.assemble_timestamp()
+            name += ["!generic+" + "+".join(self.provisioning)]
+        name += [self.OS]
+        name += [self.assemble_timestamp()]
+        name += [subprocess.check_output(['git', 'rev-parse',
+                                          '--abbrev-ref', 'HEAD']).decode('ascii').strip()]
+        name += [subprocess.check_output(['git', 'rev-parse',
+                                          '--short', 'HEAD']).decode('ascii').strip()]
+        if self.comment != None:
+            name += [self.comment]
+        return "~".join(name)
 
     # function that creates a string from the local date + seconds from midnight in the format YYYYMMDD-"seconds from midnight"
     def assemble_timestamp(self):
         today = datetime.date.today()
         seconds_since_midnight = time.time() - time.mktime(today.timetuple())
-        return today.strftime("%Y%m%d") + "-" + str(int(seconds_since_midnight))
+        return today.strftime("%Y%m%d") + "~" + str(int(seconds_since_midnight))
     # return string with the current seconds from midnight
-
-    def assemble_seconds(self):
-
 
     def execute_cmd(self):
         return subprocess.run(self.assemble_packer_command(), capture_output=True)
@@ -109,15 +118,13 @@ parser_delete.add_argument('action', choices=['delete'], help='action help')
 # Create the parser for the "build" command
 
 parser_build = subparsers.add_parser('build', help='build help')
-parser_build.add_argument('action', choices=['build'], help='action help')
-# the image argument is required and one of the automatically detected images in the templates folder
-# this script uses a function to automatically detect *.cfg files and strips the "-anaconda-ks.cfg" to make it a choice for the parser
-parser_build.add_argument('image', choices=[x[:-16] for x in os.listdir(
+
+parser_build.add_argument('image', choices=["-".join(x.split("-", 3)[:3]) for x in os.listdir(
     'templates') if x.endswith('-anaconda-ks.cfg')], help='image help')
 # another required positional argument is the provisioning. This are the ansible playbooks, which are located in the ansible folder
 # and are automatically detected by this script, the options are the file basenames
-parser_build.add_argument('provisioning', choices=[x[:-3] for x in os.listdir(
-    'ansible') if x.endswith('.yml')], help='provisioning help')
+parser_build.add_argument('provisioning', choices=[x.split(".", 1)[0] for x in os.listdir(
+    'ansible') if x.endswith('.yml')], help='provisioning help', nargs='+')
 # the --openstack option specifies if the image should be uploaded to openstack or not
 parser_build.add_argument('--openstack', action='store_true',
                           help='openstack help')
@@ -128,10 +135,42 @@ parser_build.add_argument('--publish', action='store_true',
 # and the resulting image file name according to the naming scheme
 parser_build.add_argument('--dry-run', action='store_true',
                           help='dry-run help')
+# The user has to specify either --conda-env or --packer-path
+# --conda-env specifies the conda environment to use
+parser_build.add_argument('--conda-env', type=pathlib.Path,
+                          help='conda-env help')
+# --packer-path specifies the path to the packer binary
+parser_build.add_argument('--packer-path', type=pathlib.Path,
+                          help='packer-path help')
+# --comment is an optional argument to add a comment to the image name
+parser_build.add_argument('--comment', type=str, help='comment help')
 
 # Execute the parse_args() method
 
 args = my_parser.parse_args()
+
+
+def main():
+    if args.subparser_name == 'env':
+        if args.action == 'install':
+            install_conda_env(args.name, args.file)
+        elif args.action == 'check':
+            check_conda_env()
+        elif args.action == 'delete':
+            delete_conda_env()
+    elif args.subparser_name == 'build':
+        if args.dry_run:
+            Build(args.openstack, args.image, args.conda_env,
+                  args.packer_path, args.provisioning, args.comment, args.publish).dry_run()
+        else:
+            Build(args.openstack, args.image, args.conda_env,
+                  args.packer_path, args.provisioning, args.comment, args.publish).build_image()
+    else:
+        print('No action specified')
+
+
+if __name__ == '__main__':
+    main()
 
 # Create a function to install the conda environment
 
@@ -167,6 +206,17 @@ def check_conda_env():
         print('The conda environment is not installed')
 
 # Create a function to delete the conda environment
+
+
+def get_active_branch_name():
+
+    head_dir = Path(".") / ".git" / "HEAD"
+    with head_dir.open("r") as f:
+        content = f.read().splitlines()
+
+    for line in content:
+        if line[0:4] == "ref:":
+            return line.partition("refs/heads/")[2]
 
 
 def delete_conda_env():
