@@ -1,7 +1,17 @@
 qemu/
 virtualbox-iso/
 vmware-iso/
-
+packer_plugins/
+ansible/collections
+ansible/roles/galaxyproject*
+ansible/roles/geerlingguy*
+ansible/roles/influxdata*
+ansible/roles/usegalaxy-eu.a*
+ansible/roles/usegalaxy_eu.*
+ansible/roles/usegalaxy-eu.c*
+ansible/roles/usegalaxy-eu.d*
+ansible/roles/usegalaxy-eu.f*
+ansible/roles/usegalaxy-eu.t*
 # Created by https://www.gitignore.io/api/packer
 
 ### Packer ###
