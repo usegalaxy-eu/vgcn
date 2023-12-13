@@ -34,56 +34,34 @@ my_parser = argparse.ArgumentParser(prog='build',
                                     description='Create a conda environment and build an image with packer')
 
 # Add the arguments
-
-
-# Create subparsers
-
-subparsers = my_parser.add_subparsers(
-    help='sub-command help', dest='subparser_name')
-
-# Create the parser for the "env" command
-parser_env = subparsers.add_parser('deps', help='env help')
-
-parser_env.add_argument(
-    'path', type=pathlib.Path, help='Absolute path to the conda environment. e.g. /home/foo/miniconda3/envs/vgcn \
-        If "install" is chosen, the script will assume the last part of the path as name.')
-
-parser_env.add_argument(
-    'env_action', choices=['install', 'delete'], help='\
-        "create will install packages specified in requirements.txt if it \
-        exists and create environment first otherwise')
-# Create the parser for the "build" command
-
-parser_build = subparsers.add_parser('build', help='build help')
-
-parser_build.add_argument('image', choices=["-".join(x.split("-", 3)[:3]) for x in os.listdir(
+my_parser.add_argument('image', choices=["-".join(x.split("-", 3)[:3]) for x in os.listdir(
     'templates') if x.endswith('-anaconda-ks.cfg')], help='image help')
 # another required positional argument is the provisioning. This are the ansible playbooks, which are located in the ansible folder
 # and are automatically detected by this script, the options are the file basenames
-parser_build.add_argument('provisioning', choices=[x.split(".", 1)[0] for x in os.listdir(
+my_parser.add_argument('provisioning', choices=[x.split(".", 1)[0] for x in os.listdir(
     'ansible') if x.endswith('.yml')], help='provisioning help', nargs='+')
 # --ansible-args lets the user pass additional args to the packer ansible provisioner, useful e.g. in case of ssh problems
-parser_build.add_argument('--ansible-args', type=str,
-                          help='e.g. --ansible-args="--scp-extra-args=-O" which activates SCP compatibility mode and might be needed on Fedora')
+my_parser.add_argument('--ansible-args', type=str,
+                       help='e.g. --ansible-args="--scp-extra-args=-O" which activates SCP compatibility mode and might be needed on Fedora')
 # the --openstack option specifies if the image should be uploaded to openstack or not
-parser_build.add_argument('--openstack', action='store_true',
-                          help='openstack help')
+my_parser.add_argument('--openstack', action='store_true',
+                       help='openstack help')
 # another option is to publish the image to /static/vgcn via scp
-parser_build.add_argument('--publish', type=pathlib.Path,
-                          help='specify the path to your ssh key for sn06')
+my_parser.add_argument('--publish', type=pathlib.Path,
+                       help='specify the path to your ssh key for sn06')
 # with the --dry-run option the script will only print the commands that would be executed
 # and the resulting image file name according to the naming scheme
-parser_build.add_argument('--dry-run', action='store_true',
-                          help='dry-run help')
+my_parser.add_argument('--dry-run', action='store_true',
+                       help='dry-run help')
 # The user has to specify either --conda-env or --packer-path
 # --conda-env specifies the conda environment to use
-parser_build.add_argument('--conda-env', type=pathlib.Path,
-                          help='conda-env help')
+my_parser.add_argument('--conda-env', type=pathlib.Path,
+                       help='conda-env help')
 # --packer-path specifies the path to the packer binary
-parser_build.add_argument('--packer-path', type=pathlib.Path,
-                          help='packer-path help')
+my_parser.add_argument('--packer-path', type=pathlib.Path,
+                       help='packer-path help')
 # --comment is an optional argument to add a comment to the image name
-parser_build.add_argument('--comment', type=str, help='comment help')
+my_parser.add_argument('--comment', type=str, help='comment help')
 
 # Execute the parse_args() method
 
@@ -136,31 +114,6 @@ def get_active_branch_name():
     for line in content:
         if line[0:4] == "ref:":
             return line.partition("refs/heads/")[2]
-
-
-class CondaEnv:
-    def __init__(self, path: pathlib.Path):
-        if path.is_file():
-            raise FileExistsError(
-                "The path you specified is a file, not a directory")
-        else:
-            self.env_path = path
-
-    def install(self):
-        install_cmd = ["-p", str(self.env_path), "--file",
-                       "requirements.txt", "-c", "conda-forge"]
-        try:
-            run_command(Commands.INSTALL, install_cmd)
-
-        except conda.exceptions.EnvironmentLocationNotFound:
-            run_command(Commands.CREATE, install_cmd)
-
-    def delete(self):
-        try:
-            run_command(Commands.REMOVE, "-p", str(self.env_path), "--all")
-        except conda.exceptions.EnvironmentLocationNotFound:
-            print(f"Environment {self.env_path} not found")
-
 
 # Create a function to build the image
 
@@ -257,28 +210,18 @@ class Build:
 
 
 def main():
-    if args.subparser_name == 'deps':
-        env = CondaEnv(args.path)
-        if args.env_action == 'install':
-            env.install()
-        elif args.env_action == 'delete':
-            env.delete()
-    elif args.subparser_name == 'build':
-        if args.dry_run:
-            Build(openstack=args.openstack, template=args.image, conda_env=args.conda_env,
-                  packer_path=args.packer_path, provisioning=args.provisioning, comment=args.comment, publish=args.publish).dry_run()
-        else:
-            image = Build(args.openstack, args.image, args.conda_env,
-                          args.packer_path, args.provisioning, args.comment, args.publish, ansible_args=args.ansible_args)
-            image.build()
-            image.convert()
-            if args.openstack:
-                image.upload_to_OS()
-            if args.publish:
-                image.publish()
-
+    if args.dry_run:
+        Build(openstack=args.openstack, template=args.image, conda_env=args.conda_env,
+              packer_path=args.packer_path, provisioning=args.provisioning, comment=args.comment, publish=args.publish).dry_run()
     else:
-        print('No action specified')
+        image = Build(args.openstack, args.image, args.conda_env,
+                      args.packer_path, args.provisioning, args.comment, args.publish, ansible_args=args.ansible_args)
+        image.build()
+        image.convert()
+        if args.openstack:
+            image.upload_to_OS()
+        if args.publish:
+            image.publish()
 
 
 if __name__ == '__main__':
