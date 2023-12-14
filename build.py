@@ -19,10 +19,6 @@ import datetime
 import signal
 import threading
 
-from keystoneauth1.identity import v3
-from keystoneauth1 import session
-from glanceclient import client
-
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -70,7 +66,7 @@ args = my_parser.parse_args()
 
 # Create a function to build the image
 
-
+# Spinner thanks to stackoverflow user victor-moyseenko
 class Spinner:
     busy = False
     delay = 0.1
@@ -151,12 +147,12 @@ def get_active_branch_name():
 
 
 class Build:
-    def __init__(self, openstack: bool, template: str, conda_env: pathlib.Path, packer_path: pathlib.Path, provisioning: [str], comment: str, publish: pathlib.Path, ansible_args: str):
+    def __init__(self, openstack: bool, template: str, conda_env: pathlib.Path, packer_path: pathlib.Path, provisioning: [str], comment: str, pvt_key: pathlib.Path, ansible_args: str):
         self.openstack = openstack
         self.template = template
         self.os = "-".join(template.split("-", 2)[:2])
         self.comment = comment
-        self.publish = publish
+        self.pvt_key = pvt_key
         self.conda_env = conda_env
         self.provisioning = provisioning
         self.ansible_args = ansible_args
@@ -193,6 +189,10 @@ class Build:
         cmd.append(str(self.image_path))
         return " ".join(cmd)
 
+    def assemble_os_command(self):
+        return ["openstack", "image", "create", "--file",
+                str(self.image_path), self.image_name]
+
     def assemble_packer_envs(self):
         env = os.environ.copy()
         env["PACKER_PLUGIN_PATH"] = DIR_PATH + "/packer_plugins"
@@ -221,7 +221,20 @@ class Build:
             name += [self.comment]
         return "~".join(name)
 
-    # function that creates a string from the local date + seconds from midnight in the format YYYYMMDD-"seconds from midnight"
+    def assemble_scp_command(self):
+        return ["scp", self.image_path,
+                "sn06.usegalaxy.eu:/data/dnb01/vgcn/" + os.path.basename(self.image_path)]
+
+    def assemble_ssh_command(self):
+        cmd = ["ssh"]
+        cmd.append("-i")
+        cmd.append(str(self.pvt_key))
+        cmd.append("sn06.galaxyproject.eu")
+        cmd.append("chmod")
+        cmd.append("ugo+r")
+        cmd.append("/data/dnb01/vgcn/" + os.path.basename(self.image_path))
+        return cmd
+
     def assemble_timestamp(self):
         today = datetime.date.today()
         seconds_since_midnight = time.time() - time.mktime(today.timetuple())
@@ -246,50 +259,29 @@ class Build:
             shutil.rmtree("./images")
 
     def upload_to_OS(self):
-        with Spinner():
-            try:
-                auth = v3.ApplicationCredential(
-                    application_credential_secret=os.environ[
-                        'OS_APPLICATION_CREDENTIAL_SECRET'],
-                    application_credential_id=os.environ[
-                        'OS_APPLICATION_CREDENTIAL_ID'],
-                    auth_url=os.environ['OS_AUTH_URL']
-                )
-            except KeyError:
-                raise Exception(
-                    f"Please source OpenStack Application Credentials file first")
+        execute_cmd("OPENSTACK IMAGE CREATE", subprocess.Popen(self.assemble_os_command(),
+                                                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True))
 
-            sess = session.Session(auth=auth)
-            print("CREATing OpenStack image...")
-            glance = client.Client('2', session=sess)
-            image = glance.images.create(name=self.image_name, is_public='False',
-                                         disk_format="raw", container_format="bare", data=os.path.basename(self.image_path))
-            print(f"CREATEd image with ID {image.id}")
-            print(f"UPLOADing image to OpenStack...")
-            glance.images.upload(
-                image.id, open(self.image_path, 'rb'))
-            print(f"===================== UPLOAD SUCCESSFUL =========================")
-
-    def publish(self):
-        scp_cmd = ["scp", self.image_path,
-                   "sn06.usegalaxy.eu:/data/dnb01/vgcn/" + os.path.basename(self.image_path)]
-        execute_cmd("PUBLISH", subprocess.Popen(scp_cmd,
+    def pvt_key(self):
+        execute_cmd("PUBLISH", subprocess.Popen(self.assemble_scp_command(),
                                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True))
+        execute_cmd("PERMISSION CHANGE", subprocess.Popen(self.assemble_ssh_command(),
+                                                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True))
 
 
 def main():
     image = Build(openstack=args.openstack, template=args.image, conda_env=args.conda_env,
                   packer_path=args.packer_path, provisioning=args.provisioning, comment=args.comment,
-                  ansible_args=args.ansible_args, publish=args.publish)
+                  ansible_args=args.ansible_args, pvt_key=args.publish)
     if args.dry_run:
         image.dry_run()
     else:
-        # image.build()
+        image.build()
         image.convert()
         if args.openstack:
             image.upload_to_OS()
         if args.publish:
-            image.publish()
+            image.pvt_key()
 
 
 if __name__ == '__main__':
