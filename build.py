@@ -247,30 +247,28 @@ class Build:
 
     def upload_to_OS(self):
         with Spinner():
-            auth = v3.ApplicationCredential(
-                application_credential_secret=os.environ[
-                    'OS_APPLICATION_CREDENTIAL_SECRET'],
-                application_credential_id=os.environ[
-                    'OS_APPLICATION_CREDENTIAL_ID'],
-                auth_url=os.environ['OS_AUTH_URL']
-
-            )
+            try:
+                auth = v3.ApplicationCredential(
+                    application_credential_secret=os.environ[
+                        'OS_APPLICATION_CREDENTIAL_SECRET'],
+                    application_credential_id=os.environ[
+                        'OS_APPLICATION_CREDENTIAL_ID'],
+                    auth_url=os.environ['OS_AUTH_URL']
+                )
+            except KeyError:
+                raise Exception(
+                    f"Please source OpenStack Application Credentials file first")
 
             sess = session.Session(auth=auth)
-            print("CREATing image...")
+            print("CREATing OpenStack image...")
             glance = client.Client('2', session=sess)
             image = glance.images.create(name=self.image_name, is_public='False',
                                          disk_format="raw", container_format="bare", data=os.path.basename(self.image_path))
             print(f"CREATEd image with ID {image.id}")
-            print(f"UPLOADing image...")
-            res = glance.images.upload(
+            print(f"UPLOADing image to OpenStack...")
+            glance.images.upload(
                 image.id, open(self.image_path, 'rb'))
-            if res == None:
-                raise Exception(
-                    f"===================== UPLOAD FAILED =========================")
-            else:
-                print(
-                    f"===================== UPLOAD SUCCESSFUL =========================")
+            print(f"===================== UPLOAD SUCCESSFUL =========================")
 
     def publish(self):
         scp_cmd = ["scp", self.image_path,
