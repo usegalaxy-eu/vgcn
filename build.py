@@ -17,13 +17,11 @@ import sys
 import shutil
 import datetime
 import signal
-from keystoneauth1 import loading
+import threading
 
+from keystoneauth1.identity import v3
 from keystoneauth1 import session
-
-from cinderclient import client
-from conda.cli.python_api import Commands, run_command
-import conda.exceptions
+from glanceclient import client
 
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -70,6 +68,42 @@ args = my_parser.parse_args()
 
 # Create a function to install the conda environment
 
+# Create a function to build the image
+
+
+class Spinner:
+    busy = False
+    delay = 0.1
+
+    @staticmethod
+    def spinning_cursor():
+        while 1:
+            for cursor in '|/-\\':
+                yield cursor
+
+    def __init__(self, delay=None):
+        self.spinner_generator = self.spinning_cursor()
+        if delay and float(delay):
+            self.delay = delay
+
+    def spinner_task(self):
+        while self.busy:
+            sys.stdout.write(next(self.spinner_generator))
+            sys.stdout.flush()
+            time.sleep(self.delay)
+            sys.stdout.write('\b')
+            sys.stdout.flush()
+
+    def __enter__(self):
+        self.busy = True
+        threading.Thread(target=self.spinner_task).start()
+
+    def __exit__(self, exception, value, tb):
+        self.busy = False
+        time.sleep(self.delay)
+        if exception is not None:
+            return False
+
 
 def execute_cmd(name: str, proc: subprocess.Popen):
     # Open a subprocess and redirect stdout and stderr to Python
@@ -86,36 +120,34 @@ def execute_cmd(name: str, proc: subprocess.Popen):
             else:
                 raise KeyboardInterrupt.add_note()
         signal.signal(signal.SIGINT, handler)
-
-        with proc as p:
-           # Loop through the readable streams in real - time
-            for line in iter(p.stdout.readline, b''):
-                # Print the line to the console
-                sys.stdout.buffer.write(line)
-            for line in iter(p.stderr.readline, b''):
-                # Print the error output to the console
-                sys.stderr.buffer.write(line)
-            if p.wait():
-                raise Exception(f"===================== {
-                    name} FAILED =========================")
-            else:
-                print(f"===================== {
-                      name} SUCCESSFUL =========================")
+        with Spinner():
+            print(f"{name}ing...")
+            with proc as p:
+               # Loop through the readable streams in real - time
+                for line in iter(p.stdout.readline, b''):
+                    # Print the line to the console
+                    sys.stdout.buffer.write(line)
+                for line in iter(p.stderr.readline, b''):
+                    # Print the error output to the console
+                    sys.stderr.buffer.write(line)
+                if p.wait():
+                    raise Exception(f"===================== {
+                        name} FAILED =========================")
+                else:
+                    print(f"===================== {
+                          name} SUCCESSFUL =========================")
     finally:
         signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 
 def get_active_branch_name():
-
-    head_dir = Path(".") / ".git" / "HEAD"
+    head_dir = pathlib.Path(".") / ".git" / "HEAD"
     with head_dir.open("r") as f:
         content = f.read().splitlines()
 
     for line in content:
         if line[0:4] == "ref:":
             return line.partition("refs/heads/")[2]
-
-# Create a function to build the image
 
 
 class Build:
@@ -131,11 +163,14 @@ class Build:
         self.PACKER_PATH = str(conda_env) + \
             "/bin/packer" if conda_env != None else str(packer_path)
         self.image_name = self.assemble_name()
+        self.image_path = pathlib.Path(
+            DIR_PATH + "/" + self.image_name + '.raw')
 
     def dry_run(self):
         print(self.assemble_packer_envs())
         print(self.assemble_packer_build_command())
-        print(self.assemble_name())
+        print(self.image_name)
+        print(self.assemble_convert_command())
 
     def assemble_packer_init(self):
         cmd = str(self.PACKER_PATH)
@@ -149,13 +184,14 @@ class Build:
         cmd.append(DIR_PATH + "/templates")
         return " ".join(cmd)
 
-    def assemble_convert_command(self) -> str:
+    def assemble_convert_command(self):
         cmd = [str(shutil.which("qemu-img"))]
         cmd.append("convert")
-        cmd.append("-O raw")
-        cmd.append(self.template)
-        cmd.append(DIR_PATH + "/images/" + self.assemble_name() + ".raw")
-        return cmd
+        cmd.append("-O")
+        cmd.append("raw")
+        cmd.append("./images/" + self.template)
+        cmd.append(str(self.image_path))
+        return " ".join(cmd)
 
     def assemble_packer_envs(self):
         env = os.environ.copy()
@@ -197,26 +233,60 @@ class Build:
                                                           stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True))
 
     def build(self):
-        execute_cmd("BUILD", subprocess.Popen(self.assemble_packer_build_command(), env=self.assemble_packer_envs(),
-                                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True))
+        try:
+            self.clean_image_dir()
+            execute_cmd("BUILD", subprocess.Popen(self.assemble_packer_build_command(), env=self.assemble_packer_envs(),
+                                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True))
+        except BaseException:
+            self.clean_image_dir()
+            raise Exception("Cleaned faulty or unfinished images")
+
+    def clean_image_dir(self):
+        if os.path.exists("./images"):
+            shutil.rmtree("./images")
 
     def upload_to_OS(self):
-        pass
+        with Spinner():
+            auth = v3.ApplicationCredential(
+                application_credential_secret=os.environ[
+                    'OS_APPLICATION_CREDENTIAL_SECRET'],
+                application_credential_id=os.environ[
+                    'OS_APPLICATION_CREDENTIAL_ID'],
+                auth_url=os.environ['OS_AUTH_URL']
+
+            )
+
+            sess = session.Session(auth=auth)
+            print("CREATing image...")
+            glance = client.Client('2', session=sess)
+            image = glance.images.create(name=self.image_name, is_public='False',
+                                         disk_format="raw", container_format="bare", data=os.path.basename(self.image_path))
+            print(f"CREATEd image with ID {image.id}")
+            print(f"UPLOADing image...")
+            res = glance.images.upload(
+                image.id, open(self.image_path, 'rb'))
+            if res == None:
+                raise Exception(
+                    f"===================== UPLOAD FAILED =========================")
+            else:
+                print(
+                    f"===================== UPLOAD SUCCESSFUL =========================")
 
     def publish(self):
-        scp_cmd = ["scp", "images/" + self.image_name, "usegalaxy"]
+        scp_cmd = ["scp", self.image_path,
+                   "sn06.usegalaxy.eu:/data/dnb01/vgcn/" + os.path.basename(self.image_path)]
         execute_cmd("PUBLISH", subprocess.Popen(scp_cmd,
                                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True))
 
 
 def main():
+    image = Build(openstack=args.openstack, template=args.image, conda_env=args.conda_env,
+                  packer_path=args.packer_path, provisioning=args.provisioning, comment=args.comment,
+                  ansible_args=args.ansible_args, publish=args.publish)
     if args.dry_run:
-        Build(openstack=args.openstack, template=args.image, conda_env=args.conda_env,
-              packer_path=args.packer_path, provisioning=args.provisioning, comment=args.comment, publish=args.publish).dry_run()
+        image.dry_run()
     else:
-        image = Build(args.openstack, args.image, args.conda_env,
-                      args.packer_path, args.provisioning, args.comment, args.publish, ansible_args=args.ansible_args)
-        image.build()
+        # image.build()
         image.convert()
         if args.openstack:
             image.upload_to_OS()
