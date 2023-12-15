@@ -158,8 +158,14 @@ class Build:
         self.conda_env = conda_env
         self.provisioning = provisioning
         self.ansible_args = ansible_args
-        self.PACKER_PATH = str(conda_env) + \
-            "/bin/packer" if conda_env != None else str(packer_path)
+        self.packer_path = str(conda_env) + \
+            "/bin/packer" if conda_env != None else str(
+                packer_path) | shutil.which("qemu-img")
+        self.qemu_path = str(conda_env) + \
+            "/bin/qemu-img" if conda_env != None else shutil.which("qemu-img")
+        self.openstack_path = str(conda_env) + \
+            "/bin/openstack" if conda_env != None else shutil.which(
+                "openstack")
         self.image_name = self.assemble_name()
         self.image_path = pathlib.Path(
             DIR_PATH + "/" + self.image_name + '.raw')
@@ -176,19 +182,19 @@ class Build:
             print(self.assemble_ssh_command())
 
     def assemble_packer_init(self):
-        cmd = str(self.PACKER_PATH)
+        cmd = str(self.packer_path)
         cmd += " init "
         cmd += DIR_PATH + "/templates"
         return cmd
 
     def assemble_packer_build_command(self):
-        cmd = [str(self.PACKER_PATH), "build"]
+        cmd = [str(self.packer_path), "build"]
         cmd.append("-only=qemu." + self.template)
         cmd.append(DIR_PATH + "/templates")
         return " ".join(cmd)
 
     def assemble_convert_command(self):
-        cmd = [str(shutil.which("qemu-img"))]
+        cmd = [str(self.qemu_path)]
         cmd.append("convert")
         cmd.append("-O")
         cmd.append("raw")
@@ -197,7 +203,7 @@ class Build:
         return " ".join(cmd)
 
     def assemble_os_command(self):
-        return ["openstack", "image", "create", "--file",
+        return [str(self.openstack_path), "image", "create", "--file",
                 str(self.image_path), self.image_name]
 
     def assemble_packer_envs(self):
@@ -233,7 +239,7 @@ class Build:
         return "~".join(name)
 
     def assemble_scp_command(self):
-        return ["scp", self.image_path,
+        return ["scp", str(self.image_path),
                 "sn06.usegalaxy.eu:/data/dnb01/vgcn/" + os.path.basename(self.image_path)]
 
     def assemble_ssh_command(self):
@@ -265,7 +271,7 @@ class Build:
             shutil.rmtree(DIR_PATH + "/images")
 
     def upload_to_OS(self):
-        run_subprocess_with_spinner("OPENSTACK IMAGE CREATE", subprocess.Popen(self.assemble_os_command(),
+        run_subprocess_with_spinner("OPENSTACK IMAGE CREATE", subprocess.Popen(self.assemble_os_command(), env=os.environ.copy(),
                                                                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True, shell=True))
 
     def pvt_key(self):
