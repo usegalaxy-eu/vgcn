@@ -126,9 +126,11 @@ def run_subprocess_with_spinner(name: str, proc: subprocess.Popen):
                 for line in iter(p.stderr.readline, b''):
                     # Print the error output to the console
                     sys.stderr.buffer.write(line)
-                if p.wait():
-                    raise Exception(f"===================== {
+                returncode = p.wait()
+                if returncode:
+                    print(f"===================== {
                         name} FAILED =========================")
+                    sys.exit(returncode)
                 else:
                     print(f"===================== {
                           name} SUCCESSFUL =========================")
