@@ -1,12 +1,18 @@
 #!/usr/bin/env python
-# Create a commandline script using argparse that
-# has two main functionalities: create a conda environment and build an image with packer
-# The script should have two subcommands: env and build
-# the env subcommand can either install, check or delete the conda environment
-# install creates an environment called "vgcn" with ansible and packer installed
-# the env subcommand utilizes conda python api
-# check checks if the environment exists and if the packages are installed
-# delete deletes the environment
+# A commandline script using argparse that builds a vgcn image with packer
+# CAUTION: If a directory called 'images' exists in this directory, it will be deleted!
+# Required arguments are the template, which are named like the anaconda-ks.cfg files without the
+# anaconda-ks.cfg suffix and the provisioning, separated by space and named like the ansible-playbooks
+# in the ansible directory without the .yml suffix.
+# Optionally you can specify the path to the Packer binary you want to use (--packer-path)
+# the path to the conda env you want to use (--conda-env)
+# the path to your ssh private key for copying the images to sn06 and
+# make them publicly available (--publish)
+# you can also source your OpenStack application credentials first and set the (`--openstack`) flag
+# to create a raw image in your openstack tenant
+# If you have trouble with the ansible provider on your setup, you can specify additional
+# --ansible-args="..." to e.g. solve the issues with scp on some distros
+
 
 import argparse
 import os
@@ -23,51 +29,43 @@ import threading
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
-# Create the parser
 my_parser = argparse.ArgumentParser(prog='build',
-                                    description='Create a conda environment and build an image with packer')
+                                    description='Build a VGCN image with Packer and the Ansible provisioner')
 
-# Add the arguments
 my_parser.add_argument('image', choices=["-".join(x.split("-", 3)[:3]) for x in os.listdir(
     'templates') if x.endswith('-anaconda-ks.cfg')], help='image help')
-# another required positional argument is the provisioning. This are the ansible playbooks, which are located in the ansible folder
-# and are automatically detected by this script, the options are the file basenames
 my_parser.add_argument('provisioning', choices=[x.split(".", 1)[0] for x in os.listdir(
-    'ansible') if x.endswith('.yml')], help='provisioning help', nargs='+')
-# --ansible-args lets the user pass additional args to the packer ansible provisioner, useful e.g. in case of ssh problems
+    'ansible') if x.endswith('.yml')], help='''
+    The playbooks you want to provision.
+    The playbook files are located in the ansible folder
+    and are automatically detected by this script, the options are the filenames, without .yml suffix
+    ''', nargs='+')
 my_parser.add_argument('--ansible-args', type=str,
                        help='e.g. --ansible-args="--scp-extra-args=-O" which activates SCP compatibility mode and might be needed on Fedora')
-# the --openstack option specifies if the image should be uploaded to openstack or not
 my_parser.add_argument('--openstack', action='store_true',
-                       help='openstack help')
-# another option is to publish the image to /static/vgcn via scp
-my_parser.add_argument('--publish', type=pathlib.Path,
+                       help='Create an image in your OpenStack tenant and upload it. Make sure to source your credentials first')
+my_parser.add_argument('--publish', type=pathlib.Path, metavar='PVT_KEY',
                        help='specify the path to your ssh key for sn06')
-# with the --dry-run option the script will only print the commands that would be executed
-# and the resulting image file name according to the naming scheme
 my_parser.add_argument('--dry-run', action='store_true',
-                       help='dry-run help')
-# The user has to specify either --conda-env or --packer-path
-# --conda-env specifies the conda environment to use
+                       help='just print the commands without executing anything')
 my_parser.add_argument('--conda-env', type=pathlib.Path,
-                       help='conda-env help')
-# --packer-path specifies the path to the packer binary
+                       help='specifies the path to  the conda environment to use')
 my_parser.add_argument('--packer-path', type=pathlib.Path,
-                       help='packer-path help')
-# --comment is an optional argument to add a comment to the image name
-my_parser.add_argument('--comment', type=str, help='comment help')
+                       help='specifies the path to the packer binary')
+my_parser.add_argument('--comment', type=str,
+                       help='add a comment to the image name')
 
-# Execute the parse_args() method
 
 args = my_parser.parse_args()
 
 
-# Create a function to install the conda environment
-
-# Create a function to build the image
-
 # Spinner thanks to stackoverflow user victor-moyseenko
 class Spinner:
+    """
+    Creates a spinning cursor while the command runs.\n
+    Indicates the user that the screen did not freeze or similar.\n
+    Especially useful during the image upload, which can take several minutes.\n
+    """
     busy = False
     delay = 0.1
 
@@ -101,8 +99,12 @@ class Spinner:
             return False
 
 
-def execute_cmd(name: str, proc: subprocess.Popen):
-    # Open a subprocess and redirect stdout and stderr to Python
+def run_subprocess_with_spinner(name: str, proc: subprocess.Popen):
+    """
+    Opens a subprocess and redirect stdout and stderr to Python.\n
+    Shows a spinning Cursor while the command runs.\n
+    Exits with returncode of subprocess if not equals 0.\n
+    """
     try:
         p = None
         # Register handler to pass keyboard interrupt to the subprocess
@@ -111,15 +113,13 @@ def execute_cmd(name: str, proc: subprocess.Popen):
             print(f"===================== {
                   name} ABORTED BY USER =========================")
             if p:
-
                 p.send_signal(signal.SIGINT)
             else:
                 raise KeyboardInterrupt.add_note()
         signal.signal(signal.SIGINT, handler)
         with Spinner():
-            print(f"{name}ing...")
+            print(f"{name.rstrip('Ee')}ing...")
             with proc as p:
-               # Loop through the readable streams in real - time
                 for line in iter(p.stdout.readline, b''):
                     # Print the line to the console
                     sys.stdout.buffer.write(line)
@@ -137,7 +137,7 @@ def execute_cmd(name: str, proc: subprocess.Popen):
 
 
 def get_active_branch_name():
-    head_dir = pathlib.Path(".") / ".git" / "HEAD"
+    head_dir = pathlib.Path(DIR_PATH + "/.git/HEAD")
     with head_dir.open("r") as f:
         content = f.read().splitlines()
 
@@ -167,6 +167,11 @@ class Build:
         print(self.assemble_packer_build_command())
         print(self.image_name)
         print(self.assemble_convert_command())
+        if self.openstack != None:
+            print(self.assemble_os_command())
+        if self.pvt_key != None:
+            print(self.assemble_scp_command())
+            print(self.assemble_ssh_command())
 
     def assemble_packer_init(self):
         cmd = str(self.PACKER_PATH)
@@ -204,6 +209,10 @@ class Build:
         return env
 
     def assemble_name(self):
+        """
+        Uses a naming scheme described in\n
+        https://github.com/usegalaxy-eu/vgcn/issues/78
+        """
         name = ["vgcn"]
         if "generic" in self.provisioning:
             prv = self.provisioning
@@ -239,34 +248,29 @@ class Build:
         today = datetime.date.today()
         seconds_since_midnight = time.time() - time.mktime(today.timetuple())
         return today.strftime("%Y%m%d") + "~" + str(int(seconds_since_midnight))
-    # return string with the current seconds from midnight
-
-    def convert(self):
-        execute_cmd(name="CONVERT", proc=subprocess.Popen(self.assemble_convert_command(),
-                                                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True))
 
     def build(self):
-        try:
-            self.clean_image_dir()
-            execute_cmd("BUILD", subprocess.Popen(self.assemble_packer_build_command(), env=self.assemble_packer_envs(),
-                                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True))
-        except BaseException:
-            self.clean_image_dir()
-            raise Exception("Cleaned faulty or unfinished images")
+        self.clean_image_dir()
+        run_subprocess_with_spinner("BUILD", subprocess.Popen(self.assemble_packer_build_command(), env=self.assemble_packer_envs(),
+                                                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True, shell=True))
+
+    def convert(self):
+        run_subprocess_with_spinner(name="CONVERT", proc=subprocess.Popen(self.assemble_convert_command(),
+                                                                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True, shell=True))
 
     def clean_image_dir(self):
-        if os.path.exists("./images"):
-            shutil.rmtree("./images")
+        if os.path.exists(DIR_PATH + "/images"):
+            shutil.rmtree(DIR_PATH + "/images")
 
     def upload_to_OS(self):
-        execute_cmd("OPENSTACK IMAGE CREATE", subprocess.Popen(self.assemble_os_command(),
-                                                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True))
+        run_subprocess_with_spinner("OPENSTACK IMAGE CREATE", subprocess.Popen(self.assemble_os_command(),
+                                                                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True, shell=True))
 
     def pvt_key(self):
-        execute_cmd("PUBLISH", subprocess.Popen(self.assemble_scp_command(),
-                                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True))
-        execute_cmd("PERMISSION CHANGE", subprocess.Popen(self.assemble_ssh_command(),
-                                                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True))
+        run_subprocess_with_spinner("PUBLISH", subprocess.Popen(self.assemble_scp_command(),
+                                                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True, shell=True))
+        run_subprocess_with_spinner("PERMISSION CHANGE", subprocess.Popen(self.assemble_ssh_command(),
+                                                                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True, shell=True))
 
 
 def main():
