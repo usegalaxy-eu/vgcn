@@ -93,9 +93,9 @@ args = my_parser.parse_args()
 # Spinner class from https://stackoverflow.com/a/39504463 by Victor Moyseenko, subject to CC BY-SA 4.0 license.
 class Spinner:
     """
-    Creates a spinning cursor while the command runs.\n
-    Indicates the user that the screen did not freeze or similar.\n
-    Especially useful during the image upload, which can take several minutes.\n
+    Creates a spinning cursor while the command runs.
+    Indicates the user that the screen did not freeze or similar.
+    Especially useful during the image upload, which can take several minutes.
     """
 
     busy = False
