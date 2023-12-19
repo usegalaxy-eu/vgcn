@@ -267,12 +267,9 @@ class Build:
         https://github.com/usegalaxy-eu/vgcn/issues/78
         """
         name = ["vgcn"]
-        if "generic" in self.provisioning:
-            provisioning = self.provisioning
-            provisioning.remove("generic")
-            name += [f"+{'+'.join(provisioning)}"]
-        else:
-            name += [f"!generic+{'+'.join(self.provisioning)}"]
+        provisioning = self.provisioning.copy()
+        if "generic" not in self.provisioning:
+            provisioning.insert(0, "!generic")
         name = [
             "vgcn",
             "-".join(self.template.split("-", 2)[:2]),
