@@ -213,7 +213,7 @@ class Build:
         return [
             f"self.packer_path",
             f"init",
-            f"{DIR_PATH}/templates",
+            f"{DIR_PATH / 'templates'}",
         ]
 
     def assemble_packer_build_command(self):
