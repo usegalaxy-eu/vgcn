@@ -309,7 +309,7 @@ class Build:
                 f"{SSH_USER}@{SSH_HOST}",
                 f"chmod",
                 f"ugo+r",
-                f"{STATIC_DIR}{os.path.basename(self.image_path)}",
+                f"{STATIC_DIR / self.image_path.basename()}",
             ]
         )
 
