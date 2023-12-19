@@ -188,7 +188,7 @@ class Build:
         self.provisioning = provisioning
         self.ansible_args = ansible_args
         self.image_name = self.assemble_name()
-        self.image_path = pathlib.Path(DIR_PATH + "/" + self.image_name + ".raw")
+        self.image_path = DIR_PATH / f"{self.image_name}.raw"
         if conda_env:
             self.qemu_path = f"{conda_env}/bin/qemu-img"
             self.openstack_path = f"{conda_env}/bin/openstack"
