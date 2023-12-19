@@ -41,11 +41,6 @@ my_parser = argparse.ArgumentParser(
 
 my_parser.add_argument(
     "image",
-    choices=[
-        "-".join(x.split("-", 3)[:3])
-        for x in os.listdir("templates")
-        if x.endswith("-anaconda-ks.cfg")
-    ],
     help="image help",
 )
 my_parser.add_argument(
