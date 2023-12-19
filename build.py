@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # A command line script that builds a VGCN image with Packer.
 # CAUTION: If a directory called 'images' exists in this directory, it will be deleted!
-# Required arguments are the template, which are named like the anaconda-ks.cfg files without the
-# anaconda-ks.cfg suffix and the provisioning, separated by space and named like the ansible-playbooks
-# in the ansible directory without the .yml suffix.
+# Required arguments are a Packer build (builds are defined in templates/build.pkr.hcl)
+# and the provisioning Ansible playbooks (located in the ansible directory, passed
+# without the .yml suffix).
 # Optionally you can specify the path to the Packer binary you want to use (--packer-path)
 # the path to the conda env you want to use (--conda-env)
 # the path to your ssh private key for copying the images to sn06 and
