@@ -266,7 +266,6 @@ class Build:
         Uses a naming scheme described in
         https://github.com/usegalaxy-eu/vgcn/issues/78
         """
-        name = ["vgcn"]
         provisioning = self.provisioning.copy()
         if "generic" not in self.provisioning:
             provisioning.insert(0, "!generic")
