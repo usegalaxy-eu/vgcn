@@ -349,6 +349,7 @@ class Build:
             shutil.rmtree(DIR_PATH + "/images")
 
     def upload_to_OS(self):
+        # Checking this, because OS is failing silently
         env = os.environ.copy()
         if not (
             "OS_AUTH_URL" in env
