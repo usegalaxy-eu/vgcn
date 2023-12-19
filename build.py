@@ -25,9 +25,9 @@ import sys
 import threading
 import time
 
-DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+DIR_PATH = pathlib.Path(__file__).parent.absolute()
 
-STATIC_DIR = "/data/dnb01/vgcn/"
+STATIC_DIR = pathlib.Path("/data/dnb01/vgcn/").absolute()
 
 SSH_HOST = "sn06.galaxyproject.eu"
 
