@@ -272,7 +272,7 @@ class Build:
             provisioning.insert(0, "!generic")
         name = [
             "vgcn",
-            "-".join(self.template.split("-", 2)[:2]),
+            self.template,
             f"+{'+'.join(provisioning)}",
             self.assemble_timestamp(),
             subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
