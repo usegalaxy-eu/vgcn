@@ -15,16 +15,15 @@
 
 
 import argparse
+import datetime
 import os
 import pathlib
-import subprocess
-import time
-import sys
 import shutil
-import datetime
 import signal
+import subprocess
+import sys
 import threading
-
+import time
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
