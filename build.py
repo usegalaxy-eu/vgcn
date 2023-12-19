@@ -133,9 +133,9 @@ class Spinner:
 
 def run_subprocess_with_spinner(name: str, proc: subprocess.Popen):
     """
-    Opens a subprocess and redirect stdout and stderr to Python.\n
-    Shows a spinning Cursor while the command runs.\n
-    Exits with returncode of subprocess if not equals 0.\n
+    Opens a subprocess and redirect stdout and stderr to Python.
+    Shows a spinning Cursor while the command runs.
+    Exits with returncode of subprocess if not equals 0.
     """
     try:
         p = None
