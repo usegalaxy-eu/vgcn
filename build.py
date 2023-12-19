@@ -341,8 +341,8 @@ class Build:
         )
 
     def clean_image_dir(self):
-        if os.path.exists(DIR_PATH + "/images"):
-            shutil.rmtree(DIR_PATH + "/images")
+        if (DIR_PATH / "images").exists():
+            shutil.rmtree(DIR_PATH / "images")
 
     def upload_to_OS(self):
         # Checking this, because OS is failing silently
