@@ -34,55 +34,58 @@ SSH_HOST = "sn06.galaxyproject.eu"
 SSH_USER = "root"
 
 
-my_parser = argparse.ArgumentParser(
-    prog="build",
-    description="Build a VGCN image with Packer and the Ansible provisioner",
-)
+def make_parser() -> argparse.ArgumentParser:
+    my_parser = argparse.ArgumentParser(
+        prog="build",
+        description="Build a VGCN image with Packer and the Ansible provisioner",
+    )
 
-my_parser.add_argument(
-    "image",
-    help="image help",
-)
-my_parser.add_argument(
-    "provisioning",
-    choices=[x.split(".", 1)[0] for x in os.listdir("ansible") if x.endswith(".yml")],
-    help="""
-    The playbooks you want to provision.
-    The playbook files are located in the ansible folder
-    and are automatically detected by this script, the options are the filenames, without .yml suffix
-    """,
-    nargs="+",
-)
-my_parser.add_argument(
-    "--ansible-args",
-    type=str,
-    help='e.g. --ansible-args="--scp-extra-args=-O" which activates SCP compatibility mode and might be needed on Fedora',
-)
-my_parser.add_argument(
-    "--openstack",
-    action="store_true",
-    help="Create an image in your OpenStack tenant and upload it. Make sure to source your credentials first",
-)
-my_parser.add_argument(
-    "--publish",
-    type=pathlib.Path,
-    metavar="PVT_KEY",
-    help="specify the path to your ssh key for sn06",
-)
-my_parser.add_argument(
-    "--dry-run",
-    action="store_true",
-    help="just print the commands without executing anything",
-)
-my_parser.add_argument(
-    "--conda-env",
-    type=pathlib.Path,
-    help="specifies the path to  the conda environment to use",
-)
-my_parser.add_argument("--comment", type=str, help="add a comment to the image name")
-
-
-args = my_parser.parse_args()
+    my_parser.add_argument(
+        "image",
+        help="image help",
+    )
+    my_parser.add_argument(
+        "provisioning",
+        choices=[
+            x.split(".", 1)[0] for x in os.listdir("ansible") if x.endswith(".yml")
+        ],
+        help="""
+        The playbooks you want to provision.
+        The playbook files are located in the ansible folder
+        and are automatically detected by this script, the options are the filenames, without .yml suffix
+        """,
+        nargs="+",
+    )
+    my_parser.add_argument(
+        "--ansible-args",
+        type=str,
+        help='e.g. --ansible-args="--scp-extra-args=-O" which activates SCP compatibility mode and might be needed on Fedora',
+    )
+    my_parser.add_argument(
+        "--openstack",
+        action="store_true",
+        help="Create an image in your OpenStack tenant and upload it. Make sure to source your credentials first",
+    )
+    my_parser.add_argument(
+        "--publish",
+        type=pathlib.Path,
+        metavar="PVT_KEY",
+        help="specify the path to your ssh key for sn06",
+    )
+    my_parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="just print the commands without executing anything",
+    )
+    my_parser.add_argument(
+        "--conda-env",
+        type=pathlib.Path,
+        help="specifies the path to  the conda environment to use",
+    )
+    my_parser.add_argument(
+        "--comment", type=str, help="add a comment to the image name"
+    )
+    return my_parser
 
 
 # Spinner class from https://stackoverflow.com/a/39504463 by Victor Moyseenko, subject to CC BY-SA 4.0 license.
@@ -390,6 +393,8 @@ class Build:
 
 
 def main():
+    my_parser = make_parser()
+    args = my_parser.parse_args()
     image = Build(
         openstack=args.openstack,
         template=args.image,
