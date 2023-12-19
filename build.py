@@ -265,7 +265,7 @@ class Build:
 
     def assemble_name(self):
         """
-        Uses a naming scheme described in\n
+        Uses a naming scheme described in
         https://github.com/usegalaxy-eu/vgcn/issues/78
         """
         name = ["vgcn"]
