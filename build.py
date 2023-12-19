@@ -276,6 +276,7 @@ class Build:
         name = [
             "vgcn",
             "-".join(self.template.split("-", 2)[:2]),
+            f"+{'+'.join(provisioning)}",
             self.assemble_timestamp(),
             subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
             .decode("ascii")
