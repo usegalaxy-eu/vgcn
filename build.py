@@ -275,7 +275,8 @@ class Build:
             name += [f"+{'+'.join(provisioning)}"]
         else:
             name += [f"!generic+{'+'.join(self.provisioning)}"]
-        name += [
+        name = [
+            "vgcn",
             "-".join(self.template.split("-", 2)[:2]),
             self.assemble_timestamp(),
             subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
