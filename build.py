@@ -222,7 +222,7 @@ class Build:
                 f"{self.packer_path}",
                 f"build",
                 f"-only=qemu.{self.template}",
-                f"{DIR_PATH}/templates",
+                f"{DIR_PATH / 'templates'}",
             ]
         )
 
