@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# A commandline script using argparse that builds a vgcn image with packer
+# A command line script that builds a VGCN image with Packer.
 # CAUTION: If a directory called 'images' exists in this directory, it will be deleted!
 # Required arguments are the template, which are named like the anaconda-ks.cfg files without the
 # anaconda-ks.cfg suffix and the provisioning, separated by space and named like the ansible-playbooks
