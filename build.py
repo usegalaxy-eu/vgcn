@@ -90,7 +90,7 @@ my_parser.add_argument("--comment", type=str, help="add a comment to the image n
 args = my_parser.parse_args()
 
 
-# Spinner thanks to stackoverflow user victor-moyseenko
+# Spinner class from https://stackoverflow.com/a/39504463 by Victor Moyseenko, subject to CC BY-SA 4.0 license.
 class Spinner:
     """
     Creates a spinning cursor while the command runs.\n
