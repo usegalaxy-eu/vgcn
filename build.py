@@ -296,7 +296,7 @@ class Build:
                 f"-i",
                 f"{self.pvt_key}",
                 f"{self.image_path}",
-                f"{SSH_USER}@{SSH_HOST}:{STATIC_DIR}/{os.path.basename(self.image_path)}",
+                f"{SSH_USER}@{SSH_HOST}:{STATIC_DIR / self.image_path.basename()}",
             ]
         )
 
