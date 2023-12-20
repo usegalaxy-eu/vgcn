@@ -310,9 +310,25 @@ class Build:
         )
 
     def assemble_timestamp(self):
-        today = datetime.date.today()
-        seconds_since_midnight = time.time() - time.mktime(today.timetuple())
-        return today.strftime("%Y%m%d") + "~" + str(int(seconds_since_midnight))
+        commit_time = subprocess.check_output(
+            ["git", "show", "--no-patch", "--format=%ct"]
+        ).decode("ascii").strip()
+        commit_time = int(commit_time)
+        commit_time = datetime.datetime.fromtimestamp(commit_time)
+
+        commit_date = commit_time.date()
+        commit_date_midnight = datetime.datetime(
+            commit_date.year, commit_time.month, commit_time.day
+        )
+
+        seconds_since_midnight = int(
+            (commit_time - commit_date_midnight).total_seconds()
+        )
+
+        return (
+            f"{commit_time.date().strftime('%Y%m%d')}"
+            f"~{seconds_since_midnight}"
+        )
 
     def build(self):
         self.clean_image_dir()
