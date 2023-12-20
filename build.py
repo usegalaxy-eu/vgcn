@@ -255,7 +255,7 @@ class Build:
         env["PACKER_PLUGIN_PATH"] = f"{DIR_PATH}/packer_plugins"
         env[
             "PKR_VAR_groups"
-        ] = f"[{','.join('\"' + x + '\"' for x in self.provisioning)}]"
+        ] = f"""[{','.join('"' + x + '"' for x in self.provisioning)}]"""
         env["PKR_VAR_headless"] = "true"
         if self.ansible_args:
             env["PKR_VAR_ansible_extra_args"] = self.ansible_args
