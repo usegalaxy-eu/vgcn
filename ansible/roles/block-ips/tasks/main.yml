@@ -1,0 +1,21 @@
+---
+- name: Get IPs
+  ansible.builtin.uri:
+    url: "{{ block_ips_url }}"
+    return_content: true
+    status_code: 200
+    body_format: raw
+  register: ips_raw
+
+- name: Set IPs as facts
+  ansible.builtin.set_fact:
+    ips_to_block: "{{ ips_raw.content | regex_findall('\\b(?:[0-9]{1,3}\\.){3}[0-9]{1,3}\\b') }}"
+
+- name: Set firewall rules
+  ansible.posix.firewalld:
+    zone: public
+    state: present
+    permanent: true
+    immediate: true
+    rich_rule: 'rule family="ipv4" destination address="{{ item }}" DROP'
+  with_items: "{{ ips_to_block }}"
