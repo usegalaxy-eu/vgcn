@@ -1,2 +1,3 @@
 ---
-block_ips_url: https://minerstat.com/mining-pool-whitelist.txt
+block_ips_urls:
+  - https://minerstat.com/mining-pool-whitelist.txt
