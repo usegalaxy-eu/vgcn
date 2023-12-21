@@ -1,22 +1,5 @@
 ---
-- name: Template bash script (block-outbound)
-  ansible.builtin.template:
-    src: block-outbound.sh.j2
-    dest: /usr/local/bin/block-outbound.sh
-    owner: root
-    group: root
-    mode: '0755'
-
-- name: Add block-outbound service
-  ansible.builtin.template:
-    src: block-outbound.service.j2
-    dest: /etc/systemd/system/block-outbound.service
-    owner: root
-    group: root
-    mode: '0644'
-
-- name: Enable block-outbound service
-  ansible.builtin.service:
-    name: block-outbound
-    state: reloaded
-    enabled: true
+- name: Block hosts
+  ansible.builtin.blockinfile:
+    block: "{{ lookup('ansible.builtin.file', 'hosts-to-block') }}"
+    dest: /etc/hosts

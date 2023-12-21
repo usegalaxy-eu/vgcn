@@ -1,7 +1,0 @@
-#! /bin/sh
-
-{% for url in block_ips_urls %}
-curl -sL '{url}' \
-| awk '!/^\s*#/ {print $1}' \
-| xargs -n1 -P10 -i firewall-cmd --direct --add-rule ipv4 filter OUTPUT 0 -d "{}" -j DROP
-{% endfor %}
