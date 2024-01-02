@@ -8,7 +8,7 @@
   pre_tasks:
     - name: Include secret vars
       ansible.builtin.include_vars: "secret_group_vars/internal.yml"
-      when: inventory_hostname in group.internal
+      when: "'internal' in group_names"
     - name: Copy server key into VM temporarily
       ansible.builtin.copy:
         src: server_ca
