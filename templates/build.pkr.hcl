@@ -97,10 +97,7 @@ build {
       "ANSIBLE_HOST_KEY_CHECKING=False",
       "ANSIBLE_SCP_EXTRA_ARGS = '-0'",
     ]
-    extra_arguments  = [
-      "--vault-password-file=.vault_password",
-      # "--ssh-extra-args=-o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=ssh-rsa",
-    ]
+    extra_arguments  = "${ local.internal ? [var.vault_file, var.ansible_extra_args] : [var.ansible_extra_args]}"
     groups           = var.groups
   }
 

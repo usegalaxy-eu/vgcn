@@ -19,7 +19,7 @@ roles:
     version: 6.1.0
   - src: https://github.com/usegalaxy-eu/ansible-chrony
     name: influxdata.chrony
-    version: 0.1.0
+    version: 0.1.1
   - src: galaxyproject.pulsar
     version: 1.0.10
   - src: https://github.com/usegalaxy-eu/ansible-dynmotd
@@ -46,4 +46,6 @@ roles:
   - name: usegalaxy-eu.telegraf
     src: https://github.com/usegalaxy-eu/ansible-telegraf
     version: 0.14.1
-
+  - name: artis3n.tailscale
+    src: https://github.com/artis3n/ansible-role-tailscale
+    version: v4.2.3

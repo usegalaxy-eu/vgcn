@@ -1,7 +1,8 @@
 qemu/
 virtualbox-iso/
 vmware-iso/
-
+packer_plugins/
+ansible/collections
 # Created by https://www.gitignore.io/api/packer
 
 ### Packer ###
