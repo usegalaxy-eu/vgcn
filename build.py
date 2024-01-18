@@ -209,12 +209,14 @@ class Build:
             print(self.assemble_scp_command())
             print(self.assemble_ssh_command())
 
-    def assemble_packer_init(self):
-        return [
-            f"{self.packer_path}",
-            f"init",
-            f"{DIR_PATH / 'templates'}",
-        ]
+    def assemble_packer_init_command(self):
+        return " ".join(
+            [
+                f"{self.packer_path}",
+                f"init",
+                f"{DIR_PATH / 'templates'}",
+            ]
+        )
 
     def assemble_packer_build_command(self):
         return " ".join(
@@ -310,9 +312,11 @@ class Build:
         )
 
     def assemble_timestamp(self):
-        commit_time = subprocess.check_output(
-            ["git", "show", "--no-patch", "--format=%ct"]
-        ).decode("ascii").strip()
+        commit_time = (
+            subprocess.check_output(["git", "show", "--no-patch", "--format=%ct"])
+            .decode("ascii")
+            .strip()
+        )
         commit_time = int(commit_time)
         commit_time = datetime.datetime.fromtimestamp(commit_time)
 
@@ -325,13 +329,21 @@ class Build:
             (commit_time - commit_date_midnight).total_seconds()
         )
 
-        return (
-            f"{commit_time.date().strftime('%Y%m%d')}"
-            f"~{seconds_since_midnight}"
-        )
+        return f"{commit_time.date().strftime('%Y%m%d')}" f"~{seconds_since_midnight}"
 
     def build(self):
         self.clean_image_dir()
+        run_subprocess_with_spinner(
+            "INITIALIZE",
+            subprocess.Popen(
+                self.assemble_packer_init_command(),
+                env=self.assemble_packer_envs(),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                close_fds=True,
+                shell=True,
+            ),
+        )
         run_subprocess_with_spinner(
             "BUILD",
             subprocess.Popen(
