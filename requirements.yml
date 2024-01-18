@@ -49,3 +49,6 @@ roles:
   - name: artis3n.tailscale
     src: https://github.com/artis3n/ansible-role-tailscale
     version: v4.2.3
+  - name: galaxyproject.miniconda
+    src: https://github.com/galaxyproject/ansible-miniconda
+    version: 0.3.1

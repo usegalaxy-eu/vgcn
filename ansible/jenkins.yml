@@ -12,6 +12,7 @@
   vars_files:
     - "group_vars/all.yml"
     - "group_vars/java.yml"
+    - "group_vars/jenkins.yml"
 
   pre_tasks:
     - name: system update
@@ -96,3 +97,4 @@
     - geerlingguy.docker
     - influxdata.chrony
     - usegalaxy-eu.telegraf
+    - galaxyproject.miniconda
