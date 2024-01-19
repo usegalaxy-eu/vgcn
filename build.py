@@ -34,8 +34,6 @@ SSH_HOST = "sn06.galaxyproject.eu"
 
 SSH_USER = "root"
 
-quiet = False
-
 
 def make_parser() -> argparse.ArgumentParser:
     my_parser = argparse.ArgumentParser(
