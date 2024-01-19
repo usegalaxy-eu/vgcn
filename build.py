@@ -15,6 +15,7 @@
 
 
 import argparse
+import contextlib
 import datetime
 import os
 import pathlib
@@ -85,6 +86,13 @@ def make_parser() -> argparse.ArgumentParser:
     my_parser.add_argument(
         "--comment", type=str, help="add a comment to the image name"
     )
+    my_parser.add_argument(
+        "-q",
+        "--quiet",
+        action="store_true",
+        help="Don't use the spinner, but still print logs.",
+    )
+
     return my_parser
 
 
@@ -129,12 +137,13 @@ class Spinner:
             return False
 
 
-def run_subprocess_with_spinner(name: str, proc: subprocess.Popen):
+def run_subprocess_with_spinner(name: str, proc: subprocess.Popen, show_spinner: bool):
     """
     Opens a subprocess and redirect stdout and stderr to Python.
     Shows a spinning Cursor while the command runs.
     Exits with returncode of subprocess if not equals 0.
     """
+
     try:
         p = None
         # Register handler to pass keyboard interrupt to the subprocess
@@ -147,7 +156,8 @@ def run_subprocess_with_spinner(name: str, proc: subprocess.Popen):
                 raise KeyboardInterrupt.add_note()
 
         signal.signal(signal.SIGINT, handler)
-        with Spinner():
+        context_mgr = Spinner() if show_spinner else contextlib.suppress()
+        with context_mgr:
             print(f"{name.rstrip('Ee')}ing...")
             with proc as p:
                 for line in iter(p.stdout.readline, b""):
@@ -180,6 +190,7 @@ class Build:
         comment: str,
         pvt_key: pathlib.Path,
         ansible_args: str,
+        show_spinner: bool,
     ):
         self.openstack = openstack
         self.template = template
@@ -189,6 +200,7 @@ class Build:
         self.ansible_args = ansible_args
         self.image_name = self.assemble_name()
         self.image_path = DIR_PATH / f"{self.image_name}.raw"
+        self.show_spinner = show_spinner
         if conda_env:
             self.qemu_path = f"{conda_env}/bin/qemu-img"
             self.openstack_path = f"{conda_env}/bin/openstack"
@@ -343,6 +355,7 @@ class Build:
                 close_fds=True,
                 shell=True,
             ),
+            show_spinner=self.show_spinner,
         )
         run_subprocess_with_spinner(
             "BUILD",
@@ -354,6 +367,7 @@ class Build:
                 close_fds=True,
                 shell=True,
             ),
+            show_spinner=self.show_spinner,
         )
 
     def convert(self):
@@ -366,6 +380,7 @@ class Build:
                 close_fds=True,
                 shell=True,
             ),
+            show_spinner=self.show_spinner,
         )
 
     def clean_image_dir(self):
@@ -392,6 +407,7 @@ class Build:
                 close_fds=True,
                 shell=True,
             ),
+            show_spinner=self.show_spinner,
         )
 
     def publish(self):
@@ -404,6 +420,7 @@ class Build:
                 close_fds=True,
                 shell=True,
             ),
+            show_spinner=self.show_spinner,
         )
         run_subprocess_with_spinner(
             "PERMISSION CHANGE",
@@ -414,6 +431,7 @@ class Build:
                 close_fds=True,
                 shell=True,
             ),
+            show_spinner=self.show_spinner,
         )
 
 
@@ -428,6 +446,7 @@ def main():
         comment=args.comment,
         ansible_args=args.ansible_args,
         pvt_key=args.publish,
+        show_spinner=not args.quiet,
     )
     if args.dry_run:
         image.dry_run()
