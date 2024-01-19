@@ -87,6 +87,22 @@ build {
     shutdown_command = "systemctl poweroff"
   }
 
+  source "source.qemu.base" {
+    name = "rockylinux-9-latest-x86_64"
+    vm_name = "rockylinux-9-latest-x86_64"
+    iso_url = "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9-latest-x86_64-boot.iso"
+    iso_checksum = "sha256:eb096f0518e310f722d5ebd4c69f0322df4fc152c6189f93c5c797dc25f3d2e1"
+    disk_size = "10G"
+    boot_command = [
+      "<esc><wait>",
+      "linux inst.mbr biosdevname=0 net.ifnames=0 ",
+      "rootpw=${var.ssh_password} ",
+      "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-9-latest-x86_64-anaconda-ks.cfg",
+      "<enter>"
+    ]
+    shutdown_command = "systemctl poweroff"
+  }
+
   provisioner "ansible" {
     playbook_file    = "ansible/all-playbooks.yml"
     user             = "root"
