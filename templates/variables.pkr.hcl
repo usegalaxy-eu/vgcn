@@ -27,13 +27,13 @@ variable "headless" {
   default = "true"
 }
 locals {
-  internal = contains(var.groups, "internal")
+  vault_password = contains(var.groups, "internal") ? "--vault-password-file=${var.vault_password_file}" : null
 }
-variable "vault_file" {
+variable "vault_password_file" {
   type    = string
-  default = "--vault-password-file=.vault_password"
+  default = ".vault_password"
 }
 variable "ansible_extra_args" {
   type = string
-  default = ""
+  default = null
 }
