@@ -306,7 +306,7 @@ class Build:
                 f"-i",
                 f"{self.pvt_key}",
                 f"{self.image_path}",
-                f"{SSH_USER}@{SSH_HOST}:{STATIC_DIR / self.image_path.basename()}",
+                f"{SSH_USER}@{SSH_HOST}:{STATIC_DIR / self.image_name}",
             ]
         )
 
@@ -319,7 +319,7 @@ class Build:
                 f"{SSH_USER}@{SSH_HOST}",
                 f"chmod",
                 f"ugo+r",
-                f"{STATIC_DIR / self.image_path.basename()}",
+                f"{STATIC_DIR / self.image_name}",
             ]
         )
 
