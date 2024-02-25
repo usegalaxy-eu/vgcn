@@ -1,0 +1,5 @@
+---
+- name: Block hosts
+  ansible.builtin.blockinfile:
+    block: "{{ lookup('ansible.builtin.file', 'hosts-to-block') }}"
+    dest: /etc/hosts
