@@ -26,8 +26,9 @@ roles:
     name: usegalaxy-eu.dynmotd
     version:
       0.0.1
-  - name: usegalaxy_eu.htcondor
-    version: 2.2.0
+  - name: grycap.htcondor
+    src: https://github.com/kysrpex/grycap-ansible-role-htcondor.git
+    version: d9a4aab0052dfb31d48c986d39a7f5e3692abba4
   - src: geerlingguy.repo-epel
     version: 3.1.0
   - src: geerlingguy.java
@@ -46,9 +47,3 @@ roles:
   - name: usegalaxy-eu.telegraf
     src: https://github.com/usegalaxy-eu/ansible-telegraf
     version: 0.14.1
-  - name: artis3n.tailscale
-    src: https://github.com/artis3n/ansible-role-tailscale
-    version: v4.2.3
-  - name: galaxyproject.miniconda
-    src: https://github.com/galaxyproject/ansible-miniconda
-    version: 0.3.1
