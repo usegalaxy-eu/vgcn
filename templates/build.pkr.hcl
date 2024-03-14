@@ -96,7 +96,7 @@ build {
     vm_name = "rockylinux-9-latest-x86_64"
     iso_url = "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9-latest-x86_64-boot.iso"
     iso_checksum = "sha256:eb096f0518e310f722d5ebd4c69f0322df4fc152c6189f93c5c797dc25f3d2e1"
-    disk_size = "10G"
+    disk_size = "${local.disk_size}"
     boot_command = [
       "<esc><wait>",
       "linux inst.mbr biosdevname=0 net.ifnames=0 ",
