@@ -126,7 +126,6 @@
         state: absent
       vars:
         packages:
-          - gcc
           - libcurl-devel
           - openssl-devel
       become: yes
@@ -153,13 +152,6 @@
         owner: telegraf
         group: telegraf
         mode: 0755
-    - name: Install NVIDIA packages
-      become: true
-      package:
-        name:
-          - cuda-10-1
-          - nvidia-container-toolkit
-        state: present
   roles:
     - geerlingguy.repo-epel # Install EPEL
     - role: usegalaxy_eu.handy.os_setup
