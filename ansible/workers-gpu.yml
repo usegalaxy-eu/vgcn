@@ -85,7 +85,8 @@
   post_tasks:
     - name: Update to latest nvidia driver
       ansible.builtin.dnf:
-        name: nvidia-driver:latest-dkms
+        name: '@nvidia-driver:latest-dkms'
+        state: present
         allowerasing: true
     - name: Add firewall rules for NFS
       ansible.posix.firewalld:
