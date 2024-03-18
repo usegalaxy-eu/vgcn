@@ -83,6 +83,10 @@
       ansible.builtin.service_facts:
       register: service_facts
   post_tasks:
+    - name: Update to latest nvidia driver
+      ansible.builtin.dnf:
+        name: nvidia-driver:latest-dkms
+        allowerasing: true
     - name: Add firewall rules for NFS
       ansible.posix.firewalld:
         service: "{{ item }}"
