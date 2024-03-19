@@ -12,7 +12,7 @@ collections:
     type: galaxy
 roles:
   - src: usegalaxy_eu.cuda
-    version: 1.1.0
+    version: 1.2.0
   - src: usegalaxy_eu.nvidia_container
     version: 1.2.0
   - src: geerlingguy.docker
