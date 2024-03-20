@@ -95,7 +95,7 @@
         - mountd
     - name: Open Port for HTCondor
       ansible.posix.firewalld:
-        port: "{{ htcondor_port }}/tcp"
+        port: "{{ htcondor_server_port }}/tcp"
         state: enabled
         permanent: true
         immediate: true
