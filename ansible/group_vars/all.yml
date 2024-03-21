@@ -68,9 +68,9 @@ dynmotd_custom:
 
 # Docker
 docker_packages:
-  - "docker-{{ docker_edition }}-25"
-  - "docker-{{ docker_edition }}-cli-25"
-  - "docker-{{ docker_edition }}-rootless-extras-25"
+  - "docker-{{ docker_edition }}-3:25.0.0-1.el9"
+  - "docker-{{ docker_edition }}-cli-1:25.0.5-1.el9"
+  - "docker-{{ docker_edition }}-rootless-extras-25.0.5-1.el9"
   - "containerd.io"
   - docker-buildx-plugin
 docker_users:
