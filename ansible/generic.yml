@@ -13,7 +13,7 @@
   pre_tasks:
     - name: system update
       ansible.builtin.dnf:
-        name: '*'
+        name: "*"
         state: latest
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.posix.selinux:
@@ -31,10 +31,10 @@
         enable_powertools: true
         enable_install_software: true
         enable_grub: true
-        enable_kernel_5: true
+        enable_kernel_5: "{{ true if (ansible_facts['distribution_major_version'] < '9') else false }}"
 
     - geerlingguy.repo-epel # Install EPEL
-    - usegalaxy-eu.autoupdates  # keep all of our packages up to date
+    - usegalaxy-eu.autoupdates # keep all of our packages up to date
     - usegalaxy-eu.dynmotd
     - influxdata.chrony
     - usegalaxy-eu.telegraf

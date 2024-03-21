@@ -1,5 +1,7 @@
 # Cuda
-install_cuda: false
+install_cuda: true
+cuda_rhel8_package_name: cuda-11-6
+cuda_rhel9_package_name: cuda-12.4.0
 
 # Nvidia container
 install_nvidia_container: false
