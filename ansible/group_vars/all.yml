@@ -67,6 +67,12 @@ dynmotd_custom:
     command: "echo  {{ ansible_date_time.iso8601 }}"
 
 # Docker
+docker_packages:
+  - "docker-{{ docker_edition }}-25"
+  - "docker-{{ docker_edition }}-cli-25"
+  - "docker-{{ docker_edition }}-rootless-extras-25"
+  - "containerd.io"
+  - docker-buildx-plugin
 docker_users:
   - centos
   - condor
