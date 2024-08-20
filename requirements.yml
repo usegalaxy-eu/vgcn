@@ -26,7 +26,7 @@ roles:
     name: usegalaxy-eu.dynmotd
     version: 0.0.1
   - name: grycap.htcondor
-    src: https://github.com/kysrpex/grycap-ansible-role-htcondor.git
+    src: https://github.com/usegalaxy-eu/ansible-htcondor-grycap
     version: d9a4aab0052dfb31d48c986d39a7f5e3692abba4
   - src: geerlingguy.repo-epel
     version: 3.1.0
