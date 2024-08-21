@@ -18,5 +18,5 @@ packer_cache/
 .vault_password
 *.retry
 .venv
-
+.vscode
 .idea

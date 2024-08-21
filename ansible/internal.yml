@@ -37,7 +37,7 @@
     - cloudinit
 
 - name: HTCondor cluster.
-  hosts: internal
+  hosts: workers:&internal
   vars:
     internal: true
   vars_files:
