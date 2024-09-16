@@ -186,3 +186,5 @@
         ulimit_fsize_unit: "condor.service"
         ulimit_fsize_soft: 268435456000
         ulimit_fsize_hard: 1073741824000
+
+    - role: block-ips
