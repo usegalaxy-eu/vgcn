@@ -27,6 +27,9 @@ variable "headless" {
   default = "true"
 }
 locals {
+  playbook = contains(var.groups, "internal") ? "playbooks-internal.yml" : "playbooks-external.yml"
+}
+locals {
   vault_password = contains(var.groups, "internal") ? "--vault-password-file=${var.vault_password_file}" : null
 }
 variable "vault_password_file" {
