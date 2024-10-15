@@ -1,4 +1,6 @@
-# Meta-playbook that just imports all other playbooks.
+# Meta-playbook for internal images that just imports all other playbooks.
+# This Meta-playbook is selected when packer finds 'internal' in the group names.
+# Requires a --vault-password-file=.vault_password argument in packer.
 #
 # It defines the order in which playbooks should be run during the provisioning
 # step. Each playbook contains plays that only apply to hosts belonging to a
@@ -16,5 +18,3 @@
 - ansible.builtin.import_playbook: jenkins.yml
 
 - ansible.builtin.import_playbook: internal.yml
-
-- ansible.builtin.import_playbook: external.yml
