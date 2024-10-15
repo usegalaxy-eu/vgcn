@@ -108,7 +108,7 @@ build {
   }
 
   provisioner "ansible" {
-    playbook_file    = "${local.playbook}"
+    playbook_file    = "ansible/${local.playbook}"
     user             = "root"
     galaxy_file      = "requirements.yml"
     roles_path       = "ansible/roles/"
