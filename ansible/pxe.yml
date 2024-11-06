@@ -19,6 +19,3 @@
   roles:
     - openslx-ng.dracut
 
-  post_tasks:
-    - name: Move dracut artifacts
-      local_action: ansible.builtin.command mv "{{ playbook_dir }}/boot_files" "{{ playbook_dir | basename }}/boot_files"
