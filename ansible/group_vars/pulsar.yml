@@ -1,5 +1,5 @@
 pulsar_package_name: pulsar-app
-pulsar_package_version: 0.15.2.dev1
+pulsar_package_version: 0.15.6
 
 pulsar_virtualenv_command: "python -m venv"
 pulsar_root: /opt/pulsar
