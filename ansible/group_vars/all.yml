@@ -130,7 +130,7 @@ software_groups_to_install:
   - admin
   - apps
   - debug
-  - development
+  #  - development
   - editors
   - fonts
   - services
