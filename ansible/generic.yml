@@ -24,6 +24,13 @@
         name: firewalld
         enabled: true
         state: started
+    - name: Create Staponpriv user homedir, see issue 23
+      become: true
+      ansible.builtin.file:
+        path: /var/lib/stapunpriv
+        state: directory
+        owner: root
+        group: root
 
   roles:
     - role: usegalaxy_eu.handy.os_setup

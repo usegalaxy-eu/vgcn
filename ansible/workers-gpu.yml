@@ -82,6 +82,13 @@
     - name: Check if HTCondor is running.
       ansible.builtin.service_facts:
       register: service_facts
+    - name: Create Staponpriv user homedir, see issue 23
+      become: true
+      ansible.builtin.file:
+        path: /var/lib/stapunpriv
+        state: directory
+        owner: root
+        group: root
   post_tasks:
     - name: Add firewall rules for NFS
       ansible.posix.firewalld:
