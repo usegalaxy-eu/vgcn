@@ -31,10 +31,15 @@
         limit_type: hard
         limit_item: core
         value: 0
-
+  tasks:
+    - ansible.builtin.include_role:
+        name: cloudinit
+      when: not (inventory_hostname in groups['pxe'])
+    - ansible.builtin.include_role:
+        name: cloudinit-pxe
+      when: inventory_hostname in groups['pxe']
   roles:
     - lock-root
-    - cloudinit
 
 - name: HTCondor cluster.
   hosts: workers:&internal,workers-gpu:&internal
