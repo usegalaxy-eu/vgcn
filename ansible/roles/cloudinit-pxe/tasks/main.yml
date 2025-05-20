@@ -1,25 +1,25 @@
 ---
-  - name: cloud-init install
+  - name: Cloud-init install
     package:
       name: cloud-init
       state: latest
 
-  - name: cloud-utils-growpart install
+  - name: Cloud-utils-growpart install
     package:
       name: cloud-utils-growpart
       state: latest
 
-  - name: gdisk install
+  - name: Gdisk install
     package:
       name: gdisk
       state: latest
 
   # Centos
-  - name: cloud-init config 1
+  - name: Cloud-init config 1
     when: ansible_os_family == 'RedHat'
-    blockinfile:
+    ansible.builtin.copy:
       dest: /etc/cloud/cloud.cfg.d/pxe.cfg
-      block: |
+      content: |
         system_info:
           default_user:
             name: centos
@@ -33,15 +33,15 @@
             templates_dir: /etc/cloud/templates
           ssh_svcname: sshd
 
-  - name: cloud-init config 2
+  - name: Cloud-init config 2
     lineinfile:
       dest: /etc/cloud/cloud.cfg
       line: 'manage_etc_hosts: true'
       insertafter: '^syslog_fix_perms:.*$'
 
   # run for external only; for internal will be overwrite by section 5
-  - name: cloud-init config 3
-    blockinfile:
+  - name: Cloud-init config 3
+    ansible.builtin.blockinfile:
       marker: "# {mark} ANSIBLE MANAGED BLOCK 3"
       dest: /etc/cloud/cloud.cfg
       block: |
@@ -73,8 +73,8 @@
           #   when: internal | bool
 
   # Collect here all runcmd commands; this will be execute at the end of the config phase
-  - name: cloud-init config 5
-    blockinfile:
+  - name: Cloud-init config 5
+    ansible.builtin.blockinfile:
       marker: "# {mark} ANSIBLE MANAGED BLOCK 5"
       dest: /etc/cloud/cloud.cfg.d/pxe.cfg
       block: |
