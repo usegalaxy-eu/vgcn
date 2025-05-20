@@ -128,14 +128,17 @@
         name: galaxy
         groups: condor,docker
         append: yes
-    - ansible.builtin.dnf:
-        name: "{{ packages }}"
-        state: absent
-      vars:
-        packages:
-          - libcurl-devel
-          - openssl-devel
-      become: yes
+        #  Let's keep this here as a reminder that uninstalling something
+        #  because we think it MAY not be needed, can result in several hours
+        #  debugging. This task removed the nvidia driver and cuda.
+        #  - ansible.builtin.dnf:
+        #      name: "{{ packages }}"
+        #      state: absent
+        #    vars:
+        #      packages:
+        #        - libcurl-devel
+        #        - openssl-devel
+        #    become: yes
     - name: Ensure Docker directory extists
       file:
         state: directory
