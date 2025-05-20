@@ -42,7 +42,7 @@
     - lock-root
 
 - name: HTCondor cluster.
-  hosts: workers:&internal,workers-gpu:&internal
+  hosts: workers-gpu:workers:&internal
   vars:
     internal: true
   vars_files:
