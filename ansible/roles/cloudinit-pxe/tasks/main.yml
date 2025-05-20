@@ -40,17 +40,6 @@
       insertafter: '^syslog_fix_perms:.*$'
 
   # run for external only; for internal will be overwrite by section 5
-  - name: Cloud-init config 3
-    ansible.builtin.blockinfile:
-      marker: "# {mark} ANSIBLE MANAGED BLOCK 3"
-      dest: /etc/cloud/cloud.cfg
-      block: |
-        runcmd:
-          - [ sh, -xc, "sed -i 's|nameserver 10.0.2.3||g' /etc/resolv.conf" ]
-          - [ sh, -xc, "sed -i 's|localhost.localdomain|$(hostname -f)|g' /etc/telegraf/telegraf.conf" ]
-          - systemctl restart telegraf
-      when: not internal
-
           # - name: cloud-init config 4
           #   blockinfile:
           #     marker: "# {mark} ANSIBLE MANAGED BLOCK 4"
