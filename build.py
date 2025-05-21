@@ -201,7 +201,7 @@ class Build:
         self.image_name = self.assemble_name()
         self.image_path = DIR_PATH / f"{self.image_name}.raw"
         self.show_spinner = show_spinner
-        if conda_env:
+        if conda_env.exists():
             self.qemu_path = f"{conda_env}/bin/qemu-img"
             self.openstack_path = f"{conda_env}/bin/openstack"
             self.packer_path = f"{conda_env}/bin/packer"
@@ -267,10 +267,11 @@ class Build:
     def assemble_packer_envs(self):
         env = os.environ.copy()
         env["PACKER_PLUGIN_PATH"] = f"{DIR_PATH}/packer_plugins"
-        env[
-            "PKR_VAR_groups"
-        ] = f"""[{','.join('"' + x + '"' for x in self.provisioning)}]"""
+        env["PKR_VAR_groups"] = (
+            f"""[{','.join('"' + x + '"' for x in self.provisioning)}]"""
+        )
         env["PKR_VAR_headless"] = "true"
+        env["PKR_VAR_image_name"] = f"{self.image_name}"
         if self.ansible_args:
             env["PKR_VAR_ansible_extra_args"] = self.ansible_args
         return env
