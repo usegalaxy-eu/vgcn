@@ -18,5 +18,7 @@ ssh-keygen -s /tmp/server_ca -I key_for_test1 -h -V +52w /etc/ssh/ssh_host_rsa_k
 ssh-keygen -s /tmp/server_ca -I key_for_test1 -h -V +52w /etc/ssh/ssh_host_ecdsa_key.pub
 ssh-keygen -s /tmp/server_ca -I key_for_test1 -h -V +52w /etc/ssh/ssh_host_ed25519_key.pub
 rm -f /tmp/server_ca
+systemctl restart sshd
+systemctl restart condor
 systemctl restart telegraf
 systemctl restart docker
