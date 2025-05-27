@@ -34,10 +34,10 @@
   tasks:
     - ansible.builtin.include_role:
         name: cloudinit
-      when: not (inventory_hostname in groups['pxe'])
+      when: "not ('pxe' in group_names)"
     - ansible.builtin.include_role:
         name: cloudinit-pxe
-      when: inventory_hostname in groups['pxe']
+      when: "'pxe' in group_names"
   roles:
     - lock-root
 
