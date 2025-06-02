@@ -1,7 +1,7 @@
 ---
 vg_build: 60
 # This will be replaced by jenkins.
-build_tag:  vggp-v##-j##-##-branch
+build_tag: vggp-v##-j##-##-branch # overriden by packer var set in build.py
 
 cloud: bwCloud
 
@@ -62,7 +62,7 @@ galaxy_cvmfs_server_urls:
 # dynmotd
 dynmotd_custom:
   - name: Build
-    command: "echo VGGP build {{ cloud }} {{ build_tag }}"
+    command: "echo VGCN build: {{ build_tag }}"
   - name: Build date
     command: "echo  {{ ansible_date_time.iso8601 }}"
 

@@ -117,7 +117,7 @@ build {
       "ANSIBLE_HOST_KEY_CHECKING=False",
       "ANSIBLE_SCP_EXTRA_ARGS = '-0'",
     ]
-    extra_arguments  = "${compact([local.vault_password, var.ansible_extra_args])}"
+    extra_arguments  = "${compact([local.vault_password, var.ansible_extra_args, local.ansible_image_name])}"
     groups           = var.groups
   }
 
