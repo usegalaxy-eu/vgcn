@@ -20,3 +20,5 @@
 - ansible.builtin.import_playbook: internal.yml
 
 - ansible.builtin.import_playbook: pxe.yml
+
+- ansible.builtin.import_playbook: kvm.yml

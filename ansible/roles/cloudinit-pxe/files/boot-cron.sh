@@ -1,5 +1,8 @@
 #!/bin/bash
 
+if [ -e /etc/init_success ]; then
+    exit 0
+fi
 # Create user if it doesn't exist
 if ! id "centos" &>/dev/null; then
     useradd -m -c "RHEL Cloud User" -s /bin/bash centos
@@ -22,3 +25,5 @@ systemctl restart sshd
 systemctl restart condor
 systemctl restart telegraf
 systemctl restart docker
+
+touch /etc/init_success
