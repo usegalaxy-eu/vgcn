@@ -8,11 +8,21 @@ if ! id "centos" &>/dev/null; then
     useradd -m -c "RHEL Cloud User" -s /bin/bash centos
 fi
 
-if ! sudo blkid /dev/mapper/tank | grep -q 'TYPE="xfs"' &>/dev/null && [ -e /opt/openslx ]; then
-    mkfs.xfs /dev/mapper/tank
-fi
-if [ -e /dev/mapper/tank ] && [ -e /opt/openslx ]; then
-    mount /dev/mapper/tank /scratch
+# Create scratch storage for PXE machines
+SCRATCH_DEVICE=/dev/mapper/tank
+SCRATCH_MOUNT=/scratch
+if [ -e /opt/openslx ]; then
+    if ! sudo blkid "$SCRATCH_DEVICE" 2>/dev/null | grep -q 'TYPE="xfs"' ; then
+        if grep -qs "$SCRATCH_MOUNT " /proc/mounts; then
+            systemctl stop docker
+            sleep 2
+            umount "$SCRATCH_MOUNT"
+        fi
+        mkfs.xfs -f "$SCRATCH_DEVICE"
+    fi
+    if ! grep -qs "$SCRATCH_MOUNT " /proc/mounts; then
+        mount "$SCRATCH_DEVICE" "$SCRATCH_MOUNT"
+    fi
 fi
 
 # Ensure user is part of specified groups
