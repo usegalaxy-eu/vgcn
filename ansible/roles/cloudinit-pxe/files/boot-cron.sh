@@ -8,6 +8,13 @@ if ! id "centos" &>/dev/null; then
     useradd -m -c "RHEL Cloud User" -s /bin/bash centos
 fi
 
+if ! sudo blkid /dev/mapper/tank | grep -q 'TYPE="xfs"' &>/dev/null && [ -e /opt/openslx ]; then
+    mkfs.xfs /dev/mapper/tank
+fi
+if [ -e /dev/mapper/tank ] && [ -e /opt/openslx ]; then
+    mount /dev/mapper/tank /scratch
+fi
+
 # Ensure user is part of specified groups
 usermod -aG wheel,adm,systemd-journal centos
 
