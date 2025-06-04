@@ -33,7 +33,7 @@ locals {
   vault_password = contains(var.groups, "internal") ? "--vault-password-file=${var.vault_password_file}" : null
 }
 locals {
-  ansible_image_name = '-e build_tag="${var.image_name}"'
+  ansible_image_name = "-e build_tag='${var.image_name}'"
 }
 variable "vault_password_file" {
   type    = string
