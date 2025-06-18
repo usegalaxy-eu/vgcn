@@ -12,7 +12,7 @@ fi
 SCRATCH_DEVICE=/dev/mapper/tank
 SCRATCH_MOUNT=/scratch
 if [ -e /opt/openslx ]; then
-    if ! sudo blkid "$SCRATCH_DEVICE" 2>/dev/null | grep -q 'TYPE="xfs"' ; then
+    if ! blkid "$SCRATCH_DEVICE" 2>/dev/null | grep -q 'TYPE="xfs"' ; then
         if grep -qs "$SCRATCH_MOUNT " /proc/mounts; then
             systemctl stop docker
             sleep 2
@@ -23,6 +23,11 @@ if [ -e /opt/openslx ]; then
     if ! grep -qs "$SCRATCH_MOUNT " /proc/mounts; then
         mount "$SCRATCH_DEVICE" "$SCRATCH_MOUNT"
     fi
+fi
+
+# Change GalaxyGroup based on nvidia detection
+if nvidia-smi &> /dev/null; then
+    sed -i 's/.*GalaxyGroup = "training-pxe-test".*/GalaxyGroup = "training-pxe-test-gpu"/' /etc/condor/config.d/99-cloud-init.conf
 fi
 
 # Ensure user is part of specified groups
