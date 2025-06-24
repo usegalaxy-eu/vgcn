@@ -16,6 +16,9 @@
         name: "{{ packages }}"
         state: latest
         update_cache: yes
+    - name: Remove CA
+      ansible.builtin.file:
+        state: absent
+        path: /tmp/server_ca
   roles:
     - openslx-ng.dracut
-
