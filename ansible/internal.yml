@@ -6,6 +6,43 @@
     - "group_vars/all.yml"
     - "group_vars/condor.yml"
   pre_tasks:
+    - name: Include secret vars
+      ansible.builtin.include_vars: "secret_group_vars/internal.yml"
+      when: "'internal' in group_names"
+    - name: Copy signed ssh public keys
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /etc/ssh/
+        mode: 0644
+        owner: root
+        group: root
+      with_items:
+        - ssh_host_ecdsa_key.pub
+        - ssh_host_ed25519_key.pub
+        - ssh_host_rsa_key.pub
+        - ssh_host_ecdsa_key-cert.pub
+        - ssh_host_ed25519_key-cert.pub
+        - ssh_host_rsa_key-cert.pub
+    - name: Copy signed ssh private keys
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /etc/ssh/
+        mode: 0600
+        owner: root
+        group: ssh_keys
+      with_items:
+        - ssh_host_ecdsa_key
+        - ssh_host_ed25519_key
+        - ssh_host_rsa_key
+    - name: Add HostCertificate options
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^HostKey /etc/ssh/ssh_host_{{ item }}_key"
+        line: "HostKey /etc/ssh/ssh_host_{{ item }}_key\nHostCertificate /etc/ssh/ssh_host_{{ item }}_key-cert.pub"
+      with_items:
+        - rsa
+        - ecdsa
+        - ed25519
     - name: Add core limit
       community.general.pam_limits:
         domain: galaxy
@@ -23,7 +60,7 @@
     - lock-root
 
 - name: HTCondor cluster.
-  hosts: workers-gpu:workers:&internal
+  hosts: workers-gpu:workers:&internal:!pxe # Hosts that are in (workers or workers-gpu) and internal and not in pxe
   vars:
     internal: true
   vars_files:

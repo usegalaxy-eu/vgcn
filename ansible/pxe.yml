@@ -16,7 +16,7 @@
         name: "{{ packages }}"
         state: latest
         update_cache: yes
-    - name: Remove CA
+    - name: Remove CA (to be sure)
       ansible.builtin.file:
         state: absent
         path: /tmp/server_ca
