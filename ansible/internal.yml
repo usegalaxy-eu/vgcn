@@ -6,25 +6,6 @@
     - "group_vars/all.yml"
     - "group_vars/condor.yml"
   pre_tasks:
-    - name: Include secret vars
-      ansible.builtin.include_vars: "secret_group_vars/internal.yml"
-      when: "'internal' in group_names"
-    - name: Copy server key into VM temporarily
-      ansible.builtin.copy:
-        src: server_ca
-        dest: /tmp/server_ca
-        owner: root
-        group: root
-        mode: "0600"
-    - name: Add HostCertificate options
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: "^HostKey /etc/ssh/ssh_host_{{ item }}_key"
-        line: "HostKey /etc/ssh/ssh_host_{{ item }}_key\nHostCertificate /etc/ssh/ssh_host_{{ item }}_key-cert.pub"
-      with_items:
-        - rsa
-        - ecdsa
-        - ed25519
     - name: Add core limit
       community.general.pam_limits:
         domain: galaxy
