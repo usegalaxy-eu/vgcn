@@ -18,7 +18,10 @@
       ansible.builtin.dnf:
         name: '*'
         state: latest
-        exclude: condor*
+        exclude:
+          - condor*
+          - kernel*
+          - kmod-kvdo
     - name: Install Pulsar dependencies
       become: yes
       ansible.builtin.dnf:

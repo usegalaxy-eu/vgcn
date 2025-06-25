@@ -3,14 +3,10 @@
   vars_files:
     - group_vars/pxe.yml
   pre_tasks:
-    - name: system update
-      ansible.builtin.dnf:
-        name: "*"
-        state: latest
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.posix.selinux:
         policy: targeted
-        state: disabled
+        state: permissive
     - name: Alma|Rocky|CentOS | Install packages
       ansible.builtin.yum:
         name: "{{ packages }}"

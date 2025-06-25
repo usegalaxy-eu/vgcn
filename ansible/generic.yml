@@ -11,9 +11,12 @@
     - "group_vars/all.yml"
 
   pre_tasks:
-    - name: system update
+    - name: system update (without kernel update)
       ansible.builtin.dnf:
         name: "*"
+        exclude:
+          - kernel*
+          - kmod-kvdo
         state: latest
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.posix.selinux:
