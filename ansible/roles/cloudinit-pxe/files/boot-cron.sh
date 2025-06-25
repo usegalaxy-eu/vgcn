@@ -26,9 +26,9 @@ if [ -e /opt/openslx ]; then
 fi
 
 # Change GalaxyGroup based on nvidia detection
-if nvidia-smi &> /dev/null; then
-    sed -i 's/.*GalaxyGroup = "training-pxe-test".*/GalaxyGroup = "training-pxe-test-gpu"/' /etc/condor/config.d/99-cloud-init.conf
-fi
+#if nvidia-smi &> /dev/null; then
+#    sed -i 's/.*GalaxyGroup = "training-pxe-test".*/GalaxyGroup = "training-pxe-test-gpu"/' /etc/condor/config.d/99-cloud-init.conf
+#fi
 
 # Ensure user is part of specified groups
 usermod -aG wheel,adm,systemd-journal centos
