@@ -44,7 +44,7 @@
         enable_kernel_5: "{{ true if (ansible_facts['distribution_major_version'] < '9') else false }}"
 
     - geerlingguy.repo-epel # Install EPEL
-    - usegalaxy-eu.autoupdates # keep all of our packages up to date
+    # - usegalaxy-eu.autoupdates # keep all of our packages up to date REMOVED until latest kernel is supported in dnbd3
     - usegalaxy-eu.dynmotd
     - influxdata.chrony
     - usegalaxy-eu.telegraf
