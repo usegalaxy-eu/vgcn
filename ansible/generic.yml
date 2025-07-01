@@ -11,6 +11,13 @@
     - "group_vars/all.yml"
 
   pre_tasks:
+    - name: Debug Kernel version
+      ansible.builtin.shell:
+        cmd: uname -r
+      register: kernel
+    - name: Print kernel version
+      ansible.builtin.debug:
+        msg: "{{ kernel }}"
     - name: system update (without kernel update)
       ansible.builtin.dnf:
         name: "*"

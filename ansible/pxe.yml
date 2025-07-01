@@ -3,6 +3,13 @@
   vars_files:
     - group_vars/pxe.yml
   pre_tasks:
+    - name: Debug Kernel version
+      ansible.builtin.shell:
+        cmd: uname -r
+      register: kernel
+    - name: Print kernel version
+      ansible.builtin.debug:
+        msg: "{{ kernel }}"
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.posix.selinux:
         policy: targeted
@@ -16,5 +23,6 @@
       ansible.builtin.file:
         state: absent
         path: /tmp/server_ca
+
   roles:
     - openslx-ng.dracut
