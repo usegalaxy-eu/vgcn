@@ -9,3 +9,4 @@ packages:
   - "@development tools"
   - "cmake"
   - "git"
+  - kernel-devel
