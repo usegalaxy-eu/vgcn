@@ -140,4 +140,3 @@ software_groups_to_install:
 kernel_5_package: kernel-ml
 
 docker_daemon_options: {}
-
