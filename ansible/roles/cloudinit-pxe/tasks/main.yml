@@ -12,4 +12,4 @@
     name: "Run centos user setup at boot"
     user: root
     special_time: reboot
-    job: "/usr/local/sbin/boot-cron.sh"
+    job: "sleep 20 && /usr/local/sbin/boot-cron.sh > /var/log/init"

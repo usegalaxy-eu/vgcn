@@ -1,8 +1,5 @@
 #!/bin/bash
 
-if [ -e /etc/init_success ]; then
-    exit 0
-fi
 # Create user if it doesn't exist
 if ! id "centos" &>/dev/null; then
     useradd -m -c "RHEL Cloud User" -s /bin/bash centos
@@ -43,8 +40,5 @@ sed -i 's|nameserver 10.0.2.3||g' /etc/resolv.conf
 #ssh-keygen -s /tmp/server_ca -I key_for_test1 -h -V +52w /etc/ssh/ssh_host_ed25519_key.pub
 #rm -f /tmp/server_ca
 systemctl restart sshd
-systemctl restart condor
 systemctl restart telegraf
 systemctl restart docker
-
-touch /etc/init_success
