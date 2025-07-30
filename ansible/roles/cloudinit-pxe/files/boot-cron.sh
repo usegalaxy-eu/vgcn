@@ -15,7 +15,7 @@ if [ -e /opt/openslx ]; then
             sleep 2
             umount "$SCRATCH_MOUNT"
         fi
-        mkfs.xfs -f "$SCRATCH_DEVICE"
+        /usr/sbin/mkfs.xfs -f "$SCRATCH_DEVICE"
     fi
     if ! grep -qs "$SCRATCH_MOUNT " /proc/mounts; then
         mount "$SCRATCH_DEVICE" "$SCRATCH_MOUNT"
@@ -28,7 +28,7 @@ fi
 #fi
 
 # Ensure user is part of specified groups
-usermod -aG wheel,adm,systemd-journal centos
+/usr/sbin/usermod -aG wheel,adm,systemd-journal centos
 
 # Set up passwordless sudo
 echo "centos ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/90-cloud-init-centos
