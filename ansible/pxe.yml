@@ -23,6 +23,19 @@
       ansible.builtin.file:
         state: absent
         path: /tmp/server_ca
-
+  tasks:
+    - name: Check CPU governor
+      ansible.builtin.shell:
+        cmd: 'cpupower frequency-info | grep "The governor"'
+      register: cpu_governor
+    - name: Set CPU governor to schedutil
+      ansible.builtin.shell:
+        cmd: cpupower frequency-set -g schedutil
+      when: 'not "schedutil" in cpu_governor.stdout'
+    - name: Enable cpupower.service
+      ansible.builtin.service:
+        state: started
+        enabled: true
+        name: cpupower
   roles:
     - openslx-ng.dracut
