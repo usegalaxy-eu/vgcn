@@ -4,6 +4,8 @@ builder_url: "http://git.openslx.org/openslx-ng/systemd-init.git/plain/build-ini
 builder_path: "/opt/systemd-init/build-initramfs.sh"
 builder_target: "{{ builder_path | dirname }}/initramfs"
 
+governor: schedutil
+
 packages:
   - "epel-release"
   - "@development tools"
