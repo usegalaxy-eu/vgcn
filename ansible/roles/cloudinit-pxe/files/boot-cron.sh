@@ -35,6 +35,10 @@ echo "centos ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/90-cloud-init-centos
 chmod 440 /etc/sudoers.d/90-cloud-init-centos
 
 sed -i 's|nameserver 10.0.2.3||g' /etc/resolv.conf
+
+# Set CPUPower to schedutil
+cpupower frequency-set -g schedutil
+systemctl start cpupower.service
 #ssh-keygen -s /tmp/server_ca -I key_for_test1 -h -V +52w /etc/ssh/ssh_host_rsa_key.pub
 #ssh-keygen -s /tmp/server_ca -I key_for_test1 -h -V +52w /etc/ssh/ssh_host_ecdsa_key.pub
 #ssh-keygen -s /tmp/server_ca -I key_for_test1 -h -V +52w /etc/ssh/ssh_host_ed25519_key.pub
