@@ -45,3 +45,11 @@ cpupower -c all frequency-set -g schedutil
 systemctl restart sshd
 systemctl restart telegraf
 systemctl restart docker
+
+# Add trim cron task
+cat <<EOT > /etc/cron.daily/trim
+#!/bin/bash
+# This script runs the fstrim command once a day and trims all the mounted file systems that support TRIM.
+sudo fstrim -v --all
+EOT
+sudo chmod +x /etc/cron.daily/trim
