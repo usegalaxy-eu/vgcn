@@ -19,6 +19,7 @@
         name: "{{ packages }}"
         state: latest
         update_cache: yes
+        enablerepo: devel
     - name: Remove CA (to be sure)
       ansible.builtin.file:
         state: absent
