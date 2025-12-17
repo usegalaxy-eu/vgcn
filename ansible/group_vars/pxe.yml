@@ -7,6 +7,7 @@ builder_target: "{{ builder_path | dirname }}/initramfs"
 governor: schedutil
 
 packages:
+  - redhat-lsb-core
   - "epel-release"
   - "@development tools"
   - "cmake"
