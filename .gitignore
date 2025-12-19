@@ -3,6 +3,7 @@ virtualbox-iso/
 vmware-iso/
 packer_plugins/
 ansible/collections
+roles/
 # Created by https://www.gitignore.io/api/packer
 
 ### Packer ###
