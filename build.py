@@ -201,7 +201,7 @@ class Build:
         self.image_name = self.assemble_name()
         self.image_path = DIR_PATH / f"{self.image_name}.raw"
         self.show_spinner = show_spinner
-        if conda_env and conda_env.exists():
+        if conda_env.exists():
             self.qemu_path = f"{conda_env}/bin/qemu-img"
             self.openstack_path = f"{conda_env}/bin/openstack"
             self.packer_path = f"{conda_env}/bin/packer"
