@@ -59,6 +59,7 @@ galaxy_cvmfs_server_urls:
       - "http://cvmfs1-tacc0.galaxyproject.org/cvmfs/@fqrn@"
       - "http://cvmfs1-mel0.gvl.org.au/cvmfs/@fqrn@"
 
+cvmfs_quota_limit: 10000
 cvmfs_telemetry_send: "ON"
 cvmfs_telemetry_rate: "60"
 cvmfs_influx_host: localhost
