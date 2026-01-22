@@ -113,7 +113,7 @@ ansible_root_cron:
     weekday: "{{ 7 | random }}"
     minute: "{{ 60 | random }}"
     hour: "{{ 5 | random }}"
-    job: "docker system prune -f"
+    job: "docker system prune -a -f"
   - name: "Stop containers running more than 1 months"
     weekday: "{{ 7 | random }}"
     minute: "{{ 60 | random }}"
