@@ -50,7 +50,7 @@ roles:
     version: main
   - name: usegalaxy-eu.telegraf
     src: https://github.com/dj-wasabi/ansible-telegraf
-    version: 0.14.1
+    version: 0.14.2
   - name: galaxyproject.miniconda
     src: https://github.com/galaxyproject/ansible-miniconda
     version: 0.3.1
