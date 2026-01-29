@@ -11,6 +11,7 @@ galaxy_gid: 999
 replace_non_galaxy_999: true
 
 telegraf_agent_package_state: latest
+telegraf_yum_gpgcheck: false
 telegraf_agent_tags:
   - tag_name: datacenter
     tag_value: rz
