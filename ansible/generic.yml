@@ -41,6 +41,12 @@
         state: directory
         owner: root
         group: root
+    - name: Ensure serial console getty exists (ttyS0)
+      become: true
+      ansible.builtin.file:
+        state: link
+        src: /lib/systemd/system/serial-getty@.service
+        dest: /etc/systemd/system/getty.target.wants/serial-getty@ttyS0.service
 
   roles:
     - role: usegalaxy_eu.handy.os_setup
