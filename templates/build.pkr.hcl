@@ -92,6 +92,22 @@ build {
   }
 
   source "source.qemu.base" {
+    name = "rockylinux-9.6-x86_64"
+    vm_name = "rockylinux-9.6-x86_64"
+    iso_url = "https://dl.rockylinux.org/vault/rocky/9.6/isos/x86_64/Rocky-9.6-x86_64-boot.iso"
+    iso_checksum = "0fad8d8b19a94a0222ea37152cdf5601229fe0178b651dc476e1cba41d2e6067"
+    disk_size = "${local.disk_size}"
+    boot_command = [
+      "<esc><wait>",
+      "linux inst.mbr biosdevname=0 net.ifnames=0 ",
+      "rootpw=${var.ssh_password} ",
+      "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-9.7-x86_64-anaconda-ks.cfg",
+      "<enter>"
+    ]
+    shutdown_command = "systemctl poweroff"
+  }
+
+  source "source.qemu.base" {
     name = "rockylinux-9-latest-x86_64"
     vm_name = "rockylinux-9-latest-x86_64"
     iso_url = "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9-latest-x86_64-boot.iso"
