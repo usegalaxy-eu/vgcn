@@ -43,10 +43,10 @@
         group: root
     - name: Ensure serial console getty exists (ttyS0)
       become: true
-      ansible.builtin.file:
-        state: link
-        src: /usr/lib/systemd/system/serial-getty@.service
-        dest: /etc/systemd/system/getty.target.wants/serial-getty@ttyS0.service
+      ansible.builtin.systemd:
+        name: serial-getty@ttyS0
+        enabled: true
+        state: started
 
   roles:
     - role: usegalaxy_eu.handy.os_setup
