@@ -45,7 +45,7 @@
       become: true
       ansible.builtin.file:
         state: link
-        src: /lib/systemd/system/serial-getty@.service
+        src: /usr/lib/systemd/system/serial-getty@.service
         dest: /etc/systemd/system/getty.target.wants/serial-getty@ttyS0.service
 
   roles:
