@@ -106,6 +106,13 @@ autofs_service.enable: True
 nfs_kernel_tuning: True
 nfs_kernel_tuning_parameters:
   sunrpc.tcp_max_slot_table_entries: 100
+handy_groups:
+  - group_name: galaxy
+    group_gid: 999
+handy_users:
+  - user_name: galaxy
+    user_uid: 999
+    user_group: galaxy
 
 # usegalaxy_eu.handy.os_setup
 # ansible_root_cron
