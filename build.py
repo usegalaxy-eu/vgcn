@@ -291,7 +291,8 @@ class Build:
             self.assemble_timestamp(),
             subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
             .decode("ascii")
-            .strip(),
+            .strip()
+            .replace("/", "-"),
             subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
             .decode("ascii")
             .strip(),
