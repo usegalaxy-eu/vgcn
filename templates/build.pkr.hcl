@@ -101,7 +101,7 @@ build {
       "<esc><wait>",
       "linux inst.mbr biosdevname=0 net.ifnames=0 ",
       "rootpw=${var.ssh_password} ",
-      "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-9.7-x86_64-anaconda-ks.cfg",
+      "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-9.6-x86_64-anaconda-ks.cfg",
       "<enter>"
     ]
     shutdown_command = "systemctl poweroff"
