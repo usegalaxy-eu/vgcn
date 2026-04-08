@@ -78,11 +78,20 @@ build {
   source "source.qemu.base" {
     name = "rockylinux-10.1-x86_64"
     vm_name = "rockylinux-10.1-x86_64"
-    iso_url = "./Rocky-10.1-x86_64-minimal.iso"
+    iso_url = "https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10.1-x86_64-boot.iso"
     iso_checksum = "sha256:18543988d9a1a5632d142c3dc288136dcc48ab71628f92ebcd40ada7f4ecd110"
     disk_size = "${local.disk_size}"
     boot_command = [
-      "<up><tab> text ip=192.168.1.11::192.168.1.254:255.255.255.0:template:ens192:none nameserver=192.168.1.254 inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-10.1-x86_64-anaconda-ks.cfg<enter><wait><enter>"
+      # 1. Access the boot editor (Esc for the menu, then 'e' to edit the first entry)
+      "<esc><wait>e",
+      # 2. Navigate to the end of the 'linux' or 'linuxefi' line
+      "<down><down><end><wait>",
+      # 3. Append parameters (Note: removed the 'text' prefix as it's a kernel param)
+      " inst.text ip=192.168.1.11::192.168.1.254:255.255.255.0:rocky10:ens192:none nameserver=192.168.1.254",
+      " inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-10.1-x86_64-anaconda-ks.cfg",
+      " rootpw=YourSecurePassword", # Critical for your %pre script!
+      # 4. Boot (Ctrl+X for GRUB2)
+      "<leftCtrlOn>x<leftCtrlOff>"
     ]
     shutdown_command = "systemctl poweroff"
   }
