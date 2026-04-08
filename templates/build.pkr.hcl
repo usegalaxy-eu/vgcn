@@ -78,15 +78,11 @@ build {
   source "source.qemu.base" {
     name = "rockylinux-10.1-x86_64"
     vm_name = "rockylinux-10.1-x86_64"
-    iso_url = "https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10.1-x86_64-boot.iso"
+    iso_url = "./Rocky-10.1-x86_64-minimal.iso"
     iso_checksum = "sha256:18543988d9a1a5632d142c3dc288136dcc48ab71628f92ebcd40ada7f4ecd110"
     disk_size = "${local.disk_size}"
     boot_command = [
-      "<esc><wait>",
-      "linux inst.mbr biosdevname=0 net.ifnames=0 ",
-      "rootpw=${var.ssh_password} ",
-      "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-10.1-x86_64-anaconda-ks.cfg",
-      "<enter>"
+      "<up><tab> text ip=192.168.1.11::192.168.1.254:255.255.255.0:template:ens192:none nameserver=192.168.1.254 inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-10.1-x86_64-anaconda-ks.cfg<enter><wait><enter>"
     ]
     shutdown_command = "systemctl poweroff"
   }
