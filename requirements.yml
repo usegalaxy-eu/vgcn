@@ -11,7 +11,7 @@ collections:
     source: https://galaxy.ansible.com
     type: galaxy
   - name: devsec.hardening
-    version: 8.7.0
+    version: 10.5.2
     source: https://galaxy.ansible.com
     type: galaxy
 roles:

@@ -148,3 +148,8 @@ software_groups_to_install:
 kernel_5_package: kernel-ml
 
 docker_daemon_options: {}
+
+# Devsec
+# Forsing group owenership to root. The role is for some reason trying to change it to "ssh_keys"
+# and this does not aligne with the base Rocky10 image
+ssh_host_keys_group: root
