@@ -82,12 +82,10 @@ build {
     iso_checksum = "sha256:18543988d9a1a5632d142c3dc288136dcc48ab71628f92ebcd40ada7f4ecd110"
     disk_size = "${local.disk_size}"
     boot_command = [
-      # 1. Access the boot editor (Esc for the menu, then 'e' to edit the first entry)
       "<esc><wait>e",
-      # 2. Navigate to the end of the 'linux' or 'linuxefi' line
       "<down><down><end><wait>",
       " inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-10.1-x86_64-anaconda-ks.cfg",
-      " rootpw=YourSecurePassword", # Critical for your %pre script!
+      " rootpw=${var.ssh_password} ",
       "<leftCtrlOn>x<leftCtrlOff>"
     ]
     shutdown_command = "systemctl poweroff"
