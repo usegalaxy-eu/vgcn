@@ -86,11 +86,8 @@ build {
       "<esc><wait>e",
       # 2. Navigate to the end of the 'linux' or 'linuxefi' line
       "<down><down><end><wait>",
-      # 3. Append parameters (Note: removed the 'text' prefix as it's a kernel param)
-      " inst.text ip=192.168.1.11::192.168.1.254:255.255.255.0:rocky10:ens192:none nameserver=192.168.1.254",
       " inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-10.1-x86_64-anaconda-ks.cfg",
       " rootpw=YourSecurePassword", # Critical for your %pre script!
-      # 4. Boot (Ctrl+X for GRUB2)
       "<leftCtrlOn>x<leftCtrlOff>"
     ]
     shutdown_command = "systemctl poweroff"
