@@ -47,7 +47,7 @@
           - python-devel
         state: present
       become: true
-      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 9
+      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int >= 9
     - name: Set default version of Python
       community.general.alternatives:
         name: python
@@ -160,7 +160,7 @@
         enable_kernel_5: true
         enable_pam_limits: true
         enable_grub: true
-        enable_cgroups: "{{ false if ansible_facts['distribution_major_version'] == '9' else true }}"
+        enable_cgroups: "{{ false if ansible_facts['distribution_major_version'] in ['9', '10'] else true }}"
         enable_journald: true
         enable_install_software: true
         enable_ansible_root_cron: false

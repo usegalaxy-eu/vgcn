@@ -30,7 +30,7 @@ variable "ssh_password" {
 
 variable "ssh_timeout" {
   type    = string
-  default = "25m"
+  default = "60m"
 }
 
 variable "http_dir" {
