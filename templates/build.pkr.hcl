@@ -91,6 +91,16 @@ build {
     shutdown_command = "systemctl poweroff"
   }
 
+  provisioner "shell" {
+      inline = [
+        "dnf -y update",
+        "dnf -y install epel-release",
+        "dnf config-manager --set-enabled crb", # Enable CRB for dependencies
+        "dnf -y install wget ansible-core",     # Use ansible-core for v10
+        "echo 'System prepared for Ansible'"
+      ]
+    }
+
   provisioner "ansible" {
     playbook_file    = "ansible/${local.playbook}"
     user             = "root"
@@ -99,7 +109,7 @@ build {
     collections_path = "ansible/collections/"
     ansible_env_vars = [
       "ANSIBLE_HOST_KEY_CHECKING=False",
-      "ANSIBLE_SCP_EXTRA_ARGS = '-0'",
+      "ANSIBLE_SCP_EXTRA_ARGS='-0'",
     ]
     extra_arguments  = "${compact([local.vault_password, var.ansible_extra_args, local.ansible_image_name])}"
     groups           = var.groups
