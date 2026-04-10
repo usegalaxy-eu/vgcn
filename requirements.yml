@@ -38,8 +38,9 @@ roles:
     version: 3.1.0
   - src: geerlingguy.java
     version: 2.6.1
-  - src: galaxyproject.cvmfs
-    version: 0.2.21
+  - src: https://github.com/gsaudade99/ansible-cvmfs # Point to my fix
+    name: galaxyproject.cvmfs
+    version: d70f0bb75a4269f11e74598486da13555f7e0714
   - src: https://github.com/usegalaxy-eu/ansible-autofs
     name: usegalaxy-eu.autofs
     version: 08a15b6e9b031bed659fd718b036b4b8c387bb35
