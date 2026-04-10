@@ -44,11 +44,11 @@ telegraf_plugins_default:
       - name_suffix = "_alive"
 
 java_packages:
- - java-11-openjdk
- - java-11-openjdk-devel
+ - java-21-openjdk
 
 # CVMFS
 cvmfs_role: client
+cvmfs_yum_releasever: "9"
 galaxy_cvmfs_repos_enabled: true
 galaxy_cvmfs_server_urls:
   - domain: galaxyproject.org
@@ -69,11 +69,12 @@ dynmotd_custom:
 
 # Docker
 docker_packages:
-  - "docker-{{ docker_edition }}-3:25.0.0-1.el9"
-  - "docker-{{ docker_edition }}-cli-1:25.0.5-1.el9"
-  - "docker-{{ docker_edition }}-rootless-extras-25.0.5-1.el9"
-  - "containerd.io"
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
   - docker-buildx-plugin
+  - docker-compose-plugin
+  - docker-ce-rootless-extras
 docker_users:
   - centos
   - condor
