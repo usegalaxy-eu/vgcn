@@ -21,7 +21,7 @@ roles:
   - src: usegalaxy_eu.nvidia_container
     version: 1.2.0
   - src: geerlingguy.docker
-    version: 6.1.0
+    version: 8.0.0
   - src: https://github.com/usegalaxy-eu/ansible-chrony
     name: influxdata.chrony
     version: 0.1.1
@@ -36,7 +36,7 @@ roles:
   - src: geerlingguy.repo-epel
     version: 3.1.0
   - src: geerlingguy.java
-    version: 2.2.0
+    version: 2.6.1
   - src: galaxyproject.cvmfs
     version: 0.2.21
   - src: https://github.com/usegalaxy-eu/ansible-autofs
