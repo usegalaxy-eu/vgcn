@@ -120,20 +120,6 @@
       ansible.builtin.service:
         name: autofs
         state: restarted
-    - name: galaxy account group
-      ansible.builtin.group:
-        gid: "{{ galaxy_gid }}"
-        name: galaxy
-        state: present
-    - name: galaxy account user
-      ansible.builtin.user:
-        uid: "{{ galaxy_uid }}"
-        name: galaxy
-        group: galaxy
-        home: /opt/galaxy
-        state: present
-        comment: Galaxy Service-Acct
-        createhome: no
     - ansible.builtin.user:
         name: galaxy
         groups: condor,docker
