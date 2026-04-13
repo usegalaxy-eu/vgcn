@@ -21,30 +21,6 @@
     - name: Print kernel version
       ansible.builtin.debug:
         msg: "{{ kernel }}"
-    - name: system update
-      ansible.builtin.dnf:
-        name: '*'
-        state: latest
-        exclude:
-          - condor*
-          - kernel*
-          - kmod-kvdo
-    - name: Install Pulsar dependencies
-      become: yes
-      ansible.builtin.dnf:
-        state: latest
-        name:
-          - git
-          - python36
-          - python3-devel
-          - python3-virtualenv
-          - python38
-          - python38-devel
-          - gcc
-          - curl
-          - libcurl-devel
-          - openssl-devel
-      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 8
     - name: Install Pulsar dependencies
       package:
         name:
@@ -66,6 +42,7 @@
         path: /etc/selinux/config
         regexp: '^SELINUX='
         line: SELINUX=permissive
+    # CHECK IF THIS IS NEEDED OR EXECUTED
     - name: "Deploy docker-stop-1M script"
       ansible.builtin.copy:
         content: |
@@ -120,7 +97,8 @@
       ansible.builtin.service:
         name: autofs
         state: restarted
-    - ansible.builtin.user:
+    - name: Post Task Create User and add galaxy and condor/docker user groups
+      ansible.builtin.user:
         name: galaxy
         groups: condor,docker
         append: yes
@@ -159,26 +137,16 @@
         group: telegraf
         mode: 0755
   roles:
-    - geerlingguy.repo-epel # Install EPEL
     - role: usegalaxy_eu.handy.os_setup
       vars:
-        enable_powertools: true # geerlingguy.repo-epel role doesn't enable PowerTools repository
-        enable_remap_user: true
         enable_pam_limits: true
-        enable_grub: true
-        enable_cgroups: false
         enable_journald: true
-        enable_install_software: true
-        enable_ansible_root_cron: false
+        enable_ansible_root_cron: true
 
     - usegalaxy-eu.autofs
-    - usegalaxy-eu.dynmotd
 
     - geerlingguy.java
     - geerlingguy.docker
-
-    - influxdata.chrony
-    - usegalaxy-eu.telegraf
 
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
@@ -186,16 +154,6 @@
     - usegalaxy_eu.nvidia_container
 
     - usegalaxy-eu.logrotate
-    - role: usegalaxy_eu.handy.os_setup
-      vars:
-        enable_powertools: false # geerlingguy.repo-epel role doesn't enable PowerTools repository
-        enable_remap_user: true  # needs to be at the end, otherwise dnsmasq will occupy 999 slot
-        enable_pam_limits: false
-        enable_grub: false
-        enable_cgroups: false
-        enable_journald: false
-        enable_install_software: false
-        enable_ansible_root_cron: true
 
     # Applies a 250GB soft and 1TB hard limit on the file size for the condor systemd unit
     - role: usegalaxy-eu.fslimit

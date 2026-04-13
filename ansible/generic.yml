@@ -51,6 +51,7 @@
   roles:
     - role: usegalaxy_eu.handy.os_setup
       vars:
+        enable_create_user: true
         enable_powertools: true
         enable_install_software: true
         enable_grub: true
