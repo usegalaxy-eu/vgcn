@@ -11,6 +11,16 @@
     - "group_vars/all.yml"
 
   pre_tasks:
+    - name: Ensure group Galaxy exists with correct gid
+      ansible.builtin.group:
+        name: galaxy
+        state: present
+        gid: 999
+    - name: Add the user Galxy
+      ansible.builtin.user:
+        name: galaxy
+        uid: 999
+        group: galaxy
     - name: Debug Kernel version
       ansible.builtin.shell:
         cmd: uname -r

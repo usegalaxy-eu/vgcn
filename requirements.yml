@@ -16,11 +16,11 @@ collections:
     type: galaxy
 roles:
   - name: usegalaxy_eu.cuda
-    version: 7d272fa51d7f8297dd7dd49856934a22fc12d208 # CHANGE ME
+    version: 2.0.0
     src: https://github.com/usegalaxy-eu/ansible-cuda
   - name: usegalaxy_eu.nvidia_container
     src: https://github.com/usegalaxy-eu/ansible-nvidia-container
-    version: 7c608da6f512d16e7e9e772e41d8ae9d1fa0a724
+    version: 2.0.0
   - src: geerlingguy.docker
     version: 8.0.0
   - src: https://github.com/usegalaxy-eu/ansible-chrony
@@ -58,4 +58,4 @@ roles:
     version: 0.3.1
   - name: openslx-ng.dracut
     src: https://github.com/usegalaxy-eu/ansible-dracut
-    version: 0.0.1
+    version: 8f7429f469552613baa826e40e3954b4eeda09a5
