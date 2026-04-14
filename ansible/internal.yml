@@ -36,7 +36,7 @@
         dest: /etc/ssh/
         mode: 0600
         owner: root
-        group: ssh_keys
+        group: root
       with_items:
         - ssh_host_ecdsa_key
         - ssh_host_ed25519_key
