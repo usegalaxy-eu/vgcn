@@ -63,6 +63,11 @@ def make_parser() -> argparse.ArgumentParser:
         help="Enable or disable the pxe playbook",
     )
     my_parser.add_argument(
+        "kvm",
+        choices=["yes", "no"],
+        help="Enable or disable the kvm playbook",
+    )
+    my_parser.add_argument(
         "--ansible-args",
         type=str,
         help='e.g. --ansible-args="--scp-extra-args=-O" which activates SCP compatibility mode and might be needed on Fedora',
@@ -193,6 +198,7 @@ class Build:
         conda_env: pathlib.Path,
         provisioning: [str],
         pxe: str,
+        kvm: str,
         comment: str,
         pvt_key: pathlib.Path,
         ansible_args: str,
@@ -207,6 +213,10 @@ class Build:
             self.provisioning.append("pxe")
         elif pxe == "no" and "pxe" in self.provisioning:
             self.provisioning.remove("pxe")
+        if kvm == "yes" and "kvm" not in self.provisioning:
+            self.provisioning.append("kvm")
+        elif kvm == "no" and "kvm" in self.provisioning:
+            self.provisioning.remove("kvm")
         self.ansible_args = ansible_args
         self.image_name = self.assemble_name()
         self.image_path = DIR_PATH / f"{self.image_name}.raw"
@@ -454,6 +464,7 @@ def main():
         conda_env=args.conda_env,
         provisioning=args.provisioning,
         pxe=args.pxe,
+        kvm=args.kvm,
         comment=args.comment,
         ansible_args=args.ansible_args,
         pvt_key=args.publish,
