@@ -33,7 +33,7 @@ roles:
     version: 0.0.1
   - name: grycap.htcondor
     src: https://github.com/usegalaxy-eu/ansible-htcondor-grycap
-    version: fe15ce1569e93a9d1030350c42d1af79e8c3e905
+    version: ddb567594f579002c2f5d1931a7271a71d084f35
   - src: geerlingguy.repo-epel
     version: 3.1.0
   - src: geerlingguy.java
