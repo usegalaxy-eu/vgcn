@@ -1,5 +1,5 @@
 ---
-- hosts: generic
+- hosts: all
   vars:
     software_groups_to_install:
       - admin

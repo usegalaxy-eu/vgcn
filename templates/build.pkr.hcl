@@ -8,7 +8,7 @@ packer {
 }
 
 local "disk_size" {
-  expression = "${contains(var.groups, "workers-gpu") ? "40G" : "10G"}"
+  expression = "${contains(var.groups, "workers") ? "40G" : "10G"}"
 }
 
 build {

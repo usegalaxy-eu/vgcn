@@ -48,7 +48,7 @@ def make_parser() -> argparse.ArgumentParser:
     my_parser.add_argument(
         "provisioning",
         choices=[
-            x.split(".", 1)[0] for x in os.listdir("ansible") if x.endswith(".yml")
+            x.split(".", 1)[0] for x in os.listdir("ansible") if x.endswith(".yml") and x != "generic.yml"
         ],
         help="""
         The playbooks you want to provision.
@@ -292,8 +292,6 @@ class Build:
         https://github.com/usegalaxy-eu/vgcn/issues/78
         """
         provisioning = self.provisioning.copy()
-        if "generic" not in self.provisioning:
-            provisioning.insert(0, "!generic")
         name = [
             "vgcn",
             self.template,
