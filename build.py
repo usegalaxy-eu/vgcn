@@ -48,7 +48,7 @@ def make_parser() -> argparse.ArgumentParser:
     my_parser.add_argument(
         "provisioning",
         choices=[
-            x.split(".", 1)[0] for x in os.listdir("ansible") if x.endswith(".yml") and x != "generic.yml"
+            x.split(".", 1)[0] for x in os.listdir("ansible") if x.endswith(".yml") 
         ],
         help="""
         The playbooks you want to provision.
