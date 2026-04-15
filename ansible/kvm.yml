@@ -8,8 +8,3 @@
         state: link
         src: /lib/systemd/system/serial-getty@.service
         dest: /etc/systemd/system/getty.target.wants/serial-getty@ttyS0.service
-    - name: Change root password
-      ansible.builtin.user:
-        name: root
-        password: "{{ kvm_root_password | password_hash('sha512') }}"
-
