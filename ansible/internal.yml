@@ -60,7 +60,7 @@
   tasks:
     - ansible.builtin.include_role:
         name: cloudinit
-      when: "not ('pxe' in group_names or 'kvm' in group_names)"
+      when: "'cloud' in group_names"
     - ansible.builtin.include_role:
         name: cloudinit-pxe
       when: "'pxe' in group_names"
