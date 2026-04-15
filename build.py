@@ -48,7 +48,7 @@ def make_parser() -> argparse.ArgumentParser:
     my_parser.add_argument(
         "provisioning",
         choices=[
-            x.split(".", 1)[0] for x in os.listdir("ansible") if x.endswith(".yml") 
+            x.split(".", 1)[0] for x in os.listdir("ansible") if x.endswith(".yml")
         ],
         help="""
         The playbooks you want to provision.
@@ -59,7 +59,7 @@ def make_parser() -> argparse.ArgumentParser:
     )
     my_parser.add_argument(
         "delivery",
-        choices=["kvm", "pxe", "cloud"],
+        choices=["no","kvm", "pxe", "cloud"],
         help="Delivery method playbook to run (kvm, pxe, or cloud)",
     )
     my_parser.add_argument(
