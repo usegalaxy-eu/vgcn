@@ -8,7 +8,6 @@ UPDATE_VIEW_COLLECTOR_WITH_TCP = True
 {% if htcondor_network_interface is defined %}
 NETWORK_INTERFACE = {{ htcondor_network_interface }}
 {% endif %}
-
 # Security
 ALLOW_WRITE = {{ htcondor_allow_write }}
 ALLOW_READ = $(ALLOW_WRITE)

@@ -1,2 +1,0 @@
-# grub
-boot_options: "console=ttyS0 spectre_v2=off nopti"
