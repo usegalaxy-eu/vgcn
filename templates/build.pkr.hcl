@@ -25,9 +25,9 @@ build {
   }
 
   source "source.qemu.base" {
-    name = "rockylinux-10.1-x86_64"
-    vm_name = "rockylinux-10.1-x86_64"
-    iso_url = "https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10.1-x86_64-boot.iso"
+    name = "rockylinux-10-latest-x86_64"
+    vm_name = "rockylinux-10-latest-x86_64"
+    iso_url = "https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10-latest-x86_64-boot.iso"
     iso_checksum = "sha256:18543988d9a1a5632d142c3dc288136dcc48ab71628f92ebcd40ada7f4ecd110"
     disk_size = "${local.disk_size}"
     boot_command = [
