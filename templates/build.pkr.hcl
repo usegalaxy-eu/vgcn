@@ -33,7 +33,7 @@ build {
     boot_command = [
       "<esc><wait>e",
       "<down><down><end><wait>",
-      " inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-10.1-x86_64-anaconda-ks.cfg",
+      " inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-10-latest-x86_64-anaconda-ks.cfg",
       " rootpw=${var.ssh_password} ",
       "<leftCtrlOn>x<leftCtrlOff>"
     ]
