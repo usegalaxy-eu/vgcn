@@ -25,4 +25,5 @@
         state: absent
         path: /tmp/server_ca
   roles:
+    - devsec.hardening.ssh_hardening
     - openslx-ng.dracut

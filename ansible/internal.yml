@@ -57,11 +57,6 @@
         limit_type: hard
         limit_item: core
         value: 0
-  post_tasks:
-    - name: Change root password
-      ansible.builtin.user:
-        name: root
-        password: "{{ kvm_root_password | password_hash('sha512') }}"
   tasks:
     - ansible.builtin.include_role:
         name: cloudinit
