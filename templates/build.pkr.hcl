@@ -34,6 +34,7 @@ build {
       "<esc><wait>e",
       "<down><down><end><wait>",
       " inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-10-latest-x86_64-anaconda-ks.cfg",
+      " inst.keymap=de", # This could have neen portuguese ll
       " rootpw=${var.ssh_password} ",
       "<leftCtrlOn>x<leftCtrlOff>"
     ]
@@ -41,6 +42,7 @@ build {
   }
 
   provisioner "shell" {
+    only = ["qemu.rockylinux-9-latest-x86_64", "qemu.rockylinux-10-latest-x86_64"]
       inline = [
         "usermod -u 99 $(id -nu 999 )",
         "groupmod -g 99 $(getent group 999 | cut -d: -f1)",
