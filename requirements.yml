@@ -2,7 +2,7 @@
 collections:
   - name: https://github.com/usegalaxy-eu/ansible-collection-handy
     type: git
-    version: bb419f682ac2bbab79794a1e6679bfdf1b4e3b1b
+    version: 4a1994d99b9f23babc2e85eddea0dda102b89e08
   - name: ansible.posix
     version: 1.5.1
     source: https://galaxy.ansible.com
