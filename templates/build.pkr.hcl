@@ -64,6 +64,7 @@ build {
       "ANSIBLE_HOST_KEY_CHECKING=False",
       "ANSIBLE_SSH_TRANSFER_METHOD=scp",
       "ANSIBLE_SCP_IF_SSH=True",
+      "ANSIBLE_PIPELINING=True",
       "ANSIBLE_SCP_EXTRA_ARGS = '-0'",
     ]
     extra_arguments  = "${compact([local.vault_password, var.ansible_extra_args, local.ansible_image_name])}"
