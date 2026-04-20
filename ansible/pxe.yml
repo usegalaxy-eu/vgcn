@@ -24,6 +24,22 @@
       ansible.builtin.file:
         state: absent
         path: /tmp/server_ca
+    # From vgcn-infrastrucure playbook:
+    - name: Copy Cvmfs Telemetry Listener
+      ansible.builtin.template:
+        src: telegraf-cvmfs-listener.conf.j2
+        dest: "{{ telegraf_agent_config_path }}/telegraf.d/cvmfs-listener.conf"
+        mode: "0640"
+        owner: telegraf
+        group: telegraf
+      no_log: true
+    - name: Ensure the HTCondor configuration directory exists.
+      ansible.builtin.file:
+        path: /etc/condor
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
   roles:
     - devsec.hardening.ssh_hardening
     - openslx-ng.dracut
