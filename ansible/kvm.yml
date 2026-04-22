@@ -3,11 +3,11 @@
   vars_files:
     - secret_group_vars/kvm.yml
   post_tasks:
-    - name: Set serial getty link
-      ansible.builtin.file:
-        state: link
-        src: /lib/systemd/system/serial-getty@.service
-        dest: /etc/systemd/system/getty.target.wants/serial-getty@ttyS0.service
+    # - name: Set serial getty link
+    #   ansible.builtin.file:
+    #     state: link
+    #     src: /lib/systemd/system/serial-getty@.service
+    #     dest: /etc/systemd/system/getty.target.wants/serial-getty@ttyS0.service
     - name: Change root password
       ansible.builtin.user:
         name: root
