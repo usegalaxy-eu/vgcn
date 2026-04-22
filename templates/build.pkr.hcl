@@ -43,16 +43,16 @@ build {
 
   provisioner "shell" {
     only = ["qemu.rockylinux-9-latest-x86_64", "qemu.rockylinux-10-latest-x86_64"]
-      inline = [
-        "usermod -u 99 $(id -nu 999 )",
-        "groupmod -g 99 $(getent group 999 | cut -d: -f1)",
-        "sudo dnf update --exclude=kernel*",
-        "dnf -y install epel-release",
-        "dnf config-manager --set-enabled crb", # Enable CRB for dependencies
-        "dnf -y install wget ansible-core",     # Use ansible-core for v10
-        "echo 'System prepared for Ansible'",
-      ]
-    }
+    inline = [
+      "usermod -u 99 $(id -nu 999 )",
+      "groupmod -g 99 $(getent group 999 | cut -d: -f1)",
+      "sudo dnf update --exclude=kernel*",
+      "dnf -y install epel-release",
+      "dnf config-manager --set-enabled crb", # Enable CRB for dependencies
+      "dnf -y install wget ansible-core",     # Use ansible-core for v10
+      "echo 'System prepared for Ansible'",
+    ]
+  }
 
   provisioner "ansible" {
     playbook_file    = "ansible/${local.playbook}"
