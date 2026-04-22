@@ -5,14 +5,6 @@
     - "group_vars/pulsar.yml"
     - "group_vars/condor.yml"
     - "group_vars/gpu.yml"
-  handlers:
-    - name: Reload HTCondor
-      when: "'condor_service' in service_facts.ansible_facts.services and \
-        service_facts.ansible_facts.services['condor.service'].state == 'running'"
-      become: true
-      ansible.builtin.service:
-        name: condor
-        state: reloaded
   pre_tasks:
     - name: Debug Kernel version
       ansible.builtin.shell:
@@ -65,10 +57,6 @@
         dest: /etc/condor/meta_walltime.py
         src: meta_walltime.py
         mode: "0755"
-      notify: Reload HTCondor
-    - name: Check if HTCondor is running.
-      ansible.builtin.service_facts:
-      register: service_facts
     - name: Create Staponpriv user homedir, see issue 23
       become: true
       ansible.builtin.file:
