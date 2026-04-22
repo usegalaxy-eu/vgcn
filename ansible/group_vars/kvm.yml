@@ -1,3 +1,2 @@
 ---
-ssh_permit_root_login: yes
-ssh_host_keys_group: root
+ssh_permit_root_login: "yes"
