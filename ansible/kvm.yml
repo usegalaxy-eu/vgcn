@@ -3,11 +3,6 @@
   vars_files:
     - secret_group_vars/kvm.yml
   post_tasks:
-    - name: Enable and start serial-getty on ttyS0
-      ansible.builtin.systemd:
-        name: serial-getty@ttyS0.service
-        enabled: yes
-        state: started
     - name: Change root password
       ansible.builtin.user:
         name: root
