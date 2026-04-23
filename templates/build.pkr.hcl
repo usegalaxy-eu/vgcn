@@ -34,7 +34,6 @@ build {
       "<esc><wait>e",
       "<down><down><end><wait>",
       " inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rockylinux-10-latest-x86_64-anaconda-ks.cfg",
-      " inst.keymap=de", # This could have neen portuguese ll
       " rootpw=${var.ssh_password} ",
       "<leftCtrlOn>x<leftCtrlOff>"
     ]
