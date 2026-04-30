@@ -25,14 +25,14 @@
         state: absent
         path: /tmp/server_ca
     # From vgcn-infrastrucure playbook:
-    - name: Copy Cvmfs Telemetry Listener
-      ansible.builtin.template:
-        src: telegraf-cvmfs-listener.conf.j2
-        dest: "{{ telegraf_agent_config_path }}/telegraf.d/cvmfs-listener.conf"
-        mode: "0640"
-        owner: telegraf
-        group: telegraf
-      no_log: true
+    # - name: Copy Cvmfs Telemetry Listener
+    #   ansible.builtin.template:
+    #     src: telegraf-cvmfs-listener.conf.j2
+    #     dest: "{{ telegraf_agent_config_path }}/telegraf.d/cvmfs-listener.conf"
+    #     mode: "0640"
+    #     owner: telegraf
+    #     group: telegraf
+    #   no_log: true
   roles:
     - devsec.hardening.ssh_hardening
     - openslx-ng.dracut

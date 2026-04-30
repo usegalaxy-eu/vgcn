@@ -45,6 +45,7 @@ build {
     inline = [
       "usermod -u 99 $(id -nu 999 )",
       "groupmod -g 99 $(getent group 999 | cut -d: -f1)",
+      "uname -r",
       "sudo dnf update",
       "dnf -y install epel-release",
       "dnf config-manager --set-enabled crb", # Enable CRB for dependencies
