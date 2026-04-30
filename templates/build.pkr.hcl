@@ -45,7 +45,7 @@ build {
     inline = [
       "usermod -u 99 $(id -nu 999 )",
       "groupmod -g 99 $(getent group 999 | cut -d: -f1)",
-      "sudo dnf update --exclude=kernel*",
+      "sudo dnf update",
       "dnf -y install epel-release",
       "dnf config-manager --set-enabled crb", # Enable CRB for dependencies
       "dnf -y install wget ansible-core",     # Use ansible-core for v10
