@@ -40,7 +40,7 @@ roles:
     version: 2.6.1
   - src: https://github.com/gsaudade99/ansible-cvmfs # Point to my fix
     name: galaxyproject.cvmfs
-    version: 814b2908f39bb0e3d8a90551831579b8cf3c94f5
+    version: a741d183cb6a5990639f8c814d6f0f19395e1f47
   - src: https://github.com/usegalaxy-eu/ansible-autofs
     name: usegalaxy-eu.autofs
     version: 08a15b6e9b031bed659fd718b036b4b8c387bb35
