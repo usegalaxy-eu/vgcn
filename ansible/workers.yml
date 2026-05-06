@@ -75,12 +75,6 @@
         - nfs
         - rpc-bind
         - mountd
-    - name: Open Port for HTCondor
-      ansible.posix.firewalld:
-        port: "{{ htcondor_server_port }}/tcp"
-        state: enabled
-        permanent: true
-        immediate: true
     - name: Restart Autofs
       ansible.builtin.service:
         name: autofs
