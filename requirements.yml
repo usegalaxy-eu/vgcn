@@ -42,7 +42,7 @@ roles:
     version: a741d183cb6a5990639f8c814d6f0f19395e1f47
   - src: https://github.com/usegalaxy-eu/ansible-autofs
     name: usegalaxy-eu.autofs
-    version: 08a15b6e9b031bed659fd718b036b4b8c387bb35
+    version: 1.4.1
   - name: usegalaxy-eu.autoupdates
     src: https://github.com/usegalaxy-eu/ansible-autoupdates
     version: 0.0.1
