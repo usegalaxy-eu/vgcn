@@ -41,7 +41,6 @@ build {
   }
 
   provisioner "shell" {
-    only = ["qemu.rockylinux-9-latest-x86_64", "qemu.rockylinux-10-latest-x86_64"]
     inline = [
       "usermod -u 99 $(id -nu 999 )",
       "groupmod -g 99 $(getent group 999 | cut -d: -f1)",
