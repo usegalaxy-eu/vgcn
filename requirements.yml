@@ -57,6 +57,6 @@ roles:
     version: 0.3.1
   - name: openslx-ng.dracut
     src: https://github.com/usegalaxy-eu/ansible-dracut
-    version: 8f7429f469552613baa826e40e3954b4eeda09a5
+    version: 0.1.0
   - name: usegalaxy_eu.ssh_manager
     version: 0.0.2
