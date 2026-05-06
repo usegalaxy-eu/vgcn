@@ -1,8 +1,7 @@
 ---
 collections:
-  - name: https://github.com/usegalaxy-eu/ansible-collection-handy
-    type: git
-    version: 4a1994d99b9f23babc2e85eddea0dda102b89e08
+  - name: usegalaxy_eu.handy
+    version: 3.3.0
   - name: ansible.posix
     version: 1.5.1
     source: https://galaxy.ansible.com
@@ -43,7 +42,7 @@ roles:
     version: a741d183cb6a5990639f8c814d6f0f19395e1f47
   - src: https://github.com/usegalaxy-eu/ansible-autofs
     name: usegalaxy-eu.autofs
-    version: 08a15b6e9b031bed659fd718b036b4b8c387bb35
+    version: 1.4.1
   - name: usegalaxy-eu.autoupdates
     src: https://github.com/usegalaxy-eu/ansible-autoupdates
     version: 0.0.1
@@ -58,6 +57,6 @@ roles:
     version: 0.3.1
   - name: openslx-ng.dracut
     src: https://github.com/usegalaxy-eu/ansible-dracut
-    version: 8f7429f469552613baa826e40e3954b4eeda09a5
+    version: 0.1.0
   - name: usegalaxy_eu.ssh_manager
     version: 0.0.2
