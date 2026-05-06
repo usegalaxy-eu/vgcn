@@ -14,7 +14,7 @@
       ansible.builtin.debug:
         msg: "{{ kernel }}"
     - name: Install Pulsar dependencies
-      package:
+      ansible.builtin.package:
         name:
           - gcc
           - curl
