@@ -2,6 +2,13 @@
 - hosts: kvm
   vars_files:
     - secret_group_vars/kvm.yml
+  tasks:
+    - name: Ensure serial console getty exists (ttyS0)
+      become: true
+      ansible.builtin.systemd:
+        name: serial-getty@ttyS0
+        enabled: true
+        state: started
   post_tasks:
     - name: Change root password
       ansible.builtin.user:
