@@ -43,9 +43,6 @@ telegraf_plugins_default:
       - commands = ["/bin/iamalive"]
       - name_suffix = "_alive"
 
-java_packages:
- - java-21-openjdk
-
 # CVMFS
 cvmfs_role: client
 cvmfs_yum_releasever: "9"
