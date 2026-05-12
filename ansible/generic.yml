@@ -62,6 +62,7 @@
 
     - geerlingguy.repo-epel # Install EPEL
     - usegalaxy-eu.autoupdates # keep all of our packages up to date REMOVED until latest kernel is supported in dnbd3
+    - usegalaxy-eu.ffmpeg
     - usegalaxy-eu.dynmotd
     - influxdata.chrony
     - usegalaxy-eu.telegraf
