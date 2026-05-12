@@ -3,6 +3,7 @@
   ansible.builtin.dnf:
     name: "https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
     state: present
+    disable_gpg_check: yes
 - name: Install ffmpeg
   ansible.builtin.dnf:
     name: ffmpeg
