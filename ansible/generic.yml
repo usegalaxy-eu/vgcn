@@ -51,10 +51,6 @@
         state: directory
         owner: root
         group: root
-    - name: Install ffmpeg # (see https://github.com/usegalaxy-eu/issues/issues/550)
-      ansible.builtin.package:
-        name: ffmpeg
-        state: present
   roles:
     - role: usegalaxy_eu.handy.os_setup
       vars:
@@ -69,3 +65,9 @@
     - usegalaxy-eu.dynmotd
     - influxdata.chrony
     - usegalaxy-eu.telegraf
+
+  post_tasks:
+    - name: Install ffmpeg # (see https://github.com/usegalaxy-eu/issues/issues/550)
+      ansible.builtin.package:
+        name: ffmpeg
+        state: present
