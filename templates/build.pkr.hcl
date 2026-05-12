@@ -12,7 +12,7 @@ build {
     name = "rockylinux-9-latest-x86_64"
     vm_name = "rockylinux-9-latest-x86_64"
     iso_url = "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9-latest-x86_64-boot.iso"
-    iso_checksum = "sha256:628c069c9685477360640a6b58dc919692a11c44b49a50a024b5627ce3c27d5f"
+    iso_checksum = "files:https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9-latest-x86_64-boot.iso.CHECKSUM"
     disk_size = "${local.disk_size}"
     boot_command = [
       "<esc><wait>",
@@ -28,7 +28,7 @@ build {
     name = "rockylinux-10-latest-x86_64"
     vm_name = "rockylinux-10-latest-x86_64"
     iso_url = "https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10-latest-x86_64-boot.iso"
-    iso_checksum = "sha256:18543988d9a1a5632d142c3dc288136dcc48ab71628f92ebcd40ada7f4ecd110"
+    iso_checksum = "file:https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10-latest-x86_64-boot.iso.CHECKSUM"
     disk_size = "${local.disk_size}"
     boot_command = [
       "<esc><wait>e",
