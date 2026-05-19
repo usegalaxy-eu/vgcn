@@ -62,18 +62,7 @@
 
     - geerlingguy.repo-epel # Install EPEL
     - usegalaxy-eu.autoupdates # keep all of our packages up to date REMOVED until latest kernel is supported in dnbd3
-    - usegalaxy-eu.ffmpeg
+    #- usegalaxy-eu.ffmpeg # Uncommnet this to fix https://github.com/usegalaxy-eu/issues/issues/550 
     - usegalaxy-eu.dynmotd
     - influxdata.chrony
     - usegalaxy-eu.telegraf
-
-  post_tasks:
-    - name: Install RPM Fusion Free repository
-      ansible.builtin.dnf:
-        name: "https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
-        state: present
-        disable_gpg_check: yes
-    - name: Install ffmpeg # (see https://github.com/usegalaxy-eu/issues/issues/550)
-      ansible.builtin.package:
-        name: ffmpeg
-        state: present
