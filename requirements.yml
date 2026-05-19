@@ -30,13 +30,8 @@ roles:
   - src: https://github.com/usegalaxy-eu/ansible-dynmotd
     name: usegalaxy-eu.dynmotd
     version: 0.0.1
-  - name: grycap.htcondor
-    src: https://github.com/usegalaxy-eu/ansible-htcondor-grycap
-    version: master
   - src: geerlingguy.repo-epel
     version: 3.1.0
-  - src: geerlingguy.java
-    version: 2.6.1
   - src: https://github.com/gsaudade99/ansible-cvmfs # Point to my fix
     name: galaxyproject.cvmfs
     version: a741d183cb6a5990639f8c814d6f0f19395e1f47
