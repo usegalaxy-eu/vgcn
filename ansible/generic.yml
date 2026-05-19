@@ -6,10 +6,6 @@
       - editors
       - terminals
       - utils
-
-  vars_files:
-    - "group_vars/all.yml"
-
   pre_tasks:
     - name: Ensure group Galaxy exists with correct gid
       ansible.builtin.group:
