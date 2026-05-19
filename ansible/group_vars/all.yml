@@ -45,7 +45,6 @@ telegraf_plugins_default:
 
 # CVMFS
 cvmfs_role: client
-cvmfs_yum_releasever: "9"
 galaxy_cvmfs_repos_enabled: true
 galaxy_cvmfs_server_urls:
   - domain: galaxyproject.org
