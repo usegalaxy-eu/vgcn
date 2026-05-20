@@ -145,3 +145,6 @@ software_groups_to_install:
 kernel_5_package: kernel-ml
 
 docker_daemon_options: {}
+
+ssh_host_keys_group: "{{ 'ssh_keys' if (ansible_os_family == 'RedHat' and ansible_distribution_major_version | int <= 9) else 'root' }}"
+ssh_host_keys_mode: "{{ '0640' if (ansible_os_family == 'RedHat' and ansible_distribution_major_version | int <= 9) else '0600' }}"
