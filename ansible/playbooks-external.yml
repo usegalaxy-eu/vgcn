@@ -15,6 +15,3 @@
 - ansible.builtin.import_playbook: external.yml
 
 - ansible.builtin.import_playbook: pxe.yml
-
-# REMOVE ME PLEASE; THIS WAS JUST A TEST
-- ansible.builtin.import_playbook: debug_ssh_key_ownership.yml
