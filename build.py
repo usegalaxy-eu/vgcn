@@ -58,6 +58,11 @@ def make_parser() -> argparse.ArgumentParser:
         nargs="+",
     )
     my_parser.add_argument(
+        "delivery",
+        choices=["no","kvm", "pxe", "cloud"],
+        help="Delivery method playbook to run (kvm, pxe, or cloud)",
+    )
+    my_parser.add_argument(
         "--ansible-args",
         type=str,
         help='e.g. --ansible-args="--scp-extra-args=-O" which activates SCP compatibility mode and might be needed on Fedora',
@@ -187,6 +192,7 @@ class Build:
         template: str,
         conda_env: pathlib.Path,
         provisioning: [str],
+        delivery: str,
         comment: str,
         pvt_key: pathlib.Path,
         ansible_args: str,
@@ -197,11 +203,17 @@ class Build:
         self.comment = comment
         self.pvt_key = pvt_key
         self.provisioning = provisioning
+        # Manage mutually exclusive delivery methods
+        for d in ["kvm", "pxe", "cloud"]:
+            if d in self.provisioning and d != delivery:
+                self.provisioning.remove(d)
+        if delivery not in self.provisioning:
+            self.provisioning.append(delivery)
         self.ansible_args = ansible_args
         self.image_name = self.assemble_name()
         self.image_path = DIR_PATH / f"{self.image_name}.raw"
         self.show_spinner = show_spinner
-        if conda_env:
+        if conda_env and conda_env.exists():
             self.qemu_path = f"{conda_env}/bin/qemu-img"
             self.openstack_path = f"{conda_env}/bin/openstack"
             self.packer_path = f"{conda_env}/bin/packer"
@@ -267,10 +279,11 @@ class Build:
     def assemble_packer_envs(self):
         env = os.environ.copy()
         env["PACKER_PLUGIN_PATH"] = f"{DIR_PATH}/packer_plugins"
-        env[
-            "PKR_VAR_groups"
-        ] = f"""[{','.join('"' + x + '"' for x in self.provisioning)}]"""
+        env["PKR_VAR_groups"] = (
+            f"""[{','.join('"' + x + '"' for x in self.provisioning)}]"""
+        )
         env["PKR_VAR_headless"] = "true"
+        env["PKR_VAR_image_name"] = f"{self.image_name}"
         if self.ansible_args:
             env["PKR_VAR_ansible_extra_args"] = self.ansible_args
         return env
@@ -290,7 +303,8 @@ class Build:
             self.assemble_timestamp(),
             subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
             .decode("ascii")
-            .strip(),
+            .strip()
+            .replace("/", "-"),
             subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
             .decode("ascii")
             .strip(),
@@ -443,6 +457,7 @@ def main():
         template=args.image,
         conda_env=args.conda_env,
         provisioning=args.provisioning,
+        delivery=args.delivery,
         comment=args.comment,
         ansible_args=args.ansible_args,
         pvt_key=args.publish,

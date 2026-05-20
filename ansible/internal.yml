@@ -2,20 +2,43 @@
 - hosts: internal
   vars:
     internal: true
-  vars_files:
-    - "group_vars/all.yml"
-    - "group_vars/condor.yml"
   pre_tasks:
+    - name: Debug Kernel version
+      ansible.builtin.shell:
+        cmd: uname -r
+      register: kernel
+    - name: Print kernel version
+      ansible.builtin.debug:
+        msg: "{{ kernel }}"
     - name: Include secret vars
       ansible.builtin.include_vars: "secret_group_vars/internal.yml"
       when: "'internal' in group_names"
-    - name: Copy server key into VM temporarily
+    - name: Copy signed ssh public keys
       ansible.builtin.copy:
-        src: server_ca
-        dest: /tmp/server_ca
+        src: "{{ item }}"
+        dest: /etc/ssh/
+        mode: 0644
         owner: root
         group: root
-        mode: "0600"
+      with_items:
+        - ssh_host_ecdsa_key.pub
+        - ssh_host_ed25519_key.pub
+        - ssh_host_rsa_key.pub
+        - ssh_host_ecdsa_key-cert.pub
+        - ssh_host_ed25519_key-cert.pub
+        - ssh_host_rsa_key-cert.pub
+    - name: Copy signed ssh private keys
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /etc/ssh/
+        mode: "{{ '0640' if (ansible_os_family == 'RedHat' and ansible_distribution_major_version | int <= 9) else '0600' }}"
+        owner: root
+        group: "{{ 'ssh_keys' if (ansible_os_family == 'RedHat' and ansible_distribution_major_version | int <= 9) else 'root' }}"
+      with_items:
+        - ssh_host_ecdsa_key
+        - ssh_host_ed25519_key
+        - ssh_host_rsa_key
+      no_log: true
     - name: Add HostCertificate options
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
@@ -31,47 +54,12 @@
         limit_type: hard
         limit_item: core
         value: 0
-
+  tasks:
+    - ansible.builtin.include_role:
+        name: cloudinit
+      when: "'cloud' in group_names"
+    - ansible.builtin.include_role:
+        name: cloudinit-pxe
+      when: "'pxe' in group_names"
   roles:
     - lock-root
-    - cloudinit
-
-- name: HTCondor cluster.
-  hosts: workers:&internal
-  vars:
-    internal: true
-  vars_files:
-    - "group_vars/all.yml"
-    - "group_vars/condor.yml"
-    - "secret_group_vars/internal.yml"
-  handlers:
-    - name: Reload HTCondor
-      when: "'condor_service' in service_facts.ansible_facts.services and \
-        service_facts.ansible_facts.services['condor.service'].state == 'running'"
-      become: true
-      ansible.builtin.service:
-        name: condor
-        state: reloaded
-  pre_tasks:
-    - name: Ensure the HTCondor configuration directory exists.
-      become: true
-      ansible.builtin.file:
-        path: /etc/condor
-        state: directory
-        owner: root
-        group: root
-        mode: "0755"
-    - name: Template HTCondor configuration.
-      become: true
-      ansible.builtin.template:
-        src: htcondor/condor_config.local.j2
-        dest: /etc/condor/condor_config.local
-        owner: root
-        group: root
-        mode: "0644"
-      notify: Reload HTCondor
-    - name: Check if HTCondor is running.
-      ansible.builtin.service_facts:
-      register: service_facts
-  roles:
-    - grycap.htcondor

@@ -58,34 +58,32 @@ Make sure the following packages are installed on your system.
 - [QEMU](https://www.packer.io/downloads.html) >= 6.2, < 9
 - [Ansible](https://www.ansible.com/), see [requirements.txt](./requirements.txt)
 
-Run Packer to build the images.
+Run the `build.py` script to automatically template, provision, and assemble the image. 
 
 ```shell
-packer build \
-    -only=qemu.rockylinux-8.6-x86_64,qemu.rockylinux-9.2-x86_64 \
-    -var="headless=true" \
-    -var='groups=["generic", "workers", "external"]' \
-    templates
+python build.py <template> <provisioning>... <delivery> [options]
 ```
 
-- `-only=qemu.rockylinux-8.6-x86_64,qemu.rockylinux-9.2-x86_64`: selects the
-  underlying operating system on which the images will be based. One image will
-  be produced for each item. The argument can be omitted to produce images for
-  all supported operating systems. All builds use the
-  [QEMU builder](https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu),
-  hence the prefix. Supported operating systems are listed in
-  [build.pkr.hcl](templates/build.pkr.hcl).
-- `-var="headless=true"`: display the screen of the QEMU virtual machines used to build the images by
-  setting this variable to false.
-- `-var='groups=["generic", "workers", "external"]'`: Playbooks that the Packer
-  Ansible provisioner will run. VGCN standard images are built with the setting
-  `groups=["generic", "workers", "external"]`. Add `workers-gpu` to the list
-  to get the GPU images. Read the comments in 
-  [variables.pkr.hcl](templates/variables.pkr.hcl) for more details.
-- `templates`: the directory containing the Packer templates.
+**Example:**
+```shell
+python build.py rockylinux-10-latest-x86_64 workers internal cloud -q
+```
 
-Once the images are built, they will be available in a new directory called
-"images".
+### Arguments
+
+- **`template`**: Selects the underlying operating system on which the image will be based. Supported templates can be found as `source.qemu.*` blocks in `templates/build.pkr.hcl` (e.g., `rockylinux-10-latest-x86_64`, `rockylinux-9-latest-x86_64`).
+- **`provisioning`**: One or more Ansible playbooks to run (e.g., `workers`, `internal`, `jenkins`). Note that the `generic` playbook is implicit and applied globally to all builds.
+- **`delivery`**: The delivery method or destination environment, which dictates the cloud-init and boot structure. This argument expects exactly one of the mutually exclusive choices: `cloud`, `kvm`, or `pxe` (use `no` to omit all). For local development this argument should default to `no`.
+
+### Options
+
+- `--openstack`: Automatically convert and upload the built image to your OpenStack tenant. Ensure your OpenStack RC file credentials are sourced.
+- `--conda-env <path>`: Specifies a conda environment path containing `packer` and `qemu-img` binaries.
+- `--publish <key_path>`: Secure copy the resulting raw image to the static hosting site and adjust permissions.
+- `--dry-run`: Output the generated Packer and shell commands without executing them.
+- `-q`, `--quiet`: Supress the spinner output during build.
+
+Once the images are built and converted, a `.raw` output file will be available in the root directory.
 
 ## Running VGCN images
 

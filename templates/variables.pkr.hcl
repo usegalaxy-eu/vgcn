@@ -32,9 +32,19 @@ locals {
 locals {
   vault_password = contains(var.groups, "internal") ? "--vault-password-file=${var.vault_password_file}" : null
 }
+locals {
+  ansible_image_name = "-e build_tag='${var.image_name}'"
+}
+local "disk_size" {
+  expression = "${contains(var.groups, "workers") ? "50G" : "10G"}"
+}
 variable "vault_password_file" {
   type    = string
   default = ".vault_password"
+}
+variable "image_name" {
+  type = string
+  default = ""
 }
 variable "ansible_extra_args" {
   type = string
