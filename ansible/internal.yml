@@ -31,9 +31,9 @@
       ansible.builtin.copy:
         src: "{{ item }}"
         dest: /etc/ssh/
-        mode: 0600
+        mode: "{{ '0640' if (ansible_os_family == 'RedHat' and ansible_distribution_major_version | int <= 9) else '0600' }}"
         owner: root
-        group: root
+        group: "{{ 'ssh_keys' if (ansible_os_family == 'RedHat' and ansible_distribution_major_version | int <= 9) else 'root' }}"
       with_items:
         - ssh_host_ecdsa_key
         - ssh_host_ed25519_key
