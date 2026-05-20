@@ -1,0 +1,43 @@
+pulsar_package_name: pulsar-app
+pulsar_package_version: 0.15.6
+
+pulsar_virtualenv_command: "python -m venv"
+pulsar_root: /opt/pulsar
+pulsar_persistence_dir: /data/share/persisted_data
+pulsar_staging_dir: /data/share/staging
+pulsar_dependencies_dir: /data/share/tools
+pulsar_venv_dir: "{{ pulsar_root }}/venv3"
+pulsar_optional_dependencies:
+  - pycurl
+  - kombu
+  - psutil
+pulsar_pycurl_ssl_library: openssl
+pulsar_systemd: true
+pulsar_systemd_enabled: false
+pulsar_systemd_runner: webless
+
+
+pulsar_separate_privileges: false
+pulsar_create_user: true
+pulsar_user:
+  name: pulsar
+  create_home: false
+  shell: /bin/bash
+  home: "{{ pulsar_root }}"
+
+pulsar_yaml_config:
+  conda_auto_init: true
+  conda_auto_install: true
+  assign_ids: none
+  message_queue_url: REAL_MESSAGE_QUEUE_URL
+  min_polling_interval: 0.5
+  persistence_directory: "{{ pulsar_persistence_dir }}"
+  staging_directory: "{{ pulsar_staging_dir }}"
+  tool_dependency_dir: "{{ pulsar_dependencies_dir }}"
+  managers:
+    production:
+      submit_universe: vanilla
+      type: queued_condor
+    test:
+      submit_universe: vanilla
+      type: queued_condor

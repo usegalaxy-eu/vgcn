@@ -1,7 +1,9 @@
 qemu/
 virtualbox-iso/
 vmware-iso/
-
+packer_plugins/
+ansible/collections
+ansible/roles
 # Created by https://www.gitignore.io/api/packer
 
 ### Packer ###
@@ -12,8 +14,10 @@ packer_cache/
 *.box
 
 # End of https://www.gitignore.io/api/packer
-centos-7.3-x86_64
+
 .vault_pass
+.vault_password
 *.retry
 .venv
-centos-7.x-x86_64/
+.vscode
+.idea

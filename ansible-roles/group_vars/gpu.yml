@@ -1,5 +1,0 @@
-# Cuda
-install_cuda: false
-
-# Nvidia container
-install_nvidia_container: false

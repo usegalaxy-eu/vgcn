@@ -1,0 +1,38 @@
+---
+- hosts: pxe
+  vars_files:
+    - group_vars/pxe.yml
+  pre_tasks:
+    - name: Debug Kernel version
+      ansible.builtin.shell:
+        cmd: uname -r
+      register: kernel
+    - name: Print kernel version
+      ansible.builtin.debug:
+        msg: "{{ kernel }}"
+    - name: Put SELinux in permissive mode, logging actions that would be blocked.
+      ansible.posix.selinux:
+        policy: targeted
+        state: permissive
+    - name: Alma|Rocky|CentOS | Install packages
+      ansible.builtin.yum:
+        name: "{{ packages }}"
+        state: latest
+        update_cache: yes
+        enablerepo: devel
+    - name: Remove CA (to be sure)
+      ansible.builtin.file:
+        state: absent
+        path: /tmp/server_ca
+    # From vgcn-infrastrucure playbook:
+    # - name: Copy Cvmfs Telemetry Listener
+    #   ansible.builtin.template:
+    #     src: telegraf-cvmfs-listener.conf.j2
+    #     dest: "{{ telegraf_agent_config_path }}/telegraf.d/cvmfs-listener.conf"
+    #     mode: "0640"
+    #     owner: telegraf
+    #     group: telegraf
+    #   no_log: true
+  roles:
+    - devsec.hardening.ssh_hardening
+    - openslx-ng.dracut

@@ -1,0 +1,15 @@
+---
+- name: Copy user setup script
+  ansible.builtin.copy:
+    src: boot-cron.sh
+    dest: /usr/local/sbin/boot-cron.sh
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Ensure cron job exists for script at reboot
+  ansible.builtin.cron:
+    name: "Run centos user setup at boot"
+    user: root
+    special_time: reboot
+    job: "sleep 20 && /usr/local/sbin/boot-cron.sh > /var/log/init"

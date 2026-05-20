@@ -1,0 +1,64 @@
+---
+- hosts: generic
+  vars:
+    software_groups_to_install:
+      - admin
+      - editors
+      - terminals
+      - utils
+  pre_tasks:
+    - name: Ensure group Galaxy exists with correct gid
+      ansible.builtin.group:
+        name: galaxy
+        state: present
+        gid: 999
+    - name: Add the user Galxy
+      ansible.builtin.user:
+        name: galaxy
+        uid: 999
+        group: galaxy
+    - name: Debug Kernel version
+      ansible.builtin.shell:
+        cmd: uname -r
+      register: kernel
+    - name: Print kernel version
+      ansible.builtin.debug:
+        msg: "{{ kernel }}"
+    - name: system update (without kernel update)
+      ansible.builtin.dnf:
+        name: "*"
+        exclude:
+          - kernel*
+          - kmod-kvdo
+        state: latest
+    - name: Put SELinux in permissive mode, logging actions that would be blocked.
+      ansible.posix.selinux:
+        policy: targeted
+        state: permissive
+    - name: Enable firewalld service
+      ansible.builtin.systemd:
+        name: firewalld
+        enabled: true
+        state: started
+    - name: Create Staponpriv user homedir, see issue 23
+      become: true
+      ansible.builtin.file:
+        path: /var/lib/stapunpriv
+        state: directory
+        owner: root
+        group: root
+  roles:
+    - role: usegalaxy_eu.handy.os_setup
+      vars:
+        enable_create_user: true
+        enable_powertools: true
+        enable_install_software: true
+        enable_grub: true
+        enable_kernel_5: "{{ true if (ansible_facts['distribution_major_version'] < '9') else false }}"
+
+    - geerlingguy.repo-epel # Install EPEL
+    - usegalaxy-eu.autoupdates # keep all of our packages up to date REMOVED until latest kernel is supported in dnbd3
+    #- usegalaxy-eu.ffmpeg # Uncommnet this to fix https://github.com/usegalaxy-eu/issues/issues/550 
+    - usegalaxy-eu.dynmotd
+    - influxdata.chrony
+    - usegalaxy-eu.telegraf

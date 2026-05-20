@@ -1,0 +1,5 @@
+---
+- hosts: external
+  roles:
+    - lock-root
+    - cloudinit

@@ -1,0 +1,16 @@
+---
+builder_branch: "master"
+builder_url: "http://git.openslx.org/openslx-ng/systemd-init.git/plain/build-initramfs.sh?h={{ builder_branch }}"
+builder_path: "/opt/systemd-init/build-initramfs.sh"
+builder_target: "{{ builder_path | dirname }}/initramfs"
+
+governor: schedutil
+
+packages:
+  - lsb-release
+  - "epel-release"
+  - "@development tools"
+  - "cmake"
+  - "git"
+  - kernel-devel
+  - kernel-headers
