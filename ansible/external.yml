@@ -1,7 +1,5 @@
 ---
 - hosts: external
-  vars_files:
-    - "group_vars/all.yml"
   roles:
     - lock-root
     - cloudinit

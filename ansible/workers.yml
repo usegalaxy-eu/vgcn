@@ -1,72 +1,54 @@
 ---
 - hosts: workers
   vars_files:
-    - "group_vars/all.yml"
-    - "group_vars/grub.yml"
     - "group_vars/pulsar.yml"
-    - "group_vars/condor.yml"
-  handlers:
-    - name: Reload HTCondor
-      when: "'condor_service' in service_facts.ansible_facts.services and \
-        service_facts.ansible_facts.services['condor.service'].state == 'running'"
-      become: true
-      ansible.builtin.service:
-        name: condor
-        state: reloaded
   pre_tasks:
-    - name: System update
-      ansible.builtin.dnf:
-        name: "*"
-        state: latest
-        exclude: condor*
+    - name: Ensure `gnupg2` is installed
+      # required for repository management,
+      # in this playbook precisely by `geerlingguy.docker`
+      ansible.builtin.package:
+        name:
+          - gnupg2
+        state: present
+      when: ansible_distribution_major_version|int >= 10
+    - name: Debug Kernel version
+      ansible.builtin.shell:
+        cmd: uname -r
+      register: kernel
+    - name: Print kernel version
+      ansible.builtin.debug:
+        msg: "{{ kernel }}"
     - name: Install Pulsar dependencies
       ansible.builtin.package:
         name:
-          - git
-          - python3-virtualenv
-          - python3
-          - python3-pycurl
-          - python3-devel
-          - yum
           - gcc
           - curl
-          - libcurl-devel
-          - python3-libs
-          - python38
-          - python38-devel
-          - openssl
-          - openssl-devel
-        state: present
-      become: true
-      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 8
-    - name: Install Pulsar dependencies
-      ansible.builtin.package:
-        name:
           - git
           - libcurl-devel
           - python-devel
         state: present
       become: true
-      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 9
+      when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int >= 9
     - name: Set default version of Python
-      community.general.alternatives:
+      ansible.builtin.alternatives:
         name: python
         path: /usr/bin/python3
         link: /usr/bin/python
-    - name: Set SELINUX to permissive
+    - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.builtin.lineinfile:
         path: /etc/selinux/config
-        regexp: "^SELINUX="
+        regexp: '^SELINUX='
         line: SELINUX=permissive
+    # CHECK IF THIS IS NEEDED OR EXECUTED
     - name: "Deploy docker-stop-1M script"
       ansible.builtin.copy:
         content: |
-          #!/bin/bash
-          docker ps -f status=running --format '{{ '{{' }}.ID}}: {{ '{{' }}.RunningFor}}' | awk '/months/ && $2 > 1 { print $0 }'|cut -f1 -d':' | xargs docker stop
+            #!/bin/bash
+            docker ps -f status=running --format '{{ '{{' }}.ID}}: {{ '{{' }}.RunningFor}}' | awk '/months/ && $2 > 1 { print $0 }'|cut -f1 -d':' | xargs docker stop
         dest: /usr/bin/docker-stop-1M
         owner: root
         group: root
-        mode: '0755'
+        mode: 0755
     - name: Ensure the HTCondor configuration directory exists.
       become: true
       ansible.builtin.file:
@@ -80,10 +62,6 @@
         dest: /etc/condor/meta_walltime.py
         src: meta_walltime.py
         mode: "0755"
-      notify: Reload HTCondor
-    - name: Check if HTCondor is running.
-      ansible.builtin.service_facts:
-      register: service_facts
     - name: Create Staponpriv user homedir, see issue 23
       become: true
       ansible.builtin.file:
@@ -91,7 +69,6 @@
         state: directory
         owner: root
         group: root
-        mode: "0755"
   post_tasks:
     - name: Add firewall rules for NFS
       ansible.posix.firewalld:
@@ -103,33 +80,28 @@
         - nfs
         - rpc-bind
         - mountd
-    - name: Open Port for HTCondor
-      ansible.posix.firewalld:
-        port: "{{ htcondor_server_port  }}/tcp"
-        state: enabled
-        permanent: true
-        immediate: true
     - name: Restart Autofs
       ansible.builtin.service:
         name: autofs
         state: restarted
-    - name: Add groups to Galaxy user
+    - name: Post Task Create User and add galaxy and condor/docker user groups
       ansible.builtin.user:
         name: galaxy
         groups: condor,docker
-        append: true
-    - name: Remove packages
-      ansible.builtin.dnf:
-        name: "{{ packages }}"
-        state: absent
-      vars:
-        packages:
-          - gcc
-          - libcurl-devel
-          - openssl-devel
-      become: true
+        append: yes
+        #  Let's keep this here as a reminder that uninstalling something
+        #  because we think it MAY not be needed, can result in several hours
+        #  debugging. This task removed the nvidia driver and cuda.
+        #  - ansible.builtin.dnf:
+        #      name: "{{ packages }}"
+        #      state: absent
+        #    vars:
+        #      packages:
+        #        - libcurl-devel
+        #        - openssl-devel
+        #    become: yes
     - name: Ensure Docker directory extists
-      ansible.builtin.file:
+      file:
         state: directory
         path: /etc/docker
         mode: '0755'
@@ -150,46 +122,28 @@
         dest: /bin/iamalive
         owner: telegraf
         group: telegraf
-        mode: '0755'
+        mode: 0755
   roles:
-    - geerlingguy.repo-epel # Install EPEL
     - role: usegalaxy_eu.handy.os_setup
       vars:
-        enable_powertools: true # geerlingguy.repo-epel role doesn't enable PowerTools repository
-        enable_remap_user: true
-        enable_kernel_5: true
         enable_pam_limits: true
-        enable_grub: true
-        enable_cgroups: "{{ false if ansible_facts['distribution_major_version'] == '9' else true }}"
         enable_journald: true
-        enable_install_software: true
-        enable_ansible_root_cron: false
-        enable_create_user: true
+        enable_ansible_root_cron: true
 
     - usegalaxy-eu.autofs
-    - usegalaxy-eu.dynmotd
-    - geerlingguy.java
+
     - geerlingguy.docker
-    - influxdata.chrony
-    - usegalaxy-eu.telegraf
+
     - galaxyproject.cvmfs
     - galaxyproject.pulsar
+    - usegalaxy_eu.cuda
+    - usegalaxy_eu.nvidia_container
+
     - usegalaxy-eu.logrotate
-    - role: usegalaxy_eu.handy.os_setup
-      vars:
-        enable_powertools: false # geerlingguy.repo-epel role doesn't enable PowerTools repository
-        enable_remap_user: true # needs to be at the end, otherwise dnsmasq will occupy 999 slot
-        enable_kernel_5: false
-        enable_pam_limits: false
-        enable_grub: false
-        enable_cgroups: false
-        enable_journald: false
-        enable_install_software: false
-        enable_ansible_root_cron: true
 
     # Applies a 250GB soft and 1TB hard limit on the file size for the condor systemd unit
     - role: usegalaxy-eu.fslimit
-      become: true
+      become: yes
       vars:
         ulimit_fsize_unit: "condor.service"
         ulimit_fsize_soft: 268435456000

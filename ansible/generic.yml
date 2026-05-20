@@ -6,11 +6,17 @@
       - editors
       - terminals
       - utils
-
-  vars_files:
-    - "group_vars/all.yml"
-
   pre_tasks:
+    - name: Ensure group Galaxy exists with correct gid
+      ansible.builtin.group:
+        name: galaxy
+        state: present
+        gid: 999
+    - name: Add the user Galxy
+      ansible.builtin.user:
+        name: galaxy
+        uid: 999
+        group: galaxy
     - name: Debug Kernel version
       ansible.builtin.shell:
         cmd: uname -r
@@ -41,10 +47,10 @@
         state: directory
         owner: root
         group: root
-
   roles:
     - role: usegalaxy_eu.handy.os_setup
       vars:
+        enable_create_user: true
         enable_powertools: true
         enable_install_software: true
         enable_grub: true
@@ -52,7 +58,7 @@
 
     - geerlingguy.repo-epel # Install EPEL
     - usegalaxy-eu.autoupdates # keep all of our packages up to date REMOVED until latest kernel is supported in dnbd3
+    #- usegalaxy-eu.ffmpeg # Uncommnet this to fix https://github.com/usegalaxy-eu/issues/issues/550 
     - usegalaxy-eu.dynmotd
     - influxdata.chrony
     - usegalaxy-eu.telegraf
-    - name: devsec.hardening.ssh_hardening

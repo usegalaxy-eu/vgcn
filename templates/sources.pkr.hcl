@@ -10,12 +10,12 @@ variable "boot_wait" {
 
 variable "cpus" {
   type    = string
-  default = "4"
+  default = "8"
 }
 
 variable "memory" {
   type    = string
-  default = "5096"
+  default = "8192"
 }
 
 variable "ssh_username" {
@@ -30,7 +30,7 @@ variable "ssh_password" {
 
 variable "ssh_timeout" {
   type    = string
-  default = "25m"
+  default = "10m"
 }
 
 variable "http_dir" {
