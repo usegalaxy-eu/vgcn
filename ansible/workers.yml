@@ -3,6 +3,14 @@
   vars_files:
     - "group_vars/pulsar.yml"
   pre_tasks:
+    - name: Ensure `gnupg2` is installed
+      # required for repository management,
+      # in this playbook precisely by `geerlingguy.docker`
+      ansible.builtin.package:
+        name:
+          - gnupg2
+        state: present
+      when: ansible_distribution_major_version|int >= 10
     - name: Debug Kernel version
       ansible.builtin.shell:
         cmd: uname -r
