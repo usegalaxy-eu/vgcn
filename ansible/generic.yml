@@ -57,7 +57,7 @@
         enable_kernel_5: "{{ true if (ansible_facts['distribution_major_version'] < '9') else false }}"
 
     - geerlingguy.repo-epel # Install EPEL
-    - usegalaxy-eu.ffmpeg # Uncommnet this to fix https://github.com/usegalaxy-eu/issues/issues/550
+    - usegalaxy-eu.ffmpeg
     - usegalaxy-eu.dynmotd
     - influxdata.chrony
     - usegalaxy-eu.telegraf
