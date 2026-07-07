@@ -25,7 +25,8 @@
           - curl
           - git
           - libcurl-devel
-          - python-devel
+          - python3-devel
+          - python3-setuptools
         state: present
       become: true
       when: ansible_os_family == 'RedHat' and ansible_distribution_major_version | int >= 9
