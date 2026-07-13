@@ -70,6 +70,14 @@
         state: directory
         owner: root
         group: root
+    - name: Ensure CVMFS scratch directory exists
+      become: true
+      ansible.builtin.file:
+        path: /scratch/cvmfs/
+        state: directory
+        owner: cvmfs
+        group: cvmfs
+        mode: "0755"
   post_tasks:
     - name: Add firewall rules for NFS
       ansible.posix.firewalld:
