@@ -43,9 +43,9 @@ build {
   provisioner "shell" {
     inline = [
       "usermod -u 99 $(id -nu 999 )",
-      "groupmod -g 99 $(getent group 999 | cut -d: -f1)",
-      "getent group cvmfs >/dev/null || groupadd -g 990 cvmfs",
-      "getent passwd cvmfs >/dev/null || useradd -u 990 -g 990 -r -s /sbin/nologin -M cvmfs",
+      "groupmod -g 99 $(getent group 989 | cut -d: -f1)",
+      "getent group cvmfs >/dev/null || groupadd -g 989 cvmfs",
+      "getent passwd cvmfs >/dev/null || useradd -u 990 -g 989 -r -s /sbin/nologin -M cvmfs",
       "uname -r",
       "sudo dnf update -y",
       "dnf -y install epel-release",
