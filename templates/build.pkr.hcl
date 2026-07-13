@@ -42,8 +42,10 @@ build {
 
   provisioner "shell" {
     inline = [
-      "if getent passwd 990 >/dev/null; then usermod -u 99 $(getent passwd 990 | cut -d: -f1); fi",
-      "if getent group 989 >/dev/null; then groupmod -g 99 $(getent group 989 | cut -d: -f1); fi",
+      "usermod -u 99 $(id -nu 999 )",
+      "groupmod -g 99 $(getent group 999 | cut -d: -f1)",
+      "if getent passwd 990 >/dev/null; then usermod -u 98 $(getent passwd 990 | cut -d: -f1); fi",
+      "if getent group 989 >/dev/null; then groupmod -g 98 $(getent group 989 | cut -d: -f1); fi",
       "getent group cvmfs >/dev/null || groupadd -g 989 cvmfs",
       "getent passwd cvmfs >/dev/null || useradd -u 990 -g 989 -r -s /sbin/nologin -d /var/lib/cvmfs -M cvmfs",
       "uname -r",
