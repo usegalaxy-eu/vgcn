@@ -1,4 +1,35 @@
 ---
+- name: Debug kernel version
+  hosts: generic
+  tasks:
+    - name: Retrieve kernel version
+      ansible.builtin.shell:
+        cmd: uname -r
+      register: kernel
+      changed_when: false
+
+    - name: Print kernel version
+      ansible.builtin.debug:
+        msg: "{{ kernel }}"
+
+- name: Manage package repositories and system updates
+  hosts: generic
+  roles:
+    - role: usegalaxy_eu.rocky_security_repository
+      vars:
+        rocky_security_repository_repo_definitions_upgrade: true
+      become: true
+    - geerlingguy.repo-epel # Install EPEL
+    - usegalaxy-eu.autoupdates # keep all of our packages up to date REMOVED until latest kernel is supported in dnbd3
+  tasks:
+    - name: system update (without kernel update)
+      ansible.builtin.dnf:
+        name: "*"
+        exclude:
+          - kernel*
+          - kmod-kvdo
+        state: latest
+
 - hosts: generic
   vars:
     software_groups_to_install:
@@ -17,20 +48,6 @@
         name: galaxy
         uid: 999
         group: galaxy
-    - name: Debug Kernel version
-      ansible.builtin.shell:
-        cmd: uname -r
-      register: kernel
-    - name: Print kernel version
-      ansible.builtin.debug:
-        msg: "{{ kernel }}"
-    - name: system update (without kernel update)
-      ansible.builtin.dnf:
-        name: "*"
-        exclude:
-          - kernel*
-          - kmod-kvdo
-        state: latest
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.posix.selinux:
         policy: targeted
@@ -56,7 +73,6 @@
         enable_grub: true
         enable_kernel_5: "{{ true if (ansible_facts['distribution_major_version'] < '9') else false }}"
 
-    - geerlingguy.repo-epel # Install EPEL
     - usegalaxy-eu.ffmpeg
     - usegalaxy-eu.dynmotd
     - influxdata.chrony
