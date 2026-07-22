@@ -44,6 +44,10 @@ build {
     inline = [
       "usermod -u 99 $(id -nu 999 )",
       "groupmod -g 99 $(getent group 999 | cut -d: -f1)",
+      "if getent passwd 990 >/dev/null; then usermod -u 98 $(getent passwd 990 | cut -d: -f1); fi",
+      "if getent group 989 >/dev/null; then groupmod -g 98 $(getent group 989 | cut -d: -f1); fi",
+      "getent group cvmfs >/dev/null || groupadd -g 989 cvmfs",
+      "getent passwd cvmfs >/dev/null || useradd -u 990 -g 989 -r -s /sbin/nologin -d /var/lib/cvmfs -M cvmfs",
       "uname -r",
       "sudo dnf update -y",
       "dnf -y install epel-release",
@@ -64,7 +68,7 @@ build {
       "ANSIBLE_SSH_TRANSFER_METHOD=scp",
       "ANSIBLE_SCP_IF_SSH=True",
       "ANSIBLE_PIPELINING=True",
-      "ANSIBLE_SCP_EXTRA_ARGS = '-0'",
+      "ANSIBLE_SCP_EXTRA_ARGS=-O",
     ]
     extra_arguments  = "${compact([local.vault_password, var.ansible_extra_args, local.ansible_image_name])}"
     groups           = var.groups
