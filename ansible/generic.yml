@@ -31,6 +31,11 @@
           - kernel*
           - kmod-kvdo
         state: latest
+    # Bug Fix Test: https://build.galaxyproject.eu/job/usegalaxy-eu/job/VGCN-Image-Build/367/console
+    - name: Ensure kernel-modules-extra is installed (provides xt_addrtype etc. needed by Docker's iptables rules)
+      ansible.builtin.dnf:
+        name: kernel-modules-extra
+        state: present
     - name: Put SELinux in permissive mode, logging actions that would be blocked.
       ansible.posix.selinux:
         policy: targeted
