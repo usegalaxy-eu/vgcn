@@ -1,5 +1,5 @@
 ---
-- name: Debug kernel version
+- name: Manage kernel
   hosts: generic
   tasks:
     - name: Retrieve kernel version
@@ -11,6 +11,11 @@
     - name: Print kernel version
       ansible.builtin.debug:
         msg: "{{ kernel }}"
+
+    - name: Ensure kernel-modules-extra is installed (provides xt_addrtype etc. needed by Docker's iptables rules)
+      ansible.builtin.dnf:
+        name: kernel-modules-extra
+        state: present
 
 - name: Manage package repositories and system updates
   hosts: generic
