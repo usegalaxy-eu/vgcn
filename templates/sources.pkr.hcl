@@ -50,6 +50,7 @@ packer {
 source "qemu" "base" {
   output_directory   = "${var.output_directory}"
   accelerator        = "kvm"
+  qemu_binary        = "/usr/libexec/qemu-kvm"
   format             = "qcow2"
   disk_interface     = "virtio"
   net_device         = "virtio-net"
