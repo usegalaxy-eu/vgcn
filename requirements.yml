@@ -35,9 +35,9 @@ roles:
     version: 0.0.1
   - src: geerlingguy.repo-epel
     version: 3.1.0
-  - src: https://github.com/gsaudade99/ansible-cvmfs # Point to my fix
+  - src: https://github.com/galaxyproject/ansible-cvmfs
     name: galaxyproject.cvmfs
-    version: a741d183cb6a5990639f8c814d6f0f19395e1f47
+    version: 0.5.2
   - src: https://github.com/usegalaxy-eu/ansible-autofs
     name: usegalaxy-eu.autofs
     version: 1.4.1
