@@ -78,6 +78,16 @@
         owner: cvmfs
         group: cvmfs
         mode: "0755"
+    - name: Ensure Docker directory extists
+      file:
+        state: directory
+        path: /etc/docker
+        mode: '0755'
+    - name: Copy Docker daemon.json
+      ansible.builtin.copy:
+        src: daemon.json
+        dest: /etc/docker/daemon.json
+        mode: '0644'
   post_tasks:
     - name: Add firewall rules for NFS
       ansible.posix.firewalld:
@@ -109,16 +119,6 @@
         #        - libcurl-devel
         #        - openssl-devel
         #    become: yes
-    - name: Ensure Docker directory extists
-      file:
-        state: directory
-        path: /etc/docker
-        mode: '0755'
-    - name: Copy Docker daemon.json
-      ansible.builtin.copy:
-        src: daemon.json
-        dest: /etc/docker/daemon.json
-        mode: '0644'
     - name: Restart Docker service, in all cases
       ansible.builtin.service:
         name: docker
