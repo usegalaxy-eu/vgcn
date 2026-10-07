@@ -14,3 +14,4 @@ packages:
   - "git"
   - kernel-devel
   - kernel-headers
+  - ipmitool
